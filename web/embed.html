@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #d4d4d8;
+      }
+      iframe {
+        height: 650px;
+        width: 350px;
+        border-radius: 6px;
+        border: 2px solid #d4d4d8;
+        border-radius: 6px;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe src="http://localhost:3000/extension"></iframe>
+    <script type="module">
+      import bime from "https://www.unpkg.com/@mike.pete/bime@latest";
+
+      const handler = {
+        get: (_, prop) => {
+          return async (...args) => {
+            console.log("call", prop, args);
+          };
+        },
+      };
+
+      const model = new Proxy({}, handler);
+
+      const listener = bime.listen("*", model);
+    </script>
+  </body>
+</html>
