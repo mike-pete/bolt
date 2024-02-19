@@ -9,12 +9,14 @@ const handler = {
 		return async (...args) => {
 			// TODO: forward messages to proper recipient
 			//       instead of sending them to both the iframe and the content script
+			let response
 			try {
-				invokeIframe[prop](args)
+				response = invokeIframe[prop](args)
 			} catch (_) {}
 			try {
-				invokeContent[prop](args)
+				response = invokeContent[prop](args)
 			} catch (_) {}
+			return response
 		}
 	},
 }

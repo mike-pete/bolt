@@ -1,8 +1,5 @@
 import { iframeHeight, iframeId, showIframeId } from '../constants'
 
-const queryArray = (selector: string) =>
-	Array.from(document.querySelectorAll(selector)) as HTMLElement[]
-
 const query = (selector: string) =>
 	document.querySelector(selector) as HTMLElement | null
 
