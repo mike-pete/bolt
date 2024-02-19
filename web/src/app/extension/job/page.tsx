@@ -1,11 +1,16 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import bi from "../_interactions/bi";
+import { jobKeys } from "../_interactions/queryKeys";
 import { jobTitleSelector } from "../_interactions/selectors";
 
 const Job: React.FC = () => {
+  // const queryClient = useQueryClient();
+  //   const jobId = queryClient.getQueryData(jobKeys.jobId()) as string | null;
+  //   console.log("jobId", jobId);
+  
   const { data, isLoading } = useQuery({
-    queryKey: ["job", "title"],
+    queryKey: jobKeys.title(),
     queryFn: async () => {
       const data = await bi.getTextContent(jobTitleSelector);
       return data;
@@ -14,7 +19,6 @@ const Job: React.FC = () => {
 
   return (
     <div className="p-4">
-      <h1>Job</h1>
       {isLoading ? <p>Loading...</p> : <p>{data ?? ""}</p>}
     </div>
   );

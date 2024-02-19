@@ -1,11 +1,15 @@
-// import { changeCurrentJob } from '../stores/useCurrentJob'
+import { queryClient } from "~/trpc/react";
+import { jobKeys } from "./queryKeys";
 
-const handleLocationChanged = (location: string) => {
-    // const queryString = JSON.parse(location).search
-    // const urlParams = new URLSearchParams(queryString)
-    // const jobId = urlParams.get('currentJobId')
-    // changeCurrentJob(typeof jobId === 'string' ? jobId : undefined)
-    console.log('location changed', location)
-}
+const handleLocationChanged = async (location: string) => {
+  const loc = JSON.parse(location) as { search: string };
 
-export default handleLocationChanged
+  const queryString = loc.search;
+  const urlParams = new URLSearchParams(queryString);
+  const jobId = urlParams.get("currentJobId");
+
+  await queryClient.invalidateQueries({ queryKey: jobKeys.all });
+  queryClient.setQueryData(jobKeys.jobId(), jobId);
+};
+
+export default handleLocationChanged;
