@@ -18,4 +18,5 @@ const ExtensionLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
+export const dynamic = "force-dynamic";
 export default ExtensionLayout;
