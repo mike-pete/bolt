@@ -4,8 +4,8 @@ import { IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { api } from "~/trpc/react";
 
-import { type KeywordGroup } from "./KeywordGroup";
 import useDebounce from "~/app/_hooks/useDebounce";
+import { type KeywordGroup } from "./KeywordGroup";
 
 const KeywordGroupHeader: React.FC<{ keywordGroup: KeywordGroup }> = ({
   keywordGroup,
@@ -58,7 +58,7 @@ const KeywordGroupHeader: React.FC<{ keywordGroup: KeywordGroup }> = ({
   };
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center gap-2">
       <input
         type="string"
         value={titleInput}
@@ -67,8 +67,9 @@ const KeywordGroupHeader: React.FC<{ keywordGroup: KeywordGroup }> = ({
         onChange={handleTitleChange}
       />
       <IconTrash
-        className="cursor-pointer"
+        className="hidden flex-shrink-0 cursor-pointer text-xl text-zinc-300 transition hover:!text-zinc-800 group-hover:block"
         onClick={() => deleteKeywordGroup({ keywordGroupId: id })}
+        size={20}
       />
     </div>
   );
