@@ -9,12 +9,15 @@ import LoadingSpinner from "../_components/LoadingSpinner";
 // https://github.com/nextauthjs/next-auth/discussions/1585
 
 const useCookieAccess = () => {
-  const storageAccessFunctionExists =
-    typeof document.hasStorageAccess === "function";
-  const [loading, setLoading] = useState(storageAccessFunctionExists);
-  const [hasCookieAccess, setHasCookieAccess] = useState(
-    !storageAccessFunctionExists,
-  );
+  const [loading, setLoading] = useState(true);
+  const [hasCookieAccess, setHasCookieAccess] = useState(false);
+
+  useEffect(() => {
+    if (typeof document.hasStorageAccess !== "function") {
+      setLoading(false)
+      setHasCookieAccess(true);
+    }
+  }, []);
 
   const requestCookieAccess = useCallback(async () => {
     setLoading(true);
@@ -84,7 +87,12 @@ const AuthScreen: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
-      <a target="_blank" href="https://twitter.com/" rel="noopener noreferrer" className="rounded-full border px-3 py-2">
+      <a
+        target="_blank"
+        href="https://twitter.com/"
+        rel="noopener noreferrer"
+        className="rounded-full border px-3 py-2"
+      >
         login
       </a>
     </div>
