@@ -66,6 +66,25 @@ export const keywordsRouter = createTRPCRouter({
       });
     }),
 
+  createKeyword: protectedProcedure
+    .input(
+      z.object({
+        keywordGroupId: z.string().min(1).max(191),
+        keyword: z.string().min(1).max(191),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+
+      const keyword = await ctx.db.keywords.create({
+        data: {
+          userId,
+          keywordGroupId: input.keywordGroupId,
+          keyword: input.keyword,
+        },
+      });
+      return keyword;
+    }),
   // TODO: create keyword
   // TODO: delete keyword
 });

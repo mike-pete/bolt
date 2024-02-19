@@ -15,7 +15,7 @@ const KeywordGroup: React.FC<{ keywordGroup: KeywordGroup }> = ({
   return (
     <div className="flex w-full flex-col flex-nowrap gap-0.5">
       <KeywordGroupHeader keywordGroup={keywordGroup} />
-      <KeywordGroupKeywords keywords={keywords} />
+      <KeywordGroupKeywords keywordGroupId={keywordGroup.id} keywords={keywords} />
     </div>
   );
 };
