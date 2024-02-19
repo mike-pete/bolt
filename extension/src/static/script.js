@@ -1,5 +1,4 @@
 import bime from './bime.js'
-console.log('script is running')
 const iframe = document.querySelector('iframe')
 const invokeIframe = bime.target(iframe.contentWindow, '*')
 const invokeContent = bime.target(parent, '*')
