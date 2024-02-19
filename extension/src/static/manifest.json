@@ -1,7 +1,7 @@
 {
 	"name": "Bolt",
 	"version": "0.0.0.01",
-	"description": "Apply to more jobs in less time.",
+	"description": "Find relevant jobs in less time",
 	"manifest_version": 3,
 	"permissions": ["activeTab", "scripting", "tabs"],
 	"content_scripts": [
