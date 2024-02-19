@@ -11,19 +11,11 @@
 			"run_at": "document_end"
 		}
 	],
-	"action": {
-		"default_icon": {
-			"16": "images/off-icon-16.png",
-			"32": "images/off-icon-32.png",
-			"48": "images/off-icon-48.png",
-			"128": "images/off-icon-128.png"
-		}
-	},
 	"icons": {
-		"16": "images/on-icon-16.png",
-		"32": "images/on-icon-32.png",
-		"48": "images/on-icon-48.png",
-		"128": "images/on-icon-128.png"
+		"16": "images/bolt-16.png",
+		"32": "images/bolt-32.png",
+		"48": "images/bolt-48.png",
+		"128": "images/bolt-128.png"
 	},
 	"web_accessible_resources": [
 		{
