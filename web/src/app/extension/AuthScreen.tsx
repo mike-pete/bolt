@@ -54,7 +54,11 @@ const AuthScreen: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { status } = useSession();
 
   if (cookieAccessLoading || status === "loading") {
-    return <div className="flex justify-center items-center h-full"><LoadingSpinner /></div>;
+    return (
+      <div className="flex h-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (!hasCookieAccess) {
@@ -79,8 +83,10 @@ const AuthScreen: React.FC<{ children: ReactNode }> = ({ children }) => {
   }
 
   return (
-    <div>
-      <h1>Not authenticated</h1>
+    <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
+      <a target="_blank" href="https://twitter.com/" rel="noopener noreferrer" className="rounded-full border px-3 py-2">
+        login
+      </a>
     </div>
   );
 };
