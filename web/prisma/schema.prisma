@@ -68,7 +68,7 @@ model Keywords {
     userId String
     keyword String
     keywordGroupId String
-    keywordGroup KeywordGroups @relation(fields: [keywordGroupId], references: [id])
+    keywordGroup KeywordGroups @relation(fields: [keywordGroupId], references: [id], onDelete: Cascade)
 
     @@index([id])
     @@index([keywordGroupId])
