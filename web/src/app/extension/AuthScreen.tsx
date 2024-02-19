@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
+import LoadingSpinner from "../_components/LoadingSpinner";
 
 // third party cookies will be restricted in Chrome in Q3 2024
 // https://developers.google.com/privacy-sandbox/3pcd/storage-access-api
@@ -53,7 +54,7 @@ const AuthScreen: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { status } = useSession();
 
   if (cookieAccessLoading || status === "loading") {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center h-full"><LoadingSpinner /></div>;
   }
 
   if (!hasCookieAccess) {
