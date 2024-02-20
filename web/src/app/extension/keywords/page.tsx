@@ -11,7 +11,7 @@ const Keywords: React.FC = () => {
     api.keywords.getKeywordGroups.useQuery();
   return (
     <div className="flex flex-col flex-nowrap gap-4 items-center p-4">
-      {loadingKeywordGroups && <LoadingSpinner />}
+      {loadingKeywordGroups && <LoadingSpinner size={30}/>}
       {keywordGroups?.map((keywordGroup) => (
         <KeywordGroup keywordGroup={keywordGroup} key={keywordGroup.id} />
       ))}

@@ -59,7 +59,7 @@ const AuthScreen: React.FC<{ children: ReactNode }> = ({ children }) => {
   if (cookieAccessLoading || status === "loading") {
     return (
       <div className="flex h-full items-center justify-center">
-        <LoadingSpinner />
+        <LoadingSpinner size={30} />
       </div>
     );
   }
