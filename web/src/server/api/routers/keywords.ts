@@ -85,6 +85,17 @@ export const keywordsRouter = createTRPCRouter({
       });
       return keyword;
     }),
-  // TODO: create keyword
-  // TODO: delete keyword
+
+  deleteKeyword: protectedProcedure
+    .input(z.string().min(1).max(191))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+
+      await ctx.db.keywords.delete({
+        where: {
+          userId,
+          id: input,
+        },
+      });
+    }),
 });

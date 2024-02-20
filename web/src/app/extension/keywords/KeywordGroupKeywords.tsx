@@ -1,3 +1,4 @@
+import { IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { api } from "~/trpc/react";
 import type { KeywordGroupType } from "./KeywordGroup";
@@ -12,6 +13,12 @@ const KeywordGroupKeywords: React.FC<{
   const ctx = api.useUtils();
 
   const { mutate: createKeyword } = api.keywords.createKeyword.useMutation({
+    onSettled: () => {
+      void ctx.keywords.getKeywordGroups.invalidate();
+    },
+  });
+
+  const { mutate: deleteKeyword } = api.keywords.deleteKeyword.useMutation({
     onSettled: () => {
       void ctx.keywords.getKeywordGroups.invalidate();
     },
@@ -34,12 +41,18 @@ const KeywordGroupKeywords: React.FC<{
 
   return (
     <div className="flex flex-wrap gap-2 overflow-clip rounded-lg border-2 border-zinc-300 p-2">
-      {keywords?.map((keyword) => (
+      {keywords?.map(({ keyword, id }) => (
         <div
-          key={keyword.id}
-          className="rounded-full bg-sky-400 px-3 py-0.5 font-semibold uppercase text-white"
+          key={id}
+          className={`group relative select-none overflow-clip rounded-full bg-sky-400 px-3 py-1.5 text-sm font-semibold uppercase text-white`}
         >
-          <p>{keyword.keyword}</p>
+          <button
+            onClick={() => deleteKeyword(id)}
+            className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-transparent text-lg text-transparent transition hover:bg-red-900/90 hover:text-white"
+          >
+            <IconTrash size={20} />
+          </button>
+          {keyword}
         </div>
       ))}
       <input
