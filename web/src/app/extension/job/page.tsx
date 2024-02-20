@@ -5,8 +5,10 @@ import { jobKeys } from "../_interactions/queryKeys";
 import {
   jobCompSelector,
   jobCompanySelector,
+  jobDescSelector,
   jobTitleSelector,
 } from "../_interactions/selectors";
+import KeywordsFound from "./KeywordsFound";
 
 const Job: React.FC = () => {
   const { data: jobTitle } = useQuery({
@@ -36,19 +38,27 @@ const Job: React.FC = () => {
     },
   });
 
+  const { data: jobDescription } = useQuery({
+    queryKey: jobKeys.description(),
+    queryFn: async () => await bi.getTextContent(jobDescSelector),
+  });
+
   return (
-    <div className="flex flex-col flex-nowrap items-start gap-1 border-b-2 border-zinc-300 bg-zinc-100 p-4">
-      {typeof company === "string" && (
-        <p className="text-sm font-bold text-zinc-500">{company}</p>
-      )}
+    <div>
+      <div className="flex flex-col flex-nowrap items-start gap-1 border-b-2 border-zinc-300 bg-zinc-100 p-4">
+        {typeof company === "string" && (
+          <p className="text-sm font-bold text-zinc-500">{company}</p>
+        )}
 
-      {typeof jobTitle === "string" && (
-        <p className="text-lg font-bold text-zinc-700">{jobTitle}</p>
-      )}
+        {typeof jobTitle === "string" && (
+          <p className="text-lg font-bold text-zinc-700">{jobTitle}</p>
+        )}
 
-      {typeof comp === "string" && (
-        <p className="text-sm font-bold text-zinc-500">{comp}</p>
-      )}
+        {typeof comp === "string" && (
+          <p className="text-sm font-bold text-zinc-500">{comp}</p>
+        )}
+      </div>
+      <KeywordsFound description={jobDescription ?? undefined} />
     </div>
   );
 };

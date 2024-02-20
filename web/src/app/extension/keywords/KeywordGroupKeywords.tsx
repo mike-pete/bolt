@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { api } from "~/trpc/react";
-import type { KeywordGroup } from "./KeywordGroup";
+import type { KeywordGroupType } from "./KeywordGroup";
 
-type Keywords = KeywordGroup["keywords"];
+type Keywords = KeywordGroupType["keywords"];
 
 const KeywordGroupKeywords: React.FC<{
   keywordGroupId: string;
@@ -37,7 +37,7 @@ const KeywordGroupKeywords: React.FC<{
       {keywords?.map((keyword) => (
         <div
           key={keyword.id}
-          className="rounded-full bg-sky-400 px-3 py-0.5 font-semibold text-white uppercase"
+          className="rounded-full bg-sky-400 px-3 py-0.5 font-semibold uppercase text-white"
         >
           <p>{keyword.keyword}</p>
         </div>

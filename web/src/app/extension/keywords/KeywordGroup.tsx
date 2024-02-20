@@ -4,10 +4,10 @@ import { type RouterOutputs } from "~/trpc/shared";
 import KeywordGroupHeader from "./KeywordGroupHeader";
 import KeywordGroupKeywords from "./KeywordGroupKeywords";
 
-export type KeywordGroup =
+export type KeywordGroupType =
   RouterOutputs["keywords"]["getKeywordGroups"][number];
 
-const KeywordGroup: React.FC<{ keywordGroup: KeywordGroup }> = ({
+const KeywordGroup: React.FC<{ keywordGroup: KeywordGroupType }> = ({
   keywordGroup,
 }) => {
   const { keywords } = keywordGroup;
@@ -15,7 +15,10 @@ const KeywordGroup: React.FC<{ keywordGroup: KeywordGroup }> = ({
   return (
     <div className="group flex w-full flex-col flex-nowrap gap-0.5">
       <KeywordGroupHeader keywordGroup={keywordGroup} />
-      <KeywordGroupKeywords keywordGroupId={keywordGroup.id} keywords={keywords} />
+      <KeywordGroupKeywords
+        keywordGroupId={keywordGroup.id}
+        keywords={keywords}
+      />
     </div>
   );
 };

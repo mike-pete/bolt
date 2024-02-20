@@ -5,9 +5,9 @@ import { useState } from "react";
 import { api } from "~/trpc/react";
 
 import useDebounce from "~/app/_hooks/useDebounce";
-import { type KeywordGroup } from "./KeywordGroup";
+import { type KeywordGroupType } from "./KeywordGroup";
 
-const KeywordGroupHeader: React.FC<{ keywordGroup: KeywordGroup }> = ({
+const KeywordGroupHeader: React.FC<{ keywordGroup: KeywordGroupType }> = ({
   keywordGroup,
 }) => {
   const { id, title } = keywordGroup;
