@@ -1,3 +1,4 @@
+import { IconArrowRight } from "@tabler/icons-react";
 import Link from "next/dist/client/link";
 import LoadingSpinner from "~/app/_components/LoadingSpinner";
 import { api } from "~/trpc/react";
@@ -41,24 +42,25 @@ const KeywordsFound: React.FC<{ description: string | undefined }> = ({
     description,
   );
 
-  return (
-    <>
-      {loadingKeywordGroups && (
-        <div className="flex h-full w-full items-center justify-center">
-          <LoadingSpinner size={30} />
-        </div>
-      )}
-      <div className="flex max-w-full flex-grow flex-col gap-6 p-4">
-        {keywordGroups?.map((group) => (
-          <KeywordGroupPreview
-            keywordGroup={group}
-            keywordsFound={keywordsFound}
-            key={group.id}
-          />
-        ))}
-        {Object.keys(keywordsFound)?.length === 0 && <NoKeywordsFound />}
+  if (loadingKeywordGroups) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <LoadingSpinner size={30} />
       </div>
-    </>
+    );
+  }
+
+  return (
+    <div className="flex max-w-full flex-grow flex-col gap-6 p-4">
+      {keywordGroups?.map((group) => (
+        <KeywordGroupPreview
+          keywordGroup={group}
+          keywordsFound={keywordsFound}
+          key={group.id}
+        />
+      ))}
+      {Object.keys(keywordsFound)?.length === 0 && <NoKeywordsFound />}
+    </div>
   );
 };
 
@@ -76,8 +78,6 @@ const KeywordGroupPreview: React.FC<{
       });
     }
   });
-
-  console.log("keywordsFoundInGroup", keywordsFoundInGroup);
 
   if (keywordsFoundInGroup.length === 0) {
     return null;
@@ -110,10 +110,10 @@ const NoKeywordsFound = () => {
         Add more keywords to see what this job offers at a glance.{" "}
       </p>
       <Link
-        href={"/keywords"}
-        className="rounded-full bg-emerald-400 px-3 py-1.5 text-sm font-semibold uppercase text-white transition hover:bg-emerald-500"
+        href={"/extension/keywords"}
+        className="flex items-center gap-1 rounded-full bg-emerald-400 px-3 py-1.5 text-sm font-semibold uppercase text-white transition hover:bg-emerald-500"
       >
-        KEYWORDS
+        KEYWORDS <IconArrowRight size={20} />
       </Link>
     </div>
   );
