@@ -11,8 +11,19 @@ const NavBar = async () => {
   }
 
   return (
-    <div className="sticky top-0 flex justify-end border-b-2">
-      <div className="flex items-center justify-center gap-2 p-2 text-sm font-semibold">
+    <div className="sticky top-0 flex border-b-2 px-4">
+      <div className="flex items-center gap-2 p-2">
+        <Link href="/">
+          <p className="text-xl font-semibold">Bolt</p>
+        </Link>
+        <Link href="/dashboard">
+          <p className="rounded-md bg-slate-500 px-1 py-0.5 text-xs font-bold text-white">
+            DASHBOARD
+          </p>
+        </Link>
+      </div>
+
+      <div className="flex flex-grow items-center justify-end gap-2 p-2 text-sm font-semibold">
         <p className="">{session && <span>{session.user?.name}</span>}</p>
         <Link
           href={session ? "/api/auth/signout" : "/api/auth/signin"}
