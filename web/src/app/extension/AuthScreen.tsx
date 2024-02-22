@@ -1,5 +1,6 @@
 "use client";
 
+import { IconArrowRight, IconArrowUpRight } from "@tabler/icons-react";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import LoadingSpinner from "../_components/LoadingSpinner";
@@ -14,7 +15,7 @@ const useCookieAccess = () => {
 
   useEffect(() => {
     if (typeof document.hasStorageAccess !== "function") {
-      setLoading(false)
+      setLoading(false);
       setHasCookieAccess(true);
     }
   }, []);
@@ -55,6 +56,21 @@ const AuthScreen: React.FC<{ children: ReactNode }> = ({ children }) => {
     requestCookieAccess,
   } = useCookieAccess();
   const { status } = useSession();
+  const [clickedLogin, setClickedLogin] = useState(false);
+
+  if (clickedLogin) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
+        <button
+          className="flex gap-2 rounded-full border bg-sky-400 px-3 py-2 font-semibold uppercase text-white"
+          onClick={() => window.location.reload()}
+        >
+          ENTER
+          <IconArrowRight />
+        </button>
+      </div>
+    );
+  }
 
   if (cookieAccessLoading || status === "loading") {
     return (
@@ -89,11 +105,13 @@ const AuthScreen: React.FC<{ children: ReactNode }> = ({ children }) => {
     <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
       <a
         target="_blank"
-        href="https://twitter.com/"
+        href={`${window.location.origin}/api/auth/signin/google`}
         rel="noopener noreferrer"
-        className="rounded-full border px-3 py-2"
+        className="flex gap-2 rounded-full border bg-sky-400 px-3 py-2 font-semibold uppercase text-white"
+        onClick={() => setClickedLogin(true)}
       >
-        login
+        LOGIN
+        <IconArrowUpRight />
       </a>
     </div>
   );
