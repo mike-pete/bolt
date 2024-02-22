@@ -1,5 +1,6 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
+import { IconArrowRight, IconX } from "@tabler/icons-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import LoadingSpinner from "~/app/_components/LoadingSpinner";
 import { api } from "~/trpc/react";
 import bi from "../_interactions/bi";
@@ -48,6 +49,8 @@ const Job: React.FC = () => {
   const { data: keywordGroups, isLoading: loadingKeywordGroups } =
     api.keywords.getKeywordGroups.useQuery();
 
+  const jobId = useQueryClient().getQueryData(jobKeys.jobId());
+
   if (loadingKeywordGroups) {
     return (
       <div className="flex h-full items-center justify-center">
@@ -56,6 +59,35 @@ const Job: React.FC = () => {
     );
   }
 
+  // if (!jobTitle && !jobId && !keywordGroups?.length) {
+  //   return (
+  //     <div className="flex h-full flex-col items-center justify-center gap-4 p-8">
+  //       <p className="text-3xl font-bold text-zinc-600">Oh no...</p>
+  //       <p>
+  //         It looks like this page {"isn't"} currently supported. If you think it
+  //         should be, please let me know!
+  //       </p>
+  //       <a
+  //         className="font-semibold text-blue-600"
+  //         href="mailto:mike@boltapply.com"
+  //       >
+  //         mike@boltapply.com
+  //       </a>
+  //       <div className="flex flex-grow items-center justify-center">
+  //         <button
+  //           className="flex gap-2 rounded-lg bg-sky-400 px-3 py-2 font-semibold text-white"
+  //           onClick={() => bi.goToPage("https://linkedin.com/jobs/search/")}
+  //         >
+  //           Back to LinkedIn Jobs <IconArrowRight />
+  //         </button>
+  //       </div>
+  //       <p className="text-zinc-400">
+  //         Tip: In the meantime, you can click the <IconX className="inline" />{" "}
+  //         icon in the top right corner to hide the extension for now.
+  //       </p>
+  //     </div>
+  //   );
+  // }
   if (!keywordGroups?.length) {
     return (
       <div className="flex flex-col gap-4 p-4">

@@ -1,9 +1,10 @@
 # Today
-home page (with pricing + demo gifs)
 go to jobs page (when you're on an irrelevant linkedin page)
-update login page to include note about pricing + test user accounts
 
 # Friday
+home page (with pricing + demo gifs)
+update login page to include note about pricing + test user accounts
+
 install page
 uninstall page (airtable)
 email list (airtable)

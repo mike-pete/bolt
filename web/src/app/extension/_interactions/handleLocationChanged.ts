@@ -6,7 +6,7 @@ const handleLocationChanged = async (location: string) => {
 
   const queryString = loc.search;
   const urlParams = new URLSearchParams(queryString);
-  const jobId = urlParams.get("currentJobId");
+  const jobId = urlParams.get("currentJobId") ?? null;
 
   await queryClient.invalidateQueries({ queryKey: jobKeys.all });
   queryClient.setQueryData(jobKeys.jobId(), jobId);
