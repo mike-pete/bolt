@@ -1,4 +1,5 @@
 import { unstable_noStore as noStore } from "next/cache";
+import Image from "next/image";
 import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
 
@@ -13,7 +14,8 @@ const NavBar = async () => {
   return (
     <div className="sticky top-0 flex border-b-2 px-4">
       <div className="flex items-center gap-2 p-2">
-        <Link href="/">
+        <Link href="/" className="flex justify-center gap-1.5">
+          <Image src="/bolt.svg" alt="Bolt" width={12} height={12} />
           <p className="text-xl font-semibold">Bolt</p>
         </Link>
         {/* <Link href="/dashboard">
