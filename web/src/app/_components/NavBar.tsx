@@ -17,7 +17,7 @@ const NavBar = async () => {
           <p className="text-xl font-semibold">Bolt</p>
         </Link>
         <Link href="/dashboard">
-          <p className="rounded-md bg-slate-500 px-1 py-0.5 text-xs font-bold text-white">
+          <p className="rounded-md border bg-zinc-100 px-1 py-0.5 text-xs font-bold text-zinc-700">
             DASHBOARD
           </p>
         </Link>
@@ -27,7 +27,7 @@ const NavBar = async () => {
         <p className="">{session && <span>{session.user?.name}</span>}</p>
         <Link
           href={session ? "/api/auth/signout" : "/api/auth/signin"}
-          className="rounded-md bg-sky-400 px-2 py-1 text-white"
+          className="rounded-md bg-sky-400 px-2 py-1 uppercase text-white"
         >
           {session ? "Sign out" : "Sign in"}
         </Link>
