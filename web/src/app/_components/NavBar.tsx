@@ -16,11 +16,11 @@ const NavBar = async () => {
         <Link href="/">
           <p className="text-xl font-semibold">Bolt</p>
         </Link>
-        <Link href="/dashboard">
+        {/* <Link href="/dashboard">
           <p className="rounded-md border bg-zinc-100 px-1 py-0.5 text-xs font-bold text-zinc-700">
             DASHBOARD
           </p>
-        </Link>
+        </Link> */}
       </div>
 
       <div className="flex flex-grow items-center justify-end gap-2 p-2 text-sm font-semibold">
