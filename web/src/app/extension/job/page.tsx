@@ -1,5 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
+import LoadingSpinner from "~/app/_components/LoadingSpinner";
+import { api } from "~/trpc/react";
 import bi from "../_interactions/bi";
 import { jobKeys } from "../_interactions/queryKeys";
 import {
@@ -42,6 +44,39 @@ const Job: React.FC = () => {
     queryKey: jobKeys.description(),
     queryFn: async () => await bi.getTextContent(jobDescSelector),
   });
+
+  const { data: keywordGroups, isLoading: loadingKeywordGroups } =
+    api.keywords.getKeywordGroups.useQuery();
+
+  if (loadingKeywordGroups) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <LoadingSpinner size={30} />
+      </div>
+    );
+  }
+
+  if (!keywordGroups?.length) {
+    return (
+      <div className="flex flex-col gap-4 p-4">
+        <p className="text-center text-2xl font-semibold">Getting Started</p>
+        <div className="rounded border p-2">
+          <p className="text-lg font-semibold">Step 1</p>
+          <p>
+            Head to the keywords tab and add the keywords you usually look for
+            in a job description.
+          </p>
+        </div>
+        <div className="rounded border p-2">
+          <p className="text-lg font-semibold">Step 2</p>
+          <p>
+            Come back to the job tab to see how many times those keywords were
+            found in the description.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
