@@ -1,1 +1,3 @@
 when the extension is installed, we need to make sure the user is directed to the main site. Otherwise we won't be able to request permissions to access cookies from the iframe.
+
+make it easier to export dev vs prod extension

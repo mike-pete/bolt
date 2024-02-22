@@ -1,7 +1,6 @@
 import bime from '@mike.pete/bime'
 import createIframe from './createIframe'
 import model from './model'
-import { iframeSource } from '../constants'
 
 const allowedHostnames = new Set(['www.linkedin.com'])
 const { hostname } = window.location
@@ -14,8 +13,7 @@ type IframeModel = {
 }
 
 if (shouldShowIframe) {
-	const src = iframeSource
-	const iframe = createIframe(src)
+	const iframe = createIframe(chrome.runtime.getURL('frame.html'))
 	const target = iframe.contentWindow
 
 	if (target) {
