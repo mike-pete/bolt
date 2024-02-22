@@ -7,7 +7,7 @@ const SignIn: React.FC = () => {
   const { status } = useSession();
 
   if (status === "authenticated") {
-    return redirect("/");
+    return redirect("/dashboard");
   }
 
   return (
