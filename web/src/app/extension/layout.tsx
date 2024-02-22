@@ -8,10 +8,10 @@ import NavBar from "./NavBar";
 const ExtensionLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <SessionProvider>
-      <div className="flex h-screen max-h-screen flex-col flex-nowrap">
+      <div className="flex h-screen max-h-screen flex-col flex-nowrap overflow-hidden">
         <AuthScreen>
           <NavBar />
-          {children}
+          <div className="flex-grow overflow-auto">{children}</div>
         </AuthScreen>
       </div>
     </SessionProvider>
