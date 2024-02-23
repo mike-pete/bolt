@@ -1,9 +1,7 @@
-welcome page
 email list (airtable)
-
 home page (with pricing + demo gifs)
+
 analytics
-update login page to include note about pricing + test user accounts
 
 payment page
 analytics
