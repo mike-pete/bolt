@@ -1,13 +1,13 @@
-import { unstable_noStore as noStore } from "next/cache";
+"use client";
+import { SessionProvider, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { getServerAuthSession } from "~/server/auth";
+import { memo } from "react";
 
-const NavBar = async () => {
-  noStore();
-  const session = await getServerAuthSession();
+const NavBar = () => {
+  const { status, data } = useSession();
 
-  if (!session) {
+  if (status !== "authenticated") {
     return null;
   }
 
@@ -18,23 +18,25 @@ const NavBar = async () => {
           <Image src="/bolt.svg" alt="Bolt" width={12} height={12} />
           <p className="text-xl font-semibold">Bolt</p>
         </Link>
-        {/* <Link href="/dashboard">
-          <p className="rounded-md border bg-zinc-100 px-1 py-0.5 text-xs font-bold text-zinc-700">
-            DASHBOARD
-          </p>
-        </Link> */}
       </div>
 
       <div className="flex flex-grow items-center justify-end gap-2 p-2 text-sm font-semibold">
-        <p className="">{session && <span>{session.user?.name}</span>}</p>
-        <Link
-          href={session ? "/api/auth/signout" : "/api/auth/signin"}
+        <p className="">{<span>{data.user?.name}</span>}</p>
+        <button
           className="rounded-md bg-sky-400 px-2 py-1 uppercase text-white"
+          onClick={() => signOut({ callbackUrl: "/", redirect: true })}
         >
-          {session ? "Sign out" : "Sign in"}
-        </Link>
+          Sign Out
+        </button>
       </div>
     </div>
   );
 };
-export default NavBar;
+
+export default memo(function NavBarWithSession() {
+  return (
+    <SessionProvider>
+      <NavBar />
+    </SessionProvider>
+  );
+});
