@@ -1,25 +1,9 @@
-"use client";
-import { signIn, useSession } from "next-auth/react";
-import Image from "next/image";
-import { redirect } from "next/navigation";
+import GoogleAuthButton from "~/app/_components/GoogleAuthButton";
 
 const SignIn: React.FC = () => {
-  const { status } = useSession();
-
-  if (status === "authenticated") {
-    return redirect("/dashboard");
-  }
-
   return (
     <div className="flex h-screen justify-center">
-      <button onClick={() => signIn("google")}>
-        <Image
-          src="/siginWithGoogle.svg"
-          alt="sign in with Google"
-          width="175"
-          height="40"
-        />
-      </button>
+      <GoogleAuthButton />
     </div>
   );
 };
