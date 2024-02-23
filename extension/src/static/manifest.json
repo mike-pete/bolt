@@ -4,6 +4,10 @@
 	"description": "Find relevant jobs in less time",
 	"manifest_version": 3,
 	"permissions": ["activeTab", "scripting", "tabs"],
+	"background": {
+		"service_worker": "background.js",
+		"type": "module"
+	},
 	"content_scripts": [
 		{
 			"matches": ["http://*/*", "https://*/*"],

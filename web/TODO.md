@@ -1,25 +1,18 @@
-# Today
-go to jobs page (when you're on an irrelevant linkedin page)
-
-# Friday
-home page (with pricing + demo gifs)
-update login page to include note about pricing + test user accounts
-
-install page
-uninstall page (airtable)
+welcome page
 email list (airtable)
+
+home page (with pricing + demo gifs)
+analytics
+update login page to include note about pricing + test user accounts
 
 payment page
 analytics
-
 
 promo video (maybe add to chrome page?)
 optimistic updates
 test + optimize
 
 post for Reddit + discord (x2)
-
-early access slot loader
 ---
 
 make it easier to export dev vs prod extension

@@ -36,6 +36,7 @@ export default [
 		target: 'web',
 		entry: {
 			content: './src/content/content.ts',
+			background: './src/background/background.ts'
 		},
 		module: {
 			rules: [
