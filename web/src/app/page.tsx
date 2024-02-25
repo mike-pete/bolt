@@ -44,7 +44,7 @@ export default async function Home() {
           <section className="w-screen bg-[url('/jobDesc.png')] bg-cover bg-fixed">
             <div className="flex h-[50vh] items-center justify-center bg-white bg-opacity-70 backdrop-blur-sm">
               <p className="w-4/5 max-w-3xl text-center  text-2xl font-bold md:text-5xl">
-                Get an instant overview for each job on LinkedIn.
+                Get an instant overview for every job on LinkedIn.
               </p>
             </div>
           </section>
@@ -80,7 +80,29 @@ export default async function Home() {
               </div>
             </div>
           </section>
-          {/* <section className="h-screen p-8"></section> */}
+
+          <section className="flex w-screen items-center justify-center p-4">
+            <div className="flex w-full max-w-3xl flex-col gap-4">
+              <h1 className="text-4xl font-black text-zinc-600 md:text-6xl">
+                DEMO
+              </h1>
+              <iframe
+                className="aspect-video w-full"
+                src="https://www.youtube.com/embed/6YVicD784xA?si=E-MdxGoBMXF_1QqM"
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              />
+            </div>
+          </section>
+
+          {/* <section className="flex w-screen items-center justify-center p-4">
+            <div className="flex w-full max-w-3xl flex-col gap-4">
+              <h1 className="text-4xl font-black text-zinc-600 md:text-6xl">
+                Q&A
+              </h1>
+              
+            </div>
+          </section> */}
         </div>
       </div>
     </div>
