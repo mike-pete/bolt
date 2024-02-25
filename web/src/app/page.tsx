@@ -7,9 +7,9 @@ export default async function Home() {
   return (
     <div>
       <NavBar />
-      <div className="flex justify-center">
-        <div className="flex max-w-md flex-col p-8">
-          <section className="flex h-screen flex-col">
+      <div className="flex w-screen flex-col items-center">
+        <div className="flex w-screen max-w-md flex-col items-center gap-8 md:max-w-5xl">
+          <section className="flex h-screen shrink-0 flex-col p-8">
             <div className="flex h-4/6 flex-col items-center justify-center">
               <div className="flex items-center gap-4">
                 <Image src="/bolt.svg" alt="Bolt" width={40} height={40} />
@@ -40,6 +40,45 @@ export default async function Home() {
               </a>
             </div>
           </section>
+
+          <section className="bg-[url('/jobDesc.png')] bg-cover bg-fixed">
+            <p className="z-10 flex h-[50vh] items-center justify-center bg-white bg-opacity-70 p-16 text-center text-2xl font-bold backdrop-blur-sm md:p-32 md:text-5xl">
+              Get an instant overview of job descriptions on LinkedIn.
+            </p>
+          </section>
+
+          <section className="flex flex-wrap justify-center gap-4 px-2">
+            <div>
+              <p className="rounded-xl bg-zinc-600 px-6 py-4 text-center text-lg font-semibold text-white sm:text-xl">
+                Tell us what {"you're"} looking for...
+              </p>
+              <div className="px-8 py-10">
+                <Image
+                  src="/keywords.png"
+                  alt="keywords"
+                  width={354}
+                  height={469}
+                  className="rounded-lg py-4 shadow-[0px_0px_30px_10px] shadow-sky-300"
+                />
+              </div>
+            </div>
+
+            <div>
+              <p className="rounded-xl bg-zinc-600 px-6 py-4 text-center text-lg font-semibold text-white sm:text-xl">
+                ...and {"we'll"} tell you if they have it!
+              </p>
+              <div className="px-8 py-10">
+                <Image
+                  src="/job.png"
+                  alt="keywords"
+                  width={354}
+                  height={410.6}
+                  className="rounded-lg shadow-[0px_0px_30px_10px] shadow-sky-300"
+                />
+              </div>
+            </div>
+          </section>
+          {/* <section className="h-screen p-8"></section> */}
         </div>
       </div>
     </div>
