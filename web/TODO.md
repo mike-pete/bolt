@@ -1,7 +1,7 @@
 home page 
+- video demo (add to chrome page?)
 - pricing
 - faq
-- video demo (add to chrome page?)
 
 analytics
 

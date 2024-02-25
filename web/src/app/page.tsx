@@ -7,8 +7,8 @@ export default async function Home() {
   return (
     <div>
       <NavBar />
-      <div className="flex w-screen flex-col items-center">
-        <div className="flex w-screen max-w-md flex-col items-center gap-8 md:max-w-5xl">
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-8">
           <section className="flex h-screen shrink-0 flex-col p-8">
             <div className="flex h-4/6 flex-col items-center justify-center">
               <div className="flex items-center gap-4">
@@ -41,13 +41,15 @@ export default async function Home() {
             </div>
           </section>
 
-          <section className="bg-[url('/jobDesc.png')] bg-cover bg-fixed">
-            <p className="z-10 flex h-[50vh] items-center justify-center bg-white bg-opacity-70 p-16 text-center text-2xl font-bold backdrop-blur-sm md:p-32 md:text-5xl">
-              Get an instant overview of job descriptions on LinkedIn.
-            </p>
+          <section className="w-screen bg-[url('/jobDesc.png')] bg-cover bg-fixed">
+            <div className="flex h-[50vh] items-center justify-center bg-white bg-opacity-70 backdrop-blur-sm">
+              <p className="w-4/5 max-w-3xl text-center  text-2xl font-bold md:text-5xl">
+                Get an instant overview for each job on LinkedIn.
+              </p>
+            </div>
           </section>
 
-          <section className="flex flex-wrap justify-center gap-4 px-2">
+          <section className="flex flex-wrap justify-center gap-4 px-4">
             <div>
               <p className="rounded-xl bg-zinc-600 px-6 py-4 text-center text-lg font-semibold text-white sm:text-xl">
                 Tell us what {"you're"} looking for...
