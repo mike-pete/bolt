@@ -1,6 +1,3 @@
-home page 
-- faq
-
 analytics
 
 test + optimize

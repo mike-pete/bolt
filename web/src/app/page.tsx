@@ -95,14 +95,25 @@ export default async function Home() {
             </div>
           </section>
 
-          {/* <section className="flex w-screen items-center justify-center p-4">
+          <section className="flex w-screen items-center justify-center p-4 pb-16">
             <div className="flex w-full max-w-3xl flex-col gap-4">
               <h1 className="text-4xl font-black text-zinc-600 md:text-6xl">
                 Q&A
               </h1>
               
+              <h3 className="text-xl font-semibold">How much does it cost?</h3>
+              <p className="ml-4 border-l-4 p-3">{"It's"} only $1/month!</p>
+
+              <h3 className="text-xl font-semibold">How do I cancel my subscription?</h3>
+              <p className="ml-4 border-l-4 p-3">Cancel at any time by sending an email to mike@boltapply.com and {"I'll"} make sure {"it's"} canceled within 24 hrs!</p>
+              
+              <h3 className="text-xl font-semibold">Why {"can't"} I log in?</h3>
+              <p className="ml-4 border-l-4 p-3">Once you purchase a subscription, {"you'll"} get an email within 24 hours confirming the activation of your account. If you still have problems logging in after receiving the email, please let me know! mike@boltapply.com</p>
+
+              <h3 className="text-xl font-semibold">What job boards are supported?</h3>
+              <p className="ml-4 border-l-4 p-3">Currently we only support LinkedIn. But if {"you'd"} like a different job board added, definitely let me know! mike@boltapply.com</p>
             </div>
-          </section> */}
+          </section>
         </div>
       </div>
     </div>
