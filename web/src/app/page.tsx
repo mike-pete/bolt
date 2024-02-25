@@ -7,7 +7,7 @@ export default async function Home() {
   return (
     <div>
       <NavBar />
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center overflow-x-hidden">
         <div className="flex flex-col items-center gap-8">
           <section className="flex h-screen shrink-0 flex-col p-8">
             <div className="flex h-4/6 flex-col items-center justify-center">
