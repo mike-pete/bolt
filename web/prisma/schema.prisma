@@ -82,3 +82,14 @@ model KeywordGroups {
 
     @@index([userId])
 }
+
+model JobSeen {
+    id String @id @default(cuid())
+    userId String
+    jobId String
+    title String
+    seenAt DateTime @default(now())
+
+    @@unique([userId, jobId])
+    @@index([userId])
+}
