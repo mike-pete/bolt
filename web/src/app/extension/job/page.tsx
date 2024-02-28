@@ -1,6 +1,7 @@
 "use client";
 import { IconArrowRight, IconX } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import LoadingSpinner from "~/app/_components/LoadingSpinner";
 import { api } from "~/trpc/react";
 import bi from "../_interactions/bi";
@@ -49,7 +50,25 @@ const Job: React.FC = () => {
   const { data: keywordGroups, isLoading: loadingKeywordGroups } =
     api.keywords.getKeywordGroups.useQuery();
 
-  const jobId = useQueryClient().getQueryData(jobKeys.jobId());
+  const jobId: string | undefined = useQueryClient().getQueryData(
+    jobKeys.jobId(),
+  );
+
+  const { mutate: addJobSeen } = api.jobs.addJobSeen.useMutation();
+
+  const [lastJobSaved, setLastJobSaved] = useState<string | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    if (typeof jobId === "string" && jobId.trim() && lastJobSaved !== jobId) {
+      addJobSeen({
+        jobId,
+        title: jobTitle ?? `unknown-${Math.floor(Math.random() * 1000000) + 1}`,
+      });
+      setLastJobSaved(jobId);
+    }
+  }, [addJobSeen, jobId, jobTitle, lastJobSaved]);
 
   if (loadingKeywordGroups) {
     return (

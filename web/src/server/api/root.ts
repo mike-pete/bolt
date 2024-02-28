@@ -1,4 +1,5 @@
 import { createTRPCRouter } from "~/server/api/trpc";
+import { jobsRouter } from "./routers/jobs";
 import { keywordsRouter } from "./routers/keywords";
 
 /**
@@ -8,6 +9,7 @@ import { keywordsRouter } from "./routers/keywords";
  */
 export const appRouter = createTRPCRouter({
   keywords: keywordsRouter,
+  jobs: jobsRouter,
 });
 
 // export type definition of API
