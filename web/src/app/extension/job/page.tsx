@@ -1,7 +1,11 @@
 "use client";
-import { IconArrowRight, IconX } from "@tabler/icons-react";
+import {
+  IconAlertTriangleFilled,
+  IconArrowRight,
+  IconX,
+} from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LoadingSpinner from "~/app/_components/LoadingSpinner";
 import { api } from "~/trpc/react";
 import bi from "../_interactions/bi";
@@ -14,6 +18,16 @@ import {
   workModeSelector,
 } from "../_interactions/selectors";
 import KeywordsFound from "./KeywordsFound";
+
+const workModes = {
+  "on-site": "on-site",
+  "on site": "on-site",
+  "in office": "on-site",
+  "in-person": "on-site",
+  onsite: "on-site",
+  hybrid: "hybrid",
+  remote: "remote",
+};
 
 const Job: React.FC = () => {
   const { data: jobTitle } = useQuery({
@@ -43,17 +57,12 @@ const Job: React.FC = () => {
     },
   });
 
-  const { data: workMode } = useQuery({
+  const { data: workModeDeclared } = useQuery({
     queryKey: jobKeys.workModel(),
     queryFn: async () => {
       const workMode = (await bi.getTextContent(workModeSelector)) ?? "";
       if (workMode) {
         const workModeLower = workMode.toLowerCase();
-        const workModes = {
-          "on-site": "on-site",
-          hybrid: "hybrid",
-          remote: "remote",
-        };
 
         for (const [key, value] of Object.entries(workModes)) {
           if (workModeLower.includes(key)) {
@@ -92,6 +101,20 @@ const Job: React.FC = () => {
       setLastJobSaved(jobId);
     }
   }, [addJobSeen, jobId, jobTitle, lastJobSaved]);
+
+  const workModesFound = useMemo(() => {
+    const workModesFound: string[] = [];
+
+    for (const [key, value] of Object.entries(workModes)) {
+      if (
+        value !== workModeDeclared &&
+        jobDescription?.toLowerCase().includes(key)
+      ) {
+        workModesFound.push(key);
+      }
+    }
+    return workModesFound;
+  }, [jobDescription, workModeDeclared]);
 
   if (loadingKeywordGroups) {
     return (
@@ -168,10 +191,30 @@ const Job: React.FC = () => {
           <p className="text-sm font-bold text-zinc-500">{comp}</p>
         )}
 
-        {typeof workMode === "string" && (
-          <p className="rounded bg-zinc-400 px-1.5 py-0.5 text-xs font-bold uppercase text-zinc-100">
-            {workMode}
-          </p>
+        {(typeof workModeDeclared === "string" ||
+          workModesFound.length > 0) && (
+          <div className="flex-wrap-none flex items-start gap-2">
+            {typeof workModeDeclared === "string" && (
+              <p className="flex-shrink-0 rounded bg-zinc-400 px-1.5 py-0.5 text-xs font-bold uppercase text-zinc-100">
+                {workModeDeclared}
+              </p>
+            )}
+            {workModesFound.length > 0 && (
+              <div className="flex flex-wrap gap-1 rounded outline-dashed  outline-2 outline-offset-1 outline-zinc-300">
+                <p className="px-1.5 py-0.5 text-xs font-bold uppercase text-zinc-500">
+                  {typeof workModeDeclared === "string" && (
+                    <>
+                      <IconAlertTriangleFilled
+                        className="inline text-amber-500"
+                        size={16}
+                      />{" "}
+                    </>
+                  )}
+                  job mentions: {workModesFound.join(", ")}
+                </p>
+              </div>
+            )}
+          </div>
         )}
       </div>
       <KeywordsFound description={jobDescription ?? undefined} />
