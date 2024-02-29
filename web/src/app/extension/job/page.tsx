@@ -11,6 +11,7 @@ import {
   jobCompanySelector,
   jobDescSelector,
   jobTitleSelector,
+  workModeSelector,
 } from "../_interactions/selectors";
 import KeywordsFound from "./KeywordsFound";
 
@@ -37,6 +38,28 @@ const Job: React.FC = () => {
       const companyString = (await bi.getTextContent(jobCompanySelector)) ?? "";
       if (companyString.includes("·")) {
         return (companyString.split("·")[0] ?? "").trim();
+      }
+      return null;
+    },
+  });
+
+  const { data: workMode } = useQuery({
+    queryKey: jobKeys.workModel(),
+    queryFn: async () => {
+      const workMode = (await bi.getTextContent(workModeSelector)) ?? "";
+      if (workMode) {
+        const workModeLower = workMode.toLowerCase();
+        const workModes = {
+          "on-site": "on-site",
+          hybrid: "hybrid",
+          remote: "remote",
+        };
+
+        for (const [key, value] of Object.entries(workModes)) {
+          if (workModeLower.includes(key)) {
+            return value;
+          }
+        }
       }
       return null;
     },
@@ -132,7 +155,7 @@ const Job: React.FC = () => {
 
   return (
     <div>
-      <div className="flex flex-col flex-nowrap items-start gap-1 border-b-2 border-zinc-300 bg-zinc-100 p-4">
+      <div className="flex flex-col flex-nowrap items-start gap-1.5 border-b-2 border-zinc-300 bg-zinc-100 p-4">
         {typeof company === "string" && (
           <p className="text-sm font-bold text-zinc-500">{company}</p>
         )}
@@ -143,6 +166,12 @@ const Job: React.FC = () => {
 
         {typeof comp === "string" && (
           <p className="text-sm font-bold text-zinc-500">{comp}</p>
+        )}
+
+        {typeof workMode === "string" && (
+          <p className="rounded bg-zinc-400 px-1.5 py-0.5 text-xs font-bold uppercase text-zinc-100">
+            {workMode}
+          </p>
         )}
       </div>
       <KeywordsFound description={jobDescription ?? undefined} />
