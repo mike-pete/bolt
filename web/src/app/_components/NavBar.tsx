@@ -2,10 +2,16 @@
 import { SessionProvider, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { memo } from "react";
+import { usePathname } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 const NavBar = () => {
   const { status, data } = useSession();
+  const pathname = usePathname();
+
+  const buttons = {
+    "/dashboard": "Dashboard",
+  };
 
   if (status !== "authenticated") {
     return null;
@@ -18,6 +24,21 @@ const NavBar = () => {
           <Image src="/bolt.svg" alt="Bolt" width={12} height={12} />
           <p className="text-xl font-semibold">Bolt</p>
         </Link>
+      </div>
+
+      <div className="flex hidden items-end gap-2 pb-2">
+        {Object.entries(buttons).map(([key, value]) => (
+          <Link
+            href={key}
+            key={key}
+            className={twMerge(
+              "rounded px-1.5 py-0.5 text-sm font-bold uppercase text-zinc-400 transition hover:bg-zinc-200 hover:text-zinc-600",
+              pathname.startsWith(key) && "bg-zinc-100 text-zinc-700",
+            )}
+          >
+            {value}
+          </Link>
+        ))}
       </div>
 
       <div className="flex flex-grow items-center justify-end gap-2 p-2 text-sm font-semibold">
@@ -33,10 +54,12 @@ const NavBar = () => {
   );
 };
 
-export default memo(function NavBarWithSession() {
+const NavBarWithSession = () => {
   return (
     <SessionProvider>
       <NavBar />
     </SessionProvider>
   );
-});
+};
+
+export default NavBarWithSession;
