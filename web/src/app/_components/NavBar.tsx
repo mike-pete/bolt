@@ -3,11 +3,11 @@ import { SessionProvider, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 const NavBar = () => {
   const { status, data } = useSession();
   const pathname = usePathname();
-  console.log(pathname);
 
   const buttons = {
     "/dashboard": "Dashboard",
@@ -26,15 +26,20 @@ const NavBar = () => {
         </Link>
       </div>
 
-      {Object.entries(buttons).map(([key, value]) => (
-        <Link
-          href={key}
-          key={key}
-          className={`p-2 ${pathname.startsWith(key) ? "border-b-2 border-sky-400" : ""}`}
-        >
-          {value}
-        </Link>
-      ))}
+      <div className="flex items-end gap-2 pb-2">
+        {Object.entries(buttons).map(([key, value]) => (
+          <Link
+            href={key}
+            key={key}
+            className={twMerge(
+              "rounded px-1.5 py-0.5 text-sm font-bold uppercase text-zinc-400 transition hover:bg-zinc-200 hover:text-zinc-600",
+              pathname.startsWith(key) && "bg-zinc-100 text-zinc-700",
+            )}
+          >
+            {value}
+          </Link>
+        ))}
+      </div>
 
       <div className="flex flex-grow items-center justify-end gap-2 p-2 text-sm font-semibold">
         <p className="">{<span>{data.user?.name}</span>}</p>
