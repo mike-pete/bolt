@@ -10,11 +10,11 @@ const Dashboard = async () => {
     return redirect("/api/auth/signin");
   }
 
-  // return redirect("https://www.linkedin.com/jobs/search/");
+  return redirect("https://www.linkedin.com/jobs/search/");
 
-  return (
-    <div className="flex flex-grow flex-col items-center justify-center"></div>
-  );
+  // return (
+  //   <div className="flex flex-grow flex-col items-center justify-center"></div>
+  // );
 };
 
 export default Dashboard;
