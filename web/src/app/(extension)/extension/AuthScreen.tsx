@@ -3,7 +3,7 @@
 import { IconArrowRight, IconArrowUpRight } from "@tabler/icons-react";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
-import LoadingSpinner from "../_components/LoadingSpinner";
+import LoadingSpinner from "../../_components/LoadingSpinner";
 
 // third party cookies will be restricted in Chrome in Q3 2024
 // https://developers.google.com/privacy-sandbox/3pcd/storage-access-api

@@ -2,10 +2,16 @@
 import { SessionProvider, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { memo } from "react";
+import { usePathname } from "next/navigation";
 
 const NavBar = () => {
   const { status, data } = useSession();
+  const pathname = usePathname();
+  console.log(pathname);
+
+  const buttons = {
+    "/dashboard": "Dashboard",
+  };
 
   if (status !== "authenticated") {
     return null;
@@ -20,6 +26,16 @@ const NavBar = () => {
         </Link>
       </div>
 
+      {Object.entries(buttons).map(([key, value]) => (
+        <Link
+          href={key}
+          key={key}
+          className={`p-2 ${pathname.startsWith(key) ? "border-b-2 border-sky-400" : ""}`}
+        >
+          {value}
+        </Link>
+      ))}
+
       <div className="flex flex-grow items-center justify-end gap-2 p-2 text-sm font-semibold">
         <p className="">{<span>{data.user?.name}</span>}</p>
         <button
@@ -33,10 +49,12 @@ const NavBar = () => {
   );
 };
 
-export default memo(function NavBarWithSession() {
+const NavBarWithSession = () => {
   return (
     <SessionProvider>
       <NavBar />
     </SessionProvider>
   );
-});
+};
+
+export default NavBarWithSession;

@@ -1,7 +1,7 @@
 "use client";
 import { IconArrowDown, IconExclamationCircle } from "@tabler/icons-react";
 import { SessionProvider } from "next-auth/react";
-import GoogleAuthButton from "../_components/GoogleAuthButton";
+import GoogleAuthButton from "../../_components/GoogleAuthButton";
 
 const Welcome = () => {
   return (
