@@ -8,9 +8,7 @@ export default function RootLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <NavBar />
-      <div className="flex flex-grow flex-col items-center justify-center">
-        {children}
-      </div>
+      {children}
     </div>
   );
 }
