@@ -93,3 +93,19 @@ model JobSeen {
     @@unique([userId, jobId])
     @@index([userId])
 }
+
+model Job {
+    id String @id @default(cuid())
+    userId String
+    jobId String
+    title String
+    company String
+    description String @db.Text
+    url String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    applied DateTime?
+
+    @@unique([userId, jobId])
+    @@index([userId])
+}
