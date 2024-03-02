@@ -135,7 +135,7 @@ export default async function Home() {
         </Link>
         <Link
           className="text-xs font-semibold uppercase text-zinc-600 hover:text-sky-600"
-          href="/privacy.txt"
+          href="https://boltapply.com/privacy.txt"
         >
           Privacy Policy
         </Link>

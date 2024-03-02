@@ -6,6 +6,10 @@ If you choose to use our service, then you agree to the collection and use of in
 Information Collection and Use
 While using our service, we may require you to provide us with certain personally identifiable information, including but not limited to email, name, and profile URL. The information that we collect may be used to contact or identify you.
 
+Google User Data
+We may accesses, use, store, and/or shares Google user data solely to the extent necessary to provide the service. We may also access, use, store, and/or share Google user data that is publicly available or that the user has made available.
+We may use this data to identify users, provide personalized features, improve the service, provide support, and contact users. We may choose to share certain data with third parties in order to collect analytical information, provide services, and contact users.
+
 Data Storage
 We also collect data that you save within the service, including but not limited to user input and job information. This data is used to improve the functionality of the service and provide personalized features.
 
