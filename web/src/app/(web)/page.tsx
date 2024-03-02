@@ -1,5 +1,6 @@
 import { IconBrandChrome, IconBrandDiscordFilled } from "@tabler/icons-react";
 import Image from "next/image";
+import Link from "next/link";
 import BuyWithStripe from "../_components/BuyWithStripe";
 
 export default async function Home() {
@@ -91,7 +92,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="flex w-full items-center justify-center p-4 pb-16">
+      <section className="flex w-full items-center justify-center p-4">
         <div className="flex w-full max-w-3xl flex-col gap-4">
           <h1 className="text-4xl font-black text-zinc-600 md:text-6xl">Q&A</h1>
 
@@ -124,6 +125,21 @@ export default async function Home() {
           </p>
         </div>
       </section>
+
+      <footer className="flex w-full gap-8 bg-gradient-to-b from-zinc-50 to-white p-6 justify-end">
+        <Link
+          className="text-xs font-semibold uppercase text-zinc-600 hover:text-sky-600"
+          href="mailto:mike@boltapply.com"
+        >
+          mike@boltapply.com
+        </Link>
+        <Link
+          className="text-xs font-semibold uppercase text-zinc-600 hover:text-sky-600"
+          href="/privacy.txt"
+        >
+          Privacy Policy
+        </Link>
+      </footer>
     </div>
   );
 }
