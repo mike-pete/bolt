@@ -7,7 +7,7 @@ import { twMerge } from "tailwind-merge";
 
 const NavBar = () => {
   const { status, data } = useSession();
-  const pathname = usePathname();
+  const pathname = usePathname(); 
 
   const buttons = {
     "/dashboard": "Dashboard",
@@ -26,7 +26,7 @@ const NavBar = () => {
         </Link>
       </div>
 
-      <div className="flex hidden items-end gap-2 pb-2">
+      <div className="flex items-end gap-2 pb-2">
         {Object.entries(buttons).map(([key, value]) => (
           <Link
             href={key}
