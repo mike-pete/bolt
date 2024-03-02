@@ -1,6 +1,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
+import SavedJobs from "./SavedJobs";
 
 const Dashboard = async () => {
   noStore();
@@ -11,7 +12,9 @@ const Dashboard = async () => {
   }
 
   return (
-    <div className="flex flex-grow flex-col items-center justify-center"></div>
+    <div className="flex flex-grow flex-col items-center justify-center">
+      <SavedJobs />
+    </div>
   );
 };
 

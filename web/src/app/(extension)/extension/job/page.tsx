@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import LoadingSpinner from "~/app/_components/LoadingSpinner";
 import { api } from "~/trpc/react";
+import { type RouterInputs } from "~/trpc/shared";
 import bi from "../_interactions/bi";
 import { jobKeys } from "../_interactions/queryKeys";
 import {
@@ -29,6 +30,8 @@ const workModes = {
   hybrid: "hybrid",
   remote: "remote",
 };
+
+type JobData = RouterInputs["jobs"]["saveJob"];
 
 const Job: React.FC = () => {
   const { data: jobTitle } = useQuery({
@@ -102,6 +105,17 @@ const Job: React.FC = () => {
       setLastJobSaved(jobId);
     }
   }, [addJobSeen, jobId, jobTitle, lastJobSaved]);
+
+  const jobData: JobData = useMemo(
+    () => ({
+      jobId: jobId ?? "unknown",
+      title: jobTitle ?? "unknown",
+      company: company ?? "unknown",
+      description: jobDescription ?? "unknown",
+      url: "http://example.com",
+    }),
+    [company, jobDescription, jobId, jobTitle],
+  );
 
   const workModesFound = useMemo(() => {
     const workModesFound: string[] = [];
@@ -220,7 +234,7 @@ const Job: React.FC = () => {
       </div>
       <div className="sticky top-0 bg-white/80 p-1	pb-0 backdrop-blur-sm">
         <div className="m-2 rounded-lg bg-white p-1 text-zinc-700 outline outline-2 outline-zinc-300">
-          <SaveButton />
+          <SaveButton jobData={jobData} />
         </div>
       </div>
       <KeywordsFound description={jobDescription ?? undefined} />
@@ -228,9 +242,14 @@ const Job: React.FC = () => {
   );
 };
 
-const SaveButton: React.FC = () => {
+const SaveButton: React.FC<{ jobData: JobData }> = ({ jobData }) => {
+  const { mutate: saveJob } = api.jobs.saveJob.useMutation();
+
   return (
-    <button className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 transition-all hover:bg-emerald-200 hover:text-emerald-700">
+    <button
+      onClick={() => saveJob(jobData)}
+      className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 transition-all hover:bg-emerald-200 hover:text-emerald-700"
+    >
       <IconDeviceFloppy />
       <p className="pr-1.5 text-xs font-bold uppercase">Save</p>
     </button>
