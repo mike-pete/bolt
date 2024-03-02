@@ -32,6 +32,7 @@ export const jobsRouter = createTRPCRouter({
         company: z.string().min(1).max(191),
         description: z.string().min(1).max(65535),
         url: z.string().url().min(1).max(2048),
+        compensation: z.optional(z.string().min(1).max(191)),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -45,6 +46,7 @@ export const jobsRouter = createTRPCRouter({
           company: input.company,
           description: input.description,
           url: input.url,
+          compensation: input.compensation,
           updatedAt: new Date(),
         },
         update: {
@@ -54,6 +56,7 @@ export const jobsRouter = createTRPCRouter({
           company: input.company,
           description: input.description,
           url: input.url,
+          compensation: input.compensation,
           updatedAt: new Date(),
         },
         where: {
@@ -79,14 +82,13 @@ export const jobsRouter = createTRPCRouter({
         company: true,
         createdAt: true,
         url: true,
+        compensation: true,
         jobId: true,
       },
       orderBy: {
         createdAt: "desc",
       },
     });
-
-    console.log('here', jobPreviews)
 
     return jobPreviews;
   }),

@@ -54,11 +54,15 @@ const JobPreview: React.FC<Omit<JobPreviewType, "createdAt">> = ({
   company,
   url,
   jobId,
+  compensation,
 }) => {
   return (
-    <div className="max-w-96 min-w-64 rounded-lg border-2 bg-white p-4">
-      <h2 className="truncate">{title}</h2>
-      <p className="text-sm font-semibold text-zinc-600">{company}</p>
+    <div className="flex min-w-64 max-w-96 flex-col items-start gap-0.5 rounded-lg border-2 bg-white p-4">
+      <p className="max-w-full text-xs font-bold text-zinc-500">{company}</p>
+      <h2 className="max-w-full text-lg font-bold text-zinc-700">{title}</h2>
+      <p className="max-w-full text-sm font-bold text-zinc-500">
+        {compensation}
+      </p>
     </div>
   );
 };

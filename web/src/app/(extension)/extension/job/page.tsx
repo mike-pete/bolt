@@ -113,8 +113,9 @@ const Job: React.FC = () => {
       company: company ?? "unknown",
       description: jobDescription ?? "unknown",
       url: "http://example.com",
+      compensation: comp ?? undefined,
     }),
-    [company, jobDescription, jobId, jobTitle],
+    [comp, company, jobDescription, jobId, jobTitle],
   );
 
   const workModesFound = useMemo(() => {
