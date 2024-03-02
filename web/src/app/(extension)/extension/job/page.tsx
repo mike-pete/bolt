@@ -2,6 +2,7 @@
 import {
   IconAlertTriangleFilled,
   IconArrowRight,
+  IconDeviceFloppy,
   IconX,
 } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -217,8 +218,22 @@ const Job: React.FC = () => {
           </div>
         )}
       </div>
+      <div className="sticky top-0 bg-white/80 p-1	pb-0 backdrop-blur-sm">
+        <div className="m-2 rounded-lg bg-white p-1 text-zinc-700 outline outline-2 outline-zinc-300">
+          <SaveButton />
+        </div>
+      </div>
       <KeywordsFound description={jobDescription ?? undefined} />
     </div>
+  );
+};
+
+const SaveButton: React.FC = () => {
+  return (
+    <button className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 transition-all hover:bg-emerald-200 hover:text-emerald-700">
+      <IconDeviceFloppy />
+      <p className="pr-1.5 text-xs font-bold uppercase">Save</p>
+    </button>
   );
 };
 
