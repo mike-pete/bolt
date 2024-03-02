@@ -12,7 +12,7 @@ const Dashboard = async () => {
   }
 
   return (
-    <div className="flex flex-grow flex-col items-center justify-center">
+    <div className="flex flex-grow flex-col items-center bg-zinc-50">
       <SavedJobs />
     </div>
   );

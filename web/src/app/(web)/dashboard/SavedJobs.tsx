@@ -30,12 +30,13 @@ const SavedJobs: React.FC = () => {
 
   return (
     <div>
-      <h1>Saved Jobs</h1>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-12 p-8">
         {jobsByDate?.map((job) => (
           <div key={job.date}>
-            <h2>{job.date}</h2>
-            <div className="flex flex-col gap-2">
+            <h2 className="p-2 text-xl font-semibold text-zinc-800">
+              {job.date}
+            </h2>
+            <div className="flex flex-wrap gap-2">
               {job.jobs.map((job) => (
                 <JobPreview key={job.id} {...job} />
               ))}
@@ -55,9 +56,9 @@ const JobPreview: React.FC<Omit<JobPreviewType, "createdAt">> = ({
   jobId,
 }) => {
   return (
-    <div className="rounded-lg border-2 bg-zinc-100 p-2">
-      <h2>{title}</h2>
-      <p>{company}</p>
+    <div className="max-w-96 min-w-64 rounded-lg border-2 bg-white p-4">
+      <h2 className="truncate">{title}</h2>
+      <p className="text-sm font-semibold text-zinc-600">{company}</p>
     </div>
   );
 };
