@@ -102,7 +102,6 @@ model Job {
     company String
     description String @db.Text
     compensation String?
-    url String @db.VarChar(2048)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     applied DateTime?

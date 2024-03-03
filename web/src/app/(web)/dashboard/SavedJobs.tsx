@@ -1,5 +1,6 @@
 "use client";
 
+import { IconExternalLink } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { api } from "~/trpc/react";
@@ -45,20 +46,29 @@ const SavedJobs: React.FC = () => {
 };
 
 const JobPreview: React.FC<Omit<JobPreviewType, "createdAt">> = ({
-  id,
   title,
   company,
-  url,
   jobId,
   compensation,
 }) => {
   return (
-    <div className="flex basis-80 flex-col items-start gap-0.5 rounded-lg border-2 bg-white p-4">
-      <p className="max-w-full text-xs font-bold text-zinc-500">{company}</p>
-      <h2 className="max-w-full text-lg font-bold text-zinc-700">{title}</h2>
-      <p className="max-w-full text-sm font-bold text-zinc-500">
-        {compensation}
-      </p>
+    <div className="group flex basis-80 flex-col items-start gap-2 rounded-lg border-2 bg-white p-4">
+      <div className="flex flex-grow flex-col gap-0.5">
+        <p className="max-w-full text-xs font-bold text-zinc-500">{company}</p>
+        <h2 className="max-w-full text-lg font-bold text-zinc-700">{title}</h2>
+        <p className="max-w-full text-sm font-bold text-zinc-500">
+          {compensation}
+        </p>
+      </div>
+      <div className="flex w-full gap-2 rounded-lg opacity-20 group-hover:opacity-100">
+        <a
+          href={`https://www.linkedin.com/jobs/search/?currentJobId=${jobId}`}
+          target="_blank"
+          title="Go to job"
+        >
+          <IconExternalLink />
+        </a>
+      </div>
     </div>
   );
 };
