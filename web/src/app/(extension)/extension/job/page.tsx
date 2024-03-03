@@ -106,17 +106,16 @@ const Job: React.FC = () => {
     }
   }, [addJobSeen, jobId, jobTitle, lastJobSaved]);
 
-  const jobData: JobData = useMemo(
-    () => ({
-      jobId: jobId ?? "unknown",
-      title: jobTitle ?? "unknown",
-      company: company ?? "unknown",
-      description: jobDescription ?? "unknown",
-      url: "http://example.com",
-      compensation: comp ?? undefined,
-    }),
-    [comp, company, jobDescription, jobId, jobTitle],
-  );
+  const jobData = !jobId
+    ? undefined
+    : {
+        jobId: jobId,
+        title: jobTitle ?? "unknown",
+        company: company ?? "unknown",
+        description: jobDescription ?? "unknown",
+        url: "http://example.com",
+        compensation: comp ?? undefined,
+      };
 
   const workModesFound = useMemo(() => {
     const workModesFound: string[] = [];
@@ -243,16 +242,56 @@ const Job: React.FC = () => {
   );
 };
 
-const SaveButton: React.FC<{ jobData: JobData }> = ({ jobData }) => {
-  const { mutate: saveJob } = api.jobs.saveJob.useMutation();
+const SaveButton: React.FC<{ jobData: JobData | undefined }> = ({
+  jobData,
+}) => {
+  const ctx = api.useUtils();
+
+  const { mutate: saveJob, isLoading } = api.jobs.saveJob.useMutation({
+    // TODO: optimistically update getJobList
+    onSuccess: () => {
+      void ctx.jobs.getJobList.invalidate();
+    },
+  });
+
+  const { data: jobsSaved } = api.jobs.getJobList.useQuery();
+
+  const jobsSavedSet = useMemo(
+    () => new Set(jobsSaved?.map((job) => job.jobId)),
+    [jobsSaved],
+  );
+
+  const saved = jobsSavedSet.has(jobData?.jobId ?? "");
+
+  if (saved) {
+    return (
+      <button
+        className="flex items-center gap-1 rounded-lg bg-emerald-200 p-1 text-emerald-700 outline outline-1 outline-emerald-400"
+        disabled
+      >
+        <IconDeviceFloppy />
+      </button>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <button
+        className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 outline outline-1 outline-zinc-400"
+        disabled
+      >
+        <LoadingSpinner size={24} />
+      </button>
+    );
+  }
 
   return (
     <button
-      onClick={() => saveJob(jobData)}
-      className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 transition-all hover:bg-emerald-200 hover:text-emerald-700"
+      disabled={jobData === undefined}
+      onClick={() => jobData && saveJob(jobData)}
+      className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 outline outline-1 outline-zinc-400 disabled:cursor-wait"
     >
-      <IconDeviceFloppy />
-      <p className="pr-1.5 text-xs font-bold uppercase">Save</p>
+      <IconDeviceFloppy className="transition-all hover:scale-110" />
     </button>
   );
 };

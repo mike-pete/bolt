@@ -92,4 +92,18 @@ export const jobsRouter = createTRPCRouter({
 
     return jobPreviews;
   }),
+
+  getJobList: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+    const jobList = await ctx.db.job.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        jobId: true,
+      },
+    });
+
+    return jobList;
+  })
 });
