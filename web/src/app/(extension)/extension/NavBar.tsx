@@ -14,10 +14,10 @@ const NavBar = () => {
       name: "keywords",
       path: "/extension/keywords",
     },
-    // {
-    //   name: "history",
-    //   path: "/extension/history",
-    // },
+    {
+      name: "saved",
+      path: "/extension/saved",
+    },
   ];
 
   // TODO: get current page from location

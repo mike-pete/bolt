@@ -30,7 +30,7 @@ const SavedJobs: React.FC = () => {
   }, [savedJobs]);
 
   return (
-    <div className="flex flex-col gap-12 p-8">
+    <div className="flex flex-col gap-12">
       {jobsByDate?.map((job) => (
         <div key={job.date}>
           <h2 className="p-2 text-2xl font-bold text-zinc-400">{job.date}</h2>
