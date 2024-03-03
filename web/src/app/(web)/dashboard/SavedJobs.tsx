@@ -29,21 +29,17 @@ const SavedJobs: React.FC = () => {
   }, [savedJobs]);
 
   return (
-    <div>
-      <div className="flex flex-col gap-12 p-8">
-        {jobsByDate?.map((job) => (
-          <div key={job.date}>
-            <h2 className="p-2 text-xl font-semibold text-zinc-800">
-              {job.date}
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {job.jobs.map((job) => (
-                <JobPreview key={job.id} {...job} />
-              ))}
-            </div>
+    <div className="flex flex-col gap-12 p-8">
+      {jobsByDate?.map((job) => (
+        <div key={job.date}>
+          <h2 className="p-2 text-2xl font-bold text-zinc-400">{job.date}</h2>
+          <div className="flex flex-wrap gap-2 ">
+            {job.jobs.map((job) => (
+              <JobPreview key={job.id} {...job} />
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 };
@@ -57,7 +53,7 @@ const JobPreview: React.FC<Omit<JobPreviewType, "createdAt">> = ({
   compensation,
 }) => {
   return (
-    <div className="flex min-w-64 max-w-96 flex-col items-start gap-0.5 rounded-lg border-2 bg-white p-4">
+    <div className="flex basis-80 flex-col items-start gap-0.5 rounded-lg border-2 bg-white p-4">
       <p className="max-w-full text-xs font-bold text-zinc-500">{company}</p>
       <h2 className="max-w-full text-lg font-bold text-zinc-700">{title}</h2>
       <p className="max-w-full text-sm font-bold text-zinc-500">
