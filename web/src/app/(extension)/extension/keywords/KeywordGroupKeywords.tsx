@@ -40,7 +40,7 @@ const KeywordGroupKeywords: React.FC<{
   };
 
   return (
-    <div className="flex flex-wrap gap-2 overflow-clip rounded-lg border-2 border-zinc-300 p-2">
+    <div className="flex flex-wrap gap-2 overflow-clip rounded-lg border-2 p-2">
       {keywords?.map(({ keyword, id }) => (
         <div
           key={id}
