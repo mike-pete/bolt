@@ -26,7 +26,7 @@ const NavBar = () => {
         </Link>
       </div>
 
-      <div className="flex items-end gap-2 pb-2">
+      <div className="flex items-end gap-2 pb-2 hidden">
         {Object.entries(buttons).map(([key, value]) => (
           <Link
             href={key}

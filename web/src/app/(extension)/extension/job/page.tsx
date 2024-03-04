@@ -285,11 +285,12 @@ const SaveButton: React.FC<{ jobData: JobData | undefined }> = ({
     );
   }
 
+  // TODO: better handler for when jobData is undefined
   return (
     <button
       disabled={jobData === undefined}
       onClick={() => jobData && saveJob(jobData)}
-      className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 outline outline-1 outline-zinc-400 disabled:cursor-wait"
+      className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 outline outline-1 outline-zinc-400 disabled:cursor-not-allowed"
     >
       <IconDeviceFloppy className="transition-all hover:scale-110" />
     </button>
