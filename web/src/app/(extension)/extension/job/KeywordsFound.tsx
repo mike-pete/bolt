@@ -51,7 +51,7 @@ const KeywordsFound: React.FC<{ description: string | undefined }> = ({
   }
 
   return (
-    <div className="flex max-w-full flex-grow flex-col gap-6 p-4">
+    <div className="flex max-w-full flex-grow flex-col gap-6 p-2">
       {keywordGroups?.map((group) => (
         <KeywordGroupPreview
           keywordGroup={group}
