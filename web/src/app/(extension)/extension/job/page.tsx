@@ -2,12 +2,14 @@
 import {
   IconAlertTriangleFilled,
   IconArrowRight,
+  IconDeviceFloppy,
   IconX,
 } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import LoadingSpinner from "~/app/_components/LoadingSpinner";
 import { api } from "~/trpc/react";
+import { type RouterInputs } from "~/trpc/shared";
 import bi from "../_interactions/bi";
 import { jobKeys } from "../_interactions/queryKeys";
 import {
@@ -28,6 +30,8 @@ const workModes = {
   hybrid: "hybrid",
   remote: "remote",
 };
+
+type JobData = RouterInputs["jobs"]["saveJob"];
 
 const Job: React.FC = () => {
   const { data: jobTitle } = useQuery({
@@ -101,6 +105,17 @@ const Job: React.FC = () => {
       setLastJobSaved(jobId);
     }
   }, [addJobSeen, jobId, jobTitle, lastJobSaved]);
+
+  const jobData = !jobId
+    ? undefined
+    : {
+        jobId: jobId,
+        title: jobTitle ?? "unknown",
+        company: company ?? "unknown",
+        description: jobDescription ?? "unknown",
+        url: "http://example.com",
+        compensation: comp ?? undefined,
+      };
 
   const workModesFound = useMemo(() => {
     const workModesFound: string[] = [];
@@ -217,8 +232,68 @@ const Job: React.FC = () => {
           </div>
         )}
       </div>
+      <div className="sticky top-0 bg-white/80 p-1	pb-0 backdrop-blur-sm">
+        <div className="m-2 rounded-lg bg-white p-1 text-zinc-700 outline outline-2 outline-zinc-300">
+          <SaveButton jobData={jobData} />
+        </div>
+      </div>
       <KeywordsFound description={jobDescription ?? undefined} />
     </div>
+  );
+};
+
+const SaveButton: React.FC<{ jobData: JobData | undefined }> = ({
+  jobData,
+}) => {
+  const ctx = api.useUtils();
+
+  const { mutate: saveJob, isLoading } = api.jobs.saveJob.useMutation({
+    // TODO: optimistically update getJobList
+    onSuccess: () => {
+      void ctx.jobs.getJobList.invalidate();
+    },
+  });
+
+  const { data: jobsSaved } = api.jobs.getJobList.useQuery();
+
+  const jobsSavedSet = useMemo(
+    () => new Set(jobsSaved?.map((job) => job.jobId)),
+    [jobsSaved],
+  );
+
+  const saved = jobsSavedSet.has(jobData?.jobId ?? "");
+
+  if (saved) {
+    return (
+      <button
+        className="flex items-center gap-1 rounded-lg bg-emerald-200 p-1 text-emerald-700 outline outline-1 outline-emerald-400"
+        disabled
+      >
+        <IconDeviceFloppy />
+      </button>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <button
+        className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 outline outline-1 outline-zinc-400"
+        disabled
+      >
+        <LoadingSpinner size={24} />
+      </button>
+    );
+  }
+
+  // TODO: better handler for when jobData is undefined
+  return (
+    <button
+      disabled={jobData === undefined}
+      onClick={() => jobData && saveJob(jobData)}
+      className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 outline outline-1 outline-zinc-400 disabled:cursor-not-allowed"
+    >
+      <IconDeviceFloppy className="transition-all hover:scale-110" />
+    </button>
   );
 };
 

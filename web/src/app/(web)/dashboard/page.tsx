@@ -1,6 +1,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
+// import SavedJobs from "../../_components/SavedJobs";
 
 const Dashboard = async () => {
   noStore();
@@ -13,7 +14,9 @@ const Dashboard = async () => {
   return redirect("https://www.linkedin.com/jobs/search/");
 
   // return (
-  //   <div className="flex flex-grow flex-col items-center justify-center"></div>
+  //   <div className="flex flex-grow flex-col items-center bg-zinc-50 p-8">
+  //     <SavedJobs />
+  //   </div>
   // );
 };
 

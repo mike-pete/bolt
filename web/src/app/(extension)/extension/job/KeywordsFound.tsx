@@ -105,7 +105,8 @@ const KeywordGroupPreview: React.FC<{
 
 const NoKeywordsFound = () => {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-1 p-8">
+    <div className="flex h-full flex-col items-center justify-center gap-2 p-8">
+      <p className="text-2xl font-bold text-zinc-400">No Keywords Found</p>
       <p className="pb-2 text-center text-base font-bold text-zinc-700">
         Add more keywords to see what this job offers at a glance.{" "}
       </p>
