@@ -192,8 +192,8 @@ const Job: React.FC = () => {
   }
 
   return (
-    <div>
-      <div className="flex flex-col flex-nowrap items-start gap-1.5 border-b-2 border-zinc-300 bg-zinc-100 p-4">
+    <div className="flex flex-col gap-2 p-4">
+      <div className="flex flex-col flex-nowrap items-start gap-1.5 rounded-lg border-2 p-4">
         {typeof company === "string" && (
           <p className="text-sm font-bold text-zinc-500">{company}</p>
         )}
@@ -231,12 +231,11 @@ const Job: React.FC = () => {
             )}
           </div>
         )}
-      </div>
-      <div className="sticky top-0 bg-white/80 p-1	pb-0 backdrop-blur-sm">
-        <div className="m-2 rounded-lg bg-white p-1 text-zinc-700 outline outline-2 outline-zinc-300">
+        <div className="flex flex-row gap-2 pt-1">
           <SaveButton jobData={jobData} />
         </div>
       </div>
+
       <KeywordsFound description={jobDescription ?? undefined} />
     </div>
   );
@@ -266,7 +265,7 @@ const SaveButton: React.FC<{ jobData: JobData | undefined }> = ({
   if (saved) {
     return (
       <button
-        className="flex items-center gap-1 rounded-lg bg-emerald-200 p-1 text-emerald-700 outline outline-1 outline-emerald-400"
+        className="flex items-center gap-1 rounded-lg bg-emerald-200 p-1 text-emerald-700"
         disabled
       >
         <IconDeviceFloppy />
@@ -277,7 +276,7 @@ const SaveButton: React.FC<{ jobData: JobData | undefined }> = ({
   if (isLoading) {
     return (
       <button
-        className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 outline outline-1 outline-zinc-400"
+        className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700"
         disabled
       >
         <LoadingSpinner size={24} />
@@ -286,11 +285,14 @@ const SaveButton: React.FC<{ jobData: JobData | undefined }> = ({
   }
 
   // TODO: better handler for when jobData is undefined
+  if (jobData === undefined) {
+    return null;
+  }
+
   return (
     <button
-      disabled={jobData === undefined}
       onClick={() => jobData && saveJob(jobData)}
-      className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700 outline outline-1 outline-zinc-400 disabled:cursor-not-allowed"
+      className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700"
     >
       <IconDeviceFloppy className="transition-all hover:scale-110" />
     </button>
