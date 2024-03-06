@@ -192,8 +192,8 @@ const Job: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2 p-4">
-      <div className="flex flex-col flex-nowrap items-start gap-1.5 rounded-lg border-2 p-4">
+    <div className="flex min-h-full flex-col gap-2 bg-zinc-50 p-4">
+      <div className="flex flex-col flex-nowrap items-start gap-1.5 rounded-lg border-2 bg-white p-4">
         {typeof company === "string" && (
           <p className="text-sm font-bold text-zinc-500">{company}</p>
         )}

@@ -63,7 +63,7 @@ const KeywordGroupHeader: React.FC<{ keywordGroup: KeywordGroupType }> = ({
         type="string"
         value={titleInput}
         placeholder="NEW KEYWORD GROUP"
-        className="min-w-0 flex-grow py-1 pr-2 font-bold uppercase text-zinc-600 outline-none"
+        className="min-w-0 flex-grow py-1 pr-2 font-bold uppercase text-zinc-600 outline-none bg-transparent"
         onChange={handleTitleChange}
       />
       <IconTrash

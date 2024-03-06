@@ -2,9 +2,13 @@
 
 import { IconX } from "@tabler/icons-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 import bi from "./_interactions/bi";
 
 const NavBar = () => {
+  const pathname = usePathname();
+
   const pages = [
     {
       name: "job",
@@ -20,8 +24,8 @@ const NavBar = () => {
     },
   ];
 
-  // TODO: get current page from location
   const currentPage = "";
+  console.log("pathname", pathname);
 
   return (
     <header className="flex select-none items-center border-b-2 border-zinc-300 p-1.5">
@@ -29,7 +33,11 @@ const NavBar = () => {
         {pages.map(({ name, path }) => (
           <Link
             href={path}
-            className="flex-grow rounded text-center font-bold uppercase text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-500 aria-selected:bg-zinc-200 aria-selected:text-zinc-600"
+            className={twMerge(
+              "flex-grow rounded px-1.5 py-0.5 text-center text-sm font-bold uppercase text-zinc-400 transition hover:bg-zinc-200 hover:text-zinc-600",
+              pathname.startsWith(`/extension/${name}`) &&
+                "bg-zinc-100 text-zinc-700",
+            )}
             aria-selected={currentPage === name}
             key={name}
           >

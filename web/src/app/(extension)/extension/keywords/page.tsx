@@ -19,7 +19,7 @@ const Keywords: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col flex-nowrap items-center gap-4 p-4">
+    <div className="flex flex-col flex-nowrap items-center gap-4 p-4 bg-zinc-50">
       {keywordGroups?.map((keywordGroup) => (
         <KeywordGroup keywordGroup={keywordGroup} key={keywordGroup.id} />
       ))}

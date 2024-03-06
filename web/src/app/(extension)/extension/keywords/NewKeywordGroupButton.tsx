@@ -14,10 +14,11 @@ const NewKeywordGroupButton: React.FC = () => {
 
   return (
     <button
-      className="cursor-pointer rounded-full bg-emerald-400 p-2 text-white transition hover:bg-emerald-500"
+      className="cursor-pointer rounded-full bg-emerald-400 p-2 text-white transition hover:bg-emerald-500 flex items-center gap-2 pl-4 uppercase font-semibold text-sm"
       onClick={() => addKeywordGroup()}
       disabled={isLoading}
     >
+      New Group
       {!isLoading && <IconPlus size={20} />}
       {isLoading && <LoadingSpinner />}
     </button>
