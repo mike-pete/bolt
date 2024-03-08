@@ -28,8 +28,8 @@ export const jobsRouter = createTRPCRouter({
     .input(
       z.object({
         jobId: z.string().min(1).max(191),
-        title: z.string().min(1).max(191),
-        company: z.string().min(1).max(191),
+        title: z.string().min(1).max(255),
+        company: z.string().min(1).max(255),
         description: z.string().min(1).max(65535),
         url: z.string().url().min(1).max(2048),
         compensation: z.optional(z.string().min(1).max(191)),

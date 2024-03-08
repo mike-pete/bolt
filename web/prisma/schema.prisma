@@ -98,14 +98,34 @@ model Job {
     id String @id @default(cuid())
     userId String
     jobId String
-    title String
-    company String
+    title String @db.TinyText
+    company String @db.TinyText
     description String @db.Text
     compensation String?
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    applied DateTime?
-
+    status JobStatus[]
     @@unique([userId, jobId])
     @@index([userId])
+}
+
+enum Status {
+    NoStatus
+    Applied
+    Interviewing
+    Rejected
+    Offer
+    OfferAccepted
+    OfferRejected
+    Archived
+}
+
+model JobStatus {
+    id String @id @default(cuid())
+    jobId String
+    job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+    status Status
+    setAt DateTime @default(now())
+
+    @@index([jobId])
 }
