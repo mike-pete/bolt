@@ -11,7 +11,7 @@ const JobOverview: React.FC<{ details: JobDetails }> = ({ details }) => {
       {comp && <p className="text-sm font-bold text-zinc-500">{comp}</p>}
       {(typeof workMode?.declared === "string" ||
         workMode?.conflicting?.length) && (
-        <div className="flex-wrap-none flex items-start gap-2">
+        <div className="flex-wrap flex items-start gap-2">
           {typeof workMode.declared === "string" && (
             <p className="flex-shrink-0 rounded bg-zinc-400 px-1.5 py-0.5 text-xs font-bold uppercase text-zinc-100">
               {workMode.declared}
@@ -28,7 +28,7 @@ const JobOverview: React.FC<{ details: JobDetails }> = ({ details }) => {
                     />{" "}
                   </>
                 )}
-                job mentions: {workMode.conflicting?.join(", ")}
+                found: {workMode.conflicting?.join(", ")}
               </p>
             </div>
           )}
