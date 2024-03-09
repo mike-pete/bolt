@@ -1,15 +1,10 @@
 "use client";
-import {
-  IconAlertTriangleFilled,
-  IconArrowRight,
-  IconDeviceFloppy,
-  IconX,
-} from "@tabler/icons-react";
+import { IconArrowRight, IconX } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
+import JobCard, { type JobDetails } from "~/app/_components/JobCard/JobCard";
 import LoadingSpinner from "~/app/_components/LoadingSpinner";
 import { api } from "~/trpc/react";
-import { type RouterInputs } from "~/trpc/shared";
 import bi from "../_interactions/bi";
 import { jobKeys } from "../_interactions/queryKeys";
 import {
@@ -31,7 +26,8 @@ const workModes = {
   remote: "remote",
 };
 
-type JobData = RouterInputs["jobs"]["saveJob"];
+// TODO: fetch saved job data
+// type JobData = RouterInputs["jobs"]["saveJob"];
 
 const Job: React.FC = () => {
   const { data: jobTitle } = useQuery({
@@ -105,17 +101,6 @@ const Job: React.FC = () => {
       setLastJobSaved(jobId);
     }
   }, [addJobSeen, jobId, jobTitle, lastJobSaved]);
-
-  const jobData = !jobId
-    ? undefined
-    : {
-        jobId: jobId,
-        title: jobTitle ?? "unknown",
-        company: company ?? "unknown",
-        description: jobDescription ?? "unknown",
-        url: "http://example.com",
-        compensation: comp ?? undefined,
-      };
 
   const workModesFound = useMemo(() => {
     const workModesFound: string[] = [];
@@ -191,111 +176,24 @@ const Job: React.FC = () => {
     );
   }
 
+  const jobDetails: JobDetails | undefined = jobId
+    ? {
+        jobId,
+        title: jobTitle ?? "unknown",
+        company: company ?? "unknown",
+        comp: comp ?? undefined,
+        workMode: {
+          declared: workModeDeclared ?? "undefined",
+          conflicting: workModesFound,
+        },
+      }
+    : undefined;
+
   return (
     <div className="flex min-h-full flex-col gap-2 bg-zinc-50 p-4">
-      <div className="flex flex-col flex-nowrap items-start gap-1.5 rounded-lg border-2 bg-white p-4">
-        {typeof company === "string" && (
-          <p className="text-sm font-bold text-zinc-500">{company}</p>
-        )}
-
-        {typeof jobTitle === "string" && (
-          <p className="text-lg font-bold text-zinc-700">{jobTitle}</p>
-        )}
-
-        {typeof comp === "string" && (
-          <p className="text-sm font-bold text-zinc-500">{comp}</p>
-        )}
-
-        {(typeof workModeDeclared === "string" ||
-          workModesFound.length > 0) && (
-          <div className="flex-wrap-none flex items-start gap-2">
-            {typeof workModeDeclared === "string" && (
-              <p className="flex-shrink-0 rounded bg-zinc-400 px-1.5 py-0.5 text-xs font-bold uppercase text-zinc-100">
-                {workModeDeclared}
-              </p>
-            )}
-            {workModesFound.length > 0 && (
-              <div className="flex flex-wrap gap-1 rounded outline-dashed  outline-2 outline-offset-1 outline-zinc-300">
-                <p className="px-1.5 py-0.5 text-xs font-bold uppercase text-zinc-500">
-                  {typeof workModeDeclared === "string" && (
-                    <>
-                      <IconAlertTriangleFilled
-                        className="inline text-amber-500"
-                        size={16}
-                      />{" "}
-                    </>
-                  )}
-                  job mentions: {workModesFound.join(", ")}
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-        <div className="flex flex-row gap-2 pt-1">
-          <SaveButton jobData={jobData} />
-        </div>
-      </div>
-
+      <JobCard isLoading={jobDetails === undefined} jobDetails={jobDetails} />
       <KeywordsFound description={jobDescription ?? undefined} />
     </div>
-  );
-};
-
-const SaveButton: React.FC<{ jobData: JobData | undefined }> = ({
-  jobData,
-}) => {
-  const ctx = api.useUtils();
-
-  const { mutate: saveJob, isLoading } = api.jobs.saveJob.useMutation({
-    // TODO: optimistically update getJobList
-    onSuccess: () => {
-      void ctx.jobs.getJobList.invalidate();
-    },
-  });
-
-  const { data: jobsSaved } = api.jobs.getJobList.useQuery();
-
-  const jobsSavedSet = useMemo(
-    () => new Set(jobsSaved?.map((job) => job.jobId)),
-    [jobsSaved],
-  );
-
-  const saved = jobsSavedSet.has(jobData?.jobId ?? "");
-
-  if (saved) {
-    return (
-      <button
-        className="flex items-center gap-1 rounded-lg bg-emerald-200 p-1 text-emerald-700"
-        disabled
-      >
-        <IconDeviceFloppy />
-      </button>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <button
-        className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700"
-        disabled
-      >
-        <LoadingSpinner size={24} />
-      </button>
-    );
-  }
-
-  // TODO: better handler for when jobData is undefined
-  if (jobData === undefined) {
-    return null;
-  }
-
-  return (
-    <button
-      onClick={() => jobData && saveJob(jobData)}
-      className="flex items-center gap-1 rounded-lg bg-zinc-200 p-1 text-zinc-700"
-    >
-      <IconDeviceFloppy className="transition-all hover:scale-110" />
-    </button>
   );
 };
 

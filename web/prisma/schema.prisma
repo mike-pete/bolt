@@ -110,13 +110,11 @@ model Job {
 }
 
 enum Status {
-    NoStatus
+    Saved
     Applied
     Interviewing
     Rejected
     Offer
-    OfferAccepted
-    OfferRejected
     Archived
 }
 
