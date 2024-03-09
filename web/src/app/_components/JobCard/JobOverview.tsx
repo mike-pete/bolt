@@ -32,7 +32,7 @@ const JobOverview: React.FC<{ details: JobDetails }> = ({ details }) => {
               </p>
             </div>
           )}
-        </div>
+        </div> 
       )}
     </>
   );

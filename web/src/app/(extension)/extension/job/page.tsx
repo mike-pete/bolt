@@ -1,120 +1,17 @@
 "use client";
 import { IconArrowRight, IconX } from "@tabler/icons-react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
-import JobCard, { type JobDetails } from "~/app/_components/JobCard/JobCard";
+import JobCard from "~/app/_components/JobCard/JobCard";
 import LoadingSpinner from "~/app/_components/LoadingSpinner";
 import { api } from "~/trpc/react";
 import bi from "../_interactions/bi";
-import { jobKeys } from "../_interactions/queryKeys";
-import {
-  jobCompSelector,
-  jobCompanySelector,
-  jobDescSelector,
-  jobTitleSelector,
-  workModeSelector,
-} from "../_interactions/selectors";
 import KeywordsFound from "./KeywordsFound";
-
-const workModes = {
-  "on-site": "on-site",
-  "on site": "on-site",
-  "in office": "on-site",
-  "in-person": "on-site",
-  onsite: "on-site",
-  hybrid: "hybrid",
-  remote: "remote",
-};
-
-// TODO: fetch saved job data
-// type JobData = RouterInputs["jobs"]["saveJob"];
+import useGetJobDetails from "./useGetJobDetails";
 
 const Job: React.FC = () => {
-  const { data: jobTitle } = useQuery({
-    queryKey: jobKeys.title(),
-    queryFn: async () => await bi.getTextContent(jobTitleSelector),
-  });
-
-  const { data: comp } = useQuery({
-    queryKey: jobKeys.comp(),
-    queryFn: async () => {
-      const compString = (await bi.getTextContent(jobCompSelector)) ?? "";
-      if (compString.includes("$")) {
-        return compString;
-      }
-      return null;
-    },
-  });
-
-  const { data: company } = useQuery({
-    queryKey: jobKeys.company(),
-    queryFn: async () => {
-      const companyString = (await bi.getTextContent(jobCompanySelector)) ?? "";
-      if (companyString.includes("·")) {
-        return (companyString.split("·")[0] ?? "").trim();
-      }
-      return null;
-    },
-  });
-
-  const { data: workModeDeclared } = useQuery({
-    queryKey: jobKeys.workModel(),
-    queryFn: async () => {
-      const workMode = (await bi.getTextContent(workModeSelector)) ?? "";
-      if (workMode) {
-        const workModeLower = workMode.toLowerCase();
-
-        for (const [key, value] of Object.entries(workModes)) {
-          if (workModeLower.includes(key)) {
-            return value;
-          }
-        }
-      }
-      return null;
-    },
-  });
-
-  const { data: jobDescription } = useQuery({
-    queryKey: jobKeys.description(),
-    queryFn: async () => await bi.getTextContent(jobDescSelector),
-  });
+  const { isLoading, jobDetails } = useGetJobDetails();
 
   const { data: keywordGroups, isLoading: loadingKeywordGroups } =
     api.keywords.getKeywordGroups.useQuery();
-
-  const jobId: string | undefined = useQueryClient().getQueryData(
-    jobKeys.jobId(),
-  );
-
-  const { mutate: addJobSeen } = api.jobs.addJobSeen.useMutation();
-
-  const [lastJobSaved, setLastJobSaved] = useState<string | undefined>(
-    undefined,
-  );
-
-  useEffect(() => {
-    if (typeof jobId === "string" && jobId.trim() && lastJobSaved !== jobId) {
-      addJobSeen({
-        jobId,
-        title: jobTitle ?? `unknown-${Math.floor(Math.random() * 1000000) + 1}`,
-      });
-      setLastJobSaved(jobId);
-    }
-  }, [addJobSeen, jobId, jobTitle, lastJobSaved]);
-
-  const workModesFound = useMemo(() => {
-    const workModesFound: string[] = [];
-
-    for (const [key, value] of Object.entries(workModes)) {
-      if (
-        value !== workModeDeclared &&
-        jobDescription?.toLowerCase().includes(key)
-      ) {
-        workModesFound.push(key);
-      }
-    }
-    return workModesFound;
-  }, [jobDescription, workModeDeclared]);
 
   if (loadingKeywordGroups) {
     return (
@@ -124,7 +21,7 @@ const Job: React.FC = () => {
     );
   }
 
-  if (jobId === null) {
+  if (jobDetails?.jobId === undefined) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4 p-8">
         <p className="text-3xl font-bold text-zinc-600">Oh no...</p>
@@ -176,23 +73,10 @@ const Job: React.FC = () => {
     );
   }
 
-  const jobDetails: JobDetails | undefined = jobId
-    ? {
-        jobId,
-        title: jobTitle ?? "unknown",
-        company: company ?? "unknown",
-        comp: comp ?? undefined,
-        workMode: {
-          declared: workModeDeclared ?? "undefined",
-          conflicting: workModesFound,
-        },
-      }
-    : undefined;
-
   return (
     <div className="flex min-h-full flex-col gap-2 bg-zinc-50 p-4">
       <JobCard isLoading={jobDetails === undefined} jobDetails={jobDetails} />
-      <KeywordsFound description={jobDescription ?? undefined} />
+      <KeywordsFound description={jobDetails?.description} />
     </div>
   );
 };

@@ -7,6 +7,7 @@ export type JobDetails = {
   company: string;
   title: string;
   comp?: string;
+  description?: string;
   workMode?: {
     declared: string;
     conflicting?: string[];
