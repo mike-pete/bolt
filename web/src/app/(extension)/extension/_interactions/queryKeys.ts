@@ -1,6 +1,6 @@
 export const jobKeys = {
   all: ["job"] as const,
-  jobId: () => [...jobKeys.all, "jobId"] as const,
+  currentURL: () => [...jobKeys.all, "currentURL"] as const,
   title: () => [...jobKeys.all, "title"] as const,
   description: () => [...jobKeys.all, "description"] as const,
   company: () => [...jobKeys.all, "company"] as const,

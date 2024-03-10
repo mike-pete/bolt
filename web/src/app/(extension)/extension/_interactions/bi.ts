@@ -1,10 +1,11 @@
 "use client";
 import bime from "@mike.pete/bime";
+import { type ExtensionModel } from "../../../../../../extension/src/content/model";
 import handleLocationChanged from "./handleLocationChanged";
 
 const bi = () => {
-	// Node doesn't know about window, so if window isn't available, just return a proxy that throws an error (instead of returning bime).
-	if (typeof window === "undefined") {
+  // Node doesn't know about window, so if window isn't available, just return a proxy that throws an error (instead of returning bime).
+  if (typeof window === "undefined") {
     const handler: ProxyHandler<Record<string, () => void>> = {
       get: () => {
         return async () => {
@@ -27,14 +28,7 @@ const bi = () => {
 
   bime.listen("*", model);
 
-  type ContentScriptModel = {
-    getTextContent: (selector: string) => Promise<string | undefined>;
-    hideIframe: () => void;
-    showIframe: () => void;
-    goToPage: (url: string) => void;
-  };
-
-  return bime.target<ContentScriptModel>(target, "*");
+  return bime.target<ExtensionModel>(target, "*");
 };
 
 export default bi();

@@ -1,27 +1,18 @@
 "use client";
 import { IconArrowRight, IconX } from "@tabler/icons-react";
 import JobCard from "~/app/_components/JobCard/JobCard";
-import LoadingSpinner from "~/app/_components/LoadingSpinner";
 import { api } from "~/trpc/react";
 import bi from "../_interactions/bi";
 import KeywordsFound from "./KeywordsFound";
-import useGetJobDetails from "./useGetJobDetails";
+import useGetJobDetails, { JobDetailError } from "./useGetJobDetails";
 
 const Job: React.FC = () => {
-  const { isLoading, jobDetails } = useGetJobDetails();
+  const { isLoading, jobDetails, error } = useGetJobDetails();
 
   const { data: keywordGroups, isLoading: loadingKeywordGroups } =
     api.keywords.getKeywordGroups.useQuery();
 
-  if (loadingKeywordGroups) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <LoadingSpinner size={30} />
-      </div>
-    );
-  }
-
-  if (jobDetails?.jobId === undefined) {
+  if (!isLoading && error === JobDetailError.NO_JOB_ID) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4 p-8">
         <p className="text-3xl font-bold text-zinc-600">Oh no...</p>
@@ -51,7 +42,8 @@ const Job: React.FC = () => {
     );
   }
 
-  if (!keywordGroups?.length) {
+  // TODO: this should be initialized in onboarding, this should be removed once that is implemented
+  if (!loadingKeywordGroups && !keywordGroups?.length) {
     return (
       <div className="flex flex-col gap-4 p-4">
         <p className="text-center text-2xl font-semibold">Getting Started</p>
@@ -75,7 +67,7 @@ const Job: React.FC = () => {
 
   return (
     <div className="flex min-h-full flex-col gap-2 bg-zinc-50 p-4">
-      <JobCard isLoading={jobDetails === undefined} jobDetails={jobDetails} />
+      <JobCard isLoading={isLoading} jobDetails={jobDetails} error={error}/>
       <KeywordsFound description={jobDetails?.description} />
     </div>
   );

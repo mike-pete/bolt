@@ -1,6 +1,7 @@
 import React from "react";
-import JobOverview from "./JobOverview";
+import { type JobDetailError } from "~/app/(extension)/extension/job/useGetJobDetails";
 import ActionBar, { type StatusValues } from "./ActionBar";
+import JobOverview from "./JobOverview";
 
 export type JobDetails = {
   jobId: string;
@@ -17,7 +18,7 @@ export type JobDetails = {
 
 const JobCard: React.FC<{
   isLoading: boolean;
-  error?: string;
+  error?: JobDetailError;
   jobDetails?: JobDetails;
 }> = ({ isLoading, error, jobDetails }) => {
   if (isLoading) {

@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { type JobDetails } from "~/app/_components/JobCard/JobCard";
 import { api } from "~/trpc/react";
@@ -25,17 +25,39 @@ const workModes = {
 // TODO: fetch saved job data
 // type JobData = RouterInputs["jobs"]["saveJob"];
 
+export enum JobDetailError {
+  NO_JOB_ID,
+}
+
 const useGetJobDetails = (): {
   isLoading: boolean;
-  error?: string;
+  error?: JobDetailError;
   jobDetails?: JobDetails;
 } => {
-  const { data: jobTitle } = useQuery({
+  const {
+    data: location,
+    isLoading: isLoadingLocation,
+  } = useQuery({
+    queryKey: jobKeys.currentURL(),
+    queryFn: async () => await bi.getCurrentUrl(),
+  });
+
+  const jobId = useMemo(() => {
+    if (!location) {
+      return undefined;
+    }
+
+    const params = new URL(location).searchParams;
+    const jobId = params.get("currentJobId") ?? null;
+    return jobId;
+  }, [location]);
+
+  const { data: jobTitle, isLoading: isLoadingTitle } = useQuery({
     queryKey: jobKeys.title(),
     queryFn: async () => await bi.getTextContent(jobTitleSelector),
   });
 
-  const { data: comp } = useQuery({
+  const { data: comp, isLoading: isLoadingComp } = useQuery({
     queryKey: jobKeys.comp(),
     queryFn: async () => {
       const compString = (await bi.getTextContent(jobCompSelector)) ?? "";
@@ -46,7 +68,7 @@ const useGetJobDetails = (): {
     },
   });
 
-  const { data: company } = useQuery({
+  const { data: company, isLoading: isLoadingCompany } = useQuery({
     queryKey: jobKeys.company(),
     queryFn: async () => {
       const companyString = (await bi.getTextContent(jobCompanySelector)) ?? "";
@@ -57,7 +79,7 @@ const useGetJobDetails = (): {
     },
   });
 
-  const { data: workModeDeclared } = useQuery({
+  const { data: workModeDeclared, isLoading: isLoadingWorkMode } = useQuery({
     queryKey: jobKeys.workModel(),
     queryFn: async () => {
       const workMode = (await bi.getTextContent(workModeSelector)) ?? "";
@@ -74,17 +96,10 @@ const useGetJobDetails = (): {
     },
   });
 
-  const { data: jobDescription } = useQuery({
+  const { data: jobDescription, isLoading: isLoadingDescription } = useQuery({
     queryKey: jobKeys.description(),
     queryFn: async () => await bi.getTextContent(jobDescSelector),
   });
-
-  const { data: keywordGroups, isLoading: loadingKeywordGroups } =
-    api.keywords.getKeywordGroups.useQuery();
-
-  const jobId: string | undefined = useQueryClient().getQueryData(
-    jobKeys.jobId(),
-  );
 
   const { mutate: addJobSeen } = api.jobs.addJobSeen.useMutation();
 
@@ -116,22 +131,37 @@ const useGetJobDetails = (): {
     return workModesFound;
   }, [jobDescription, workModeDeclared]);
 
+  const workMode = workModeDeclared
+    ? { declared: workModeDeclared, conflicting: workModesFound }
+    : undefined;
 
-  const jobDetails: JobDetails | undefined = jobId
-  ? {
+  if (jobId === null) {
+    return { isLoading: false, error: JobDetailError.NO_JOB_ID };
+  }
+
+  if (jobId) {
+    const jobDetails: JobDetails = {
       jobId,
       title: jobTitle ?? "unknown",
       company: company ?? "unknown",
       comp: comp ?? undefined,
       description: jobDescription ?? undefined,
-      workMode: {
-        declared: workModeDeclared ?? "undefined",
-        conflicting: workModesFound,
-      },
-    }
-  : undefined;
+      workMode,
+    };
 
-  return { isLoading: true, jobDetails };
+    return {
+      isLoading:
+        isLoadingLocation ||
+        isLoadingTitle ||
+        isLoadingComp ||
+        isLoadingCompany ||
+        isLoadingWorkMode ||
+        isLoadingDescription,
+      jobDetails,
+    };
+  }
+
+  return { isLoading: true };
 };
 
 export default useGetJobDetails;
