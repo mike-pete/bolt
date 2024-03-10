@@ -33,8 +33,8 @@ export const jobsRouter = createTRPCRouter({
         jobId: z.string().min(1).max(191),
         title: z.string().min(1).max(255),
         company: z.string().min(1).max(255),
-        description: z.string().min(1).max(65535).optional(),
-        compensation: z.optional(z.string().min(1).max(191)).optional(),
+        description: z.optional(z.string().min(1).max(65535)),
+        compensation: z.optional(z.string().min(1).max(191)),
         status: z
           .enum([
             "Saved",
@@ -102,7 +102,7 @@ export const jobsRouter = createTRPCRouter({
         createdAt: true,
         compensation: true,
         jobId: true,
-  
+
         status: {
           orderBy: {
             createdAt: "desc",

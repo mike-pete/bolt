@@ -4,20 +4,23 @@ import { IconChevronDown, IconExternalLink } from "@tabler/icons-react";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import { api } from "~/trpc/react";
+import { type RouterInputs } from "~/trpc/shared";
 import { type JobDetails } from "./JobCard";
 
 const ActionBar: React.FC<{ details: JobDetails }> = ({ details }) => {
   return (
-    <div className="flex w-full flex-row gap-2 border-t-2 px-4 py-2 items-center">
+    <div className="flex w-full flex-row items-center gap-2 border-t-2 px-4 py-2">
       <StatusPicker details={details} />
-      {details?.url && <a
+      {details?.url && (
+        <a
           href={details.url}
           target="_blank"
           title="Go to job"
           className="text-zinc-500"
         >
           <IconExternalLink />
-        </a>}
+        </a>
+      )}
     </div>
   );
 };
@@ -47,8 +50,15 @@ const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
       <Listbox
         value={details?.status}
         onChange={(newStatus) => {
-          console.log("updated");
-          saveJob.mutate({ ...details, status: newStatus });
+          const newJobData: RouterInputs["jobs"]["saveJob"] = {
+            jobId: details.jobId,
+            title: details?.title,
+            company: details?.company,
+            description: details?.description,
+            compensation: details?.comp,
+            status: newStatus,
+          };
+          saveJob.mutate(newJobData);
         }}
       >
         <Listbox.Button className="relative flex items-center gap-1 rounded-lg bg-zinc-200 py-1.5 pl-3 pr-2 text-left text-sm font-semibold text-zinc-700 focus:outline-none">
