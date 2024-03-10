@@ -1,6 +1,7 @@
+import { type Status } from "@prisma/client";
 import React from "react";
 import { type JobDetailError } from "~/app/(extension)/extension/job/useGetJobDetails";
-import ActionBar, { type StatusValues } from "./ActionBar";
+import ActionBar from "./ActionBar";
 import JobOverview from "./JobOverview";
 
 export type JobDetails = {
@@ -13,7 +14,7 @@ export type JobDetails = {
     declared: string;
     conflicting?: string[];
   };
-  status?: StatusValues;
+  status?: Status;
 };
 
 const JobCard: React.FC<{

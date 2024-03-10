@@ -22,9 +22,6 @@ const workModes = {
   remote: "remote",
 };
 
-// TODO: fetch saved job data
-// type JobData = RouterInputs["jobs"]["saveJob"];
-
 export enum JobDetailError {
   NO_JOB_ID,
 }
@@ -34,10 +31,7 @@ const useGetJobDetails = (): {
   error?: JobDetailError;
   jobDetails?: JobDetails;
 } => {
-  const {
-    data: location,
-    isLoading: isLoadingLocation,
-  } = useQuery({
+  const { data: location, isLoading: isLoadingLocation } = useQuery({
     queryKey: jobKeys.currentURL(),
     queryFn: async () => await bi.getCurrentUrl(),
   });
@@ -135,6 +129,11 @@ const useGetJobDetails = (): {
     ? { declared: workModeDeclared, conflicting: workModesFound }
     : undefined;
 
+  const { data: savedJobData } = api.jobs.getJob.useQuery(jobId!, {
+    enabled: !!jobId,
+    retry: 0,
+  });
+
   if (jobId === null) {
     return { isLoading: false, error: JobDetailError.NO_JOB_ID };
   }
@@ -147,6 +146,7 @@ const useGetJobDetails = (): {
       comp: comp ?? undefined,
       description: jobDescription ?? undefined,
       workMode,
+      status: savedJobData?.status?.[0]?.status,
     };
 
     return {

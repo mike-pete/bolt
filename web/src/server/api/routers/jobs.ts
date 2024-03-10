@@ -1,3 +1,5 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -102,5 +104,43 @@ export const jobsRouter = createTRPCRouter({
     });
 
     return jobList;
-  })
+  }),
+
+  getJob: protectedProcedure
+    .input(z.string().min(1).max(191))
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+
+      try {
+        const job = await ctx.db.job.findFirstOrThrow({
+          where: {
+            userId,
+            jobId: input,
+          },
+          include: {
+            status: {
+              orderBy: {
+                createdAt: "desc",
+              },
+              take: 1,
+            },
+          },
+        });
+
+        return job;
+      } catch (error) {
+        if (error instanceof PrismaClientKnownRequestError) {
+          if (error.code === "P2025") {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: "Job not found.",
+            });
+          }
+        }
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An error occurred while fetching job details.",
+        });
+      }
+    }),
 });
