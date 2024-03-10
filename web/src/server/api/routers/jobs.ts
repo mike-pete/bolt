@@ -70,8 +70,8 @@ export const jobsRouter = createTRPCRouter({
           jobId: input.jobId,
           title: input.title,
           company: input.company,
-          description: input.description,
-          compensation: input.compensation,
+          description: input?.description,
+          compensation: input?.compensation,
           updatedAt: new Date(),
           status: {
             create: {
@@ -90,19 +90,25 @@ export const jobsRouter = createTRPCRouter({
       return jobSaved;
     }),
 
-  getJobPreviews: protectedProcedure.query(async ({ ctx }) => {
+  getJobs: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
     const jobPreviews = await ctx.db.job.findMany({
       where: {
         userId,
       },
       select: {
-        id: true,
         title: true,
         company: true,
         createdAt: true,
         compensation: true,
         jobId: true,
+  
+        status: {
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 1,
+        },
       },
       orderBy: {
         createdAt: "desc",
@@ -112,6 +118,7 @@ export const jobsRouter = createTRPCRouter({
     return jobPreviews;
   }),
 
+  // TODO NOW: what is this used for?
   getJobList: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
     const jobList = await ctx.db.job.findMany({
