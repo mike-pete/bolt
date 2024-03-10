@@ -27,7 +27,7 @@ const NavBar = () => {
   const currentPage = "";
 
   return (
-    <header className="flex select-none items-center border-b-2 border-zinc-300 p-1.5">
+    <header className="flex select-none items-center border-b-2 border-zinc-300 p-1.5 bg-white">
       <div className="flex flex-grow justify-evenly gap-1.5">
         {pages.map(({ name, path }) => (
           <Link
