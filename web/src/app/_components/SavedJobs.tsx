@@ -1,6 +1,6 @@
 "use client";
 
-import { IconArrowRight, IconExternalLink } from "@tabler/icons-react";
+import { IconExternalLink } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { api } from "~/trpc/react";
