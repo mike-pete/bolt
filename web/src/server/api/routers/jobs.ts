@@ -1,4 +1,4 @@
-import { Status } from "@prisma/client";
+import { type Status } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -35,14 +35,16 @@ export const jobsRouter = createTRPCRouter({
         company: z.string().min(1).max(255),
         description: z.string().min(1).max(65535).optional(),
         compensation: z.optional(z.string().min(1).max(191)).optional(),
-        status: z.enum([
-          "Saved",
-          "Applied",
-          "Interviewing",
-          "Rejected",
-          "Offer",
-          "Archived",
-        ]).default("Saved"),
+        status: z
+          .enum([
+            "Saved",
+            "Applied",
+            "Interviewing",
+            "Rejected",
+            "Offer",
+            "Archived",
+          ])
+          .default("Saved"),
       }),
     )
     .mutation(async ({ ctx, input }) => {
