@@ -100,7 +100,7 @@ model Job {
     jobId String
     title String @db.TinyText
     company String @db.TinyText
-    description String @db.Text
+    description String? @db.Text
     compensation String?
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -109,6 +109,7 @@ model Job {
     @@index([userId])
 }
 
+// When updating this, don't forget to update the API validators
 enum Status {
     Saved
     Applied

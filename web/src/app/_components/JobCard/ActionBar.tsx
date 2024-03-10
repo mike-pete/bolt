@@ -3,6 +3,7 @@ import { Status } from "@prisma/client";
 import { IconChevronDown } from "@tabler/icons-react";
 import React from "react";
 import { twMerge } from "tailwind-merge";
+import { api } from "~/trpc/react";
 import { type JobDetails } from "./JobCard";
 
 const ActionBar: React.FC<{ details: JobDetails }> = ({ details }) => {
@@ -23,12 +24,22 @@ const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
     [Status.Archived]: "Archived",
   };
 
+  const ctx = api.useUtils();
+
+  const saveJob = api.jobs.saveJob.useMutation({
+    // todo: implement optimistic updates
+    onSuccess: () => {
+      void ctx.jobs.getJob.invalidate(); 
+    },
+  });
+
   return (
     <div>
       <Listbox
         value={details?.status}
-        onChange={() => {
+        onChange={(newStatus) => {
           console.log("updated");
+          saveJob.mutate({...details, status: newStatus});
         }}
       >
         <Listbox.Button className="relative flex items-center gap-1 rounded-lg bg-zinc-200 py-1.5 pl-3 pr-2 text-left text-sm font-semibold text-zinc-700 focus:outline-none">

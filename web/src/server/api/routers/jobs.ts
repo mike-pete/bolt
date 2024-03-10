@@ -1,3 +1,4 @@
+import { Status } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -32,9 +33,16 @@ export const jobsRouter = createTRPCRouter({
         jobId: z.string().min(1).max(191),
         title: z.string().min(1).max(255),
         company: z.string().min(1).max(255),
-        description: z.string().min(1).max(65535),
-        url: z.string().url().min(1).max(2048),
-        compensation: z.optional(z.string().min(1).max(191)),
+        description: z.string().min(1).max(65535).optional(),
+        compensation: z.optional(z.string().min(1).max(191)).optional(),
+        status: z.enum([
+          "Saved",
+          "Applied",
+          "Interviewing",
+          "Rejected",
+          "Offer",
+          "Archived",
+        ]).default("Saved"),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -46,9 +54,14 @@ export const jobsRouter = createTRPCRouter({
           jobId: input.jobId,
           title: input.title,
           company: input.company,
-          description: input.description,
-          compensation: input.compensation,
+          description: input?.description,
+          compensation: input?.compensation,
           updatedAt: new Date(),
+          status: {
+            create: {
+              status: input.status as Status,
+            },
+          },
         },
         update: {
           userId,
@@ -58,6 +71,11 @@ export const jobsRouter = createTRPCRouter({
           description: input.description,
           compensation: input.compensation,
           updatedAt: new Date(),
+          status: {
+            create: {
+              status: input.status as Status,
+            },
+          },
         },
         where: {
           userId_jobId: {
