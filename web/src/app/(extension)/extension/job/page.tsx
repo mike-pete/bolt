@@ -66,7 +66,7 @@ const Job: React.FC = () => {
   }
 
   return (
-    <div className="flex min-h-full flex-col gap-2 bg-zinc-50 p-4">
+    <div className="flex min-h-full flex-col gap-2 p-4">
       <JobCard isLoading={isLoading} jobDetails={jobDetails} error={error}/>
       <KeywordsFound description={jobDetails?.description} />
     </div>
