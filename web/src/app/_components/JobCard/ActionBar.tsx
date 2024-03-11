@@ -16,7 +16,7 @@ const ActionBar: React.FC<{ details: JobDetails }> = ({ details }) => {
           href={details.url}
           target="_blank"
           title="Go to job"
-          className="text-zinc-500"
+          className="text-sky-600 transition hover:text-sky-400"
         >
           <IconExternalLink />
         </a>
@@ -25,16 +25,37 @@ const ActionBar: React.FC<{ details: JobDetails }> = ({ details }) => {
   );
 };
 
-const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
-  const options: Record<Status, string> = {
-    [Status.Saved]: "Saved",
-    [Status.Applied]: "Applied",
-    [Status.Interviewing]: "Interviewing",
-    [Status.Rejected]: "Rejected",
-    [Status.Offer]: "Offer",
-    [Status.Archived]: "Archived",
-  };
+const options: Record<
+  Status,
+  { label: string; style: { primary: string; secondary: string } }
+> = {
+  [Status.Saved]: {
+    label: "Saved",
+    style: { primary: "bg-zinc-500/70 text-white", secondary: "bg-zinc-100 text-zinc-700" },
+  },
+  [Status.Applied]: {
+    label: "Applied",
+    style: { primary: "bg-indigo-500/70 text-white", secondary: "bg-indigo-100 text-zinc-700" },
+  },
+  [Status.Interviewing]: {
+    label: "Interviewing",
+    style: { primary: "bg-emerald-500/70 text-white", secondary: "bg-emerald-100 text-zinc-700" },
+  },
+  [Status.Offer]: {
+    label: "Offer",
+    style: { primary: "bg-violet-500/70 text-white", secondary: "bg-violet-100 text-zinc-700" },
+  },
+  [Status.Rejected]: {
+    label: "Rejected",
+    style: { primary: "bg-red-500/70 text-white", secondary: "bg-red-100 text-zinc-700" },
+  },
+  [Status.Archived]: {
+    label: "Archived",
+    style: { primary: "bg-orange-500/70 text-white", secondary: "bg-orange-100 text-zinc-700" },
+  },
+};
 
+const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
   const ctx = api.useUtils();
 
   const saveJob = api.jobs.saveJob.useMutation({
@@ -44,6 +65,10 @@ const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
       void ctx.jobs.getJobs.invalidate();
     },
   });
+
+  const { label, style } = details?.status
+    ? options[details.status]
+    : { label: "No Status", style: { primary: "", secondary: "" } };
 
   return (
     <div className="relative">
@@ -61,24 +86,30 @@ const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
           saveJob.mutate(newJobData);
         }}
       >
-        <Listbox.Button className="relative flex items-center gap-1 rounded-lg bg-zinc-200 py-1.5 pl-3 pr-2 text-left text-sm font-semibold text-zinc-700 focus:outline-none">
-          {details?.status ? options[details.status] : "No Status"}
-          <IconChevronDown stroke={2.5} size={20} className="text-zinc-500" />
+        <Listbox.Button
+          className={twMerge(
+            "relative flex items-center gap-1 rounded-lg bg-zinc-200 py-1.5 pl-3 pr-2 text-left text-xs font-bold focus:outline-none uppercase text-zinc-700",
+            style.primary,
+          )}
+        >
+          {label}
+          <IconChevronDown stroke={2.5} size={20} />
         </Listbox.Button>
-        <Listbox.Options className="absolute z-10 mt-1 flex flex-col gap-1 overflow-auto rounded-lg bg-white p-1 text-base shadow-lg outline-none">
-          {Object.entries(options).map(([value, label]) => (
+        <Listbox.Options className="absolute z-10 mt-1 flex flex-col gap-1 overflow-auto rounded-lg border-2 bg-white p-1 text-base shadow-lg outline-none">
+          {Object.entries(options).map(([value, { label, style }]) => (
             <Listbox.Option
               key={value}
               value={value}
               className={({ active, selected }) =>
                 twMerge(
-                  "cursor-pointer select-none rounded-lg px-3 py-1.5",
-                  active && "bg-zinc-100",
-                  selected && "bg-zinc-100",
+                  "cursor-pointer select-none truncate rounded-lg px-3 py-1.5 text-xs font-bold transition uppercase text-zinc-700",
+                  
+                  selected && style.primary,
+                  active && style.secondary,
                 )
               }
             >
-              <p className="block truncate text-sm">{label}</p>
+              {label}
             </Listbox.Option>
           ))}
         </Listbox.Options>
