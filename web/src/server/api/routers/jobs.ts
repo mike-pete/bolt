@@ -1,3 +1,6 @@
+import { type Status } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -28,11 +31,20 @@ export const jobsRouter = createTRPCRouter({
     .input(
       z.object({
         jobId: z.string().min(1).max(191),
-        title: z.string().min(1).max(191),
-        company: z.string().min(1).max(191),
-        description: z.string().min(1).max(65535),
-        url: z.string().url().min(1).max(2048),
+        title: z.string().min(1).max(255),
+        company: z.string().min(1).max(255),
+        description: z.optional(z.string().min(1).max(65535)),
         compensation: z.optional(z.string().min(1).max(191)),
+        status: z
+          .enum([
+            "Saved",
+            "Applied",
+            "Interviewing",
+            "Rejected",
+            "Offer",
+            "Archived",
+          ])
+          .default("Saved"),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -44,18 +56,28 @@ export const jobsRouter = createTRPCRouter({
           jobId: input.jobId,
           title: input.title,
           company: input.company,
-          description: input.description,
-          compensation: input.compensation,
+          description: input?.description,
+          compensation: input?.compensation,
           updatedAt: new Date(),
+          status: {
+            create: {
+              status: input.status as Status,
+            },
+          },
         },
         update: {
           userId,
           jobId: input.jobId,
           title: input.title,
           company: input.company,
-          description: input.description,
-          compensation: input.compensation,
+          description: input?.description,
+          compensation: input?.compensation,
           updatedAt: new Date(),
+          status: {
+            create: {
+              status: input.status as Status,
+            },
+          },
         },
         where: {
           userId_jobId: {
@@ -68,19 +90,25 @@ export const jobsRouter = createTRPCRouter({
       return jobSaved;
     }),
 
-  getJobPreviews: protectedProcedure.query(async ({ ctx }) => {
+  getJobs: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
     const jobPreviews = await ctx.db.job.findMany({
       where: {
         userId,
       },
       select: {
-        id: true,
         title: true,
         company: true,
         createdAt: true,
         compensation: true,
         jobId: true,
+
+        status: {
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 1,
+        },
       },
       orderBy: {
         createdAt: "desc",
@@ -90,17 +118,41 @@ export const jobsRouter = createTRPCRouter({
     return jobPreviews;
   }),
 
-  getJobList: protectedProcedure.query(async ({ ctx }) => {
-    const userId = ctx.session.user.id;
-    const jobList = await ctx.db.job.findMany({
-      where: {
-        userId,
-      },
-      select: {
-        jobId: true,
-      },
-    });
+  getJob: protectedProcedure
+    .input(z.string().min(1).max(191))
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
 
-    return jobList;
-  })
+      try {
+        const job = await ctx.db.job.findFirstOrThrow({
+          where: {
+            userId,
+            jobId: input,
+          },
+          include: {
+            status: {
+              orderBy: {
+                createdAt: "desc",
+              },
+              take: 1,
+            },
+          },
+        });
+
+        return job;
+      } catch (error) {
+        if (error instanceof PrismaClientKnownRequestError) {
+          if (error.code === "P2025") {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: "Job not found.",
+            });
+          }
+        }
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An error occurred while fetching job details.",
+        });
+      }
+    }),
 });

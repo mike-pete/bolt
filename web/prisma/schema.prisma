@@ -98,14 +98,33 @@ model Job {
     id String @id @default(cuid())
     userId String
     jobId String
-    title String
-    company String
-    description String @db.Text
+    title String @db.TinyText
+    company String @db.TinyText
+    description String? @db.Text
     compensation String?
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    applied DateTime?
-
+    status JobStatus[]
     @@unique([userId, jobId])
     @@index([userId])
+}
+
+// When updating this, don't forget to update the API validators
+enum Status {
+    Saved
+    Applied
+    Interviewing
+    Rejected
+    Offer
+    Archived
+}
+
+model JobStatus {
+    id String @id @default(cuid())
+    jobId String
+    job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+    status Status
+    createdAt DateTime @default(now())
+
+    @@index([jobId])
 }

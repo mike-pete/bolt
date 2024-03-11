@@ -34,18 +34,22 @@ const goToPage = (url: string) => {
 	window.location.href = url
 }
 
-type Model = {
+const getCurrentUrl = () => window.location.href
+
+export type ExtensionModel = {
 	getTextContent: (selector: string) => Promise<string | undefined>,
 	hideIframe : () => void,
 	showIframe : () => void,
 	goToPage : (url: string) => void,
+	getCurrentUrl: () => string,
 }
 
-const model: Model = {
+const model: ExtensionModel = {
 	getTextContent,
 	hideIframe,
 	showIframe,
 	goToPage,
+	getCurrentUrl,
 }
 
 export default model

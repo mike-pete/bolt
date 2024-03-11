@@ -1,22 +1,26 @@
 "use client";
 
-import { IconArrowRight, IconExternalLink } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { api } from "~/trpc/react";
-import { type RouterOutputs } from "~/trpc/shared";
-
-type JobPreviewType = RouterOutputs["jobs"]["getJobPreviews"][number];
+import JobCard, { type JobDetails } from "./JobCard/JobCard";
 
 const SavedJobs: React.FC = () => {
-  const { data: savedJobs, isLoading } = api.jobs.getJobPreviews.useQuery();
+  const { data: savedJobs, isLoading } = api.jobs.getJobs.useQuery();
 
   const jobsByDate = useMemo(() => {
-    const dates: { date: string; jobs: Omit<JobPreviewType, "createdAt">[] }[] =
-      [];
+    const dates: { date: string; jobs: JobDetails[] }[] = [];
 
     if (savedJobs) {
-      savedJobs.forEach(({ createdAt, ...job }) => {
+      savedJobs.forEach(({ createdAt, ...jobData }) => {
+        const job: JobDetails = {
+          jobId: jobData.jobId,
+          company: jobData.company,
+          title: jobData.title,
+          comp: jobData.compensation ?? undefined,
+          status: jobData.status?.[0]?.status,
+          url: `https://www.linkedin.com/jobs/search/?currentJobId=${jobData.jobId}`,
+        };
         const date = dayjs(createdAt).format("MMM D, YYYY");
 
         if (dates.at(-1)?.date === date) {
@@ -31,10 +35,10 @@ const SavedJobs: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div>
-        <p className="text-lg font-bold text-zinc-400 ">
-          Loading saved jobs...
-        </p>
+      <div className="flex flex-wrap gap-2 ">
+        <JobCard isLoading={true} />
+        <JobCard isLoading={true} />
+        <JobCard isLoading={true} />
       </div>
     );
   }
@@ -56,39 +60,11 @@ const SavedJobs: React.FC = () => {
           <h2 className="p-2 text-2xl font-bold text-zinc-400">{job.date}</h2>
           <div className="flex flex-wrap gap-2 ">
             {job.jobs.map((job) => (
-              <JobPreview key={job.id} {...job} />
+              <JobCard key={job.jobId} jobDetails={job} isLoading={false} />
             ))}
           </div>
         </div>
       ))}
-    </div>
-  );
-};
-
-const JobPreview: React.FC<Omit<JobPreviewType, "createdAt">> = ({
-  title,
-  company,
-  jobId,
-  compensation,
-}) => {
-  return (
-    <div className="group flex basis-80 flex-col items-start gap-2 rounded-lg border-2 bg-white p-4">
-      <div className="flex flex-grow flex-col gap-0.5">
-        <p className="max-w-full text-xs font-bold text-zinc-500">{company}</p>
-        <h2 className="max-w-full text-lg font-bold text-zinc-700">{title}</h2>
-        <p className="max-w-full text-sm font-bold text-zinc-500">
-          {compensation}
-        </p>
-      </div>
-      <div className="flex w-full gap-2 rounded-lg opacity-20 group-hover:opacity-100">
-        <a
-          href={`https://www.linkedin.com/jobs/search/?currentJobId=${jobId}`}
-          target="_blank"
-          title="Go to job"
-        >
-          <IconExternalLink />
-        </a>
-      </div>
     </div>
   );
 };
