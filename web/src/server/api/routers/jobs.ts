@@ -118,21 +118,6 @@ export const jobsRouter = createTRPCRouter({
     return jobPreviews;
   }),
 
-  // TODO NOW: what is this used for?
-  getJobList: protectedProcedure.query(async ({ ctx }) => {
-    const userId = ctx.session.user.id;
-    const jobList = await ctx.db.job.findMany({
-      where: {
-        userId,
-      },
-      select: {
-        jobId: true,
-      },
-    });
-
-    return jobList;
-  }),
-
   getJob: protectedProcedure
     .input(z.string().min(1).max(191))
     .query(async ({ ctx, input }) => {
