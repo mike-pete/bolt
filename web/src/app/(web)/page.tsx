@@ -1,4 +1,4 @@
-import { IconBrandChrome, IconBrandDiscordFilled } from "@tabler/icons-react";
+import { IconBrandChrome, IconBrandX } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import BuyWithStripe from "../_components/BuyWithStripe";
@@ -27,13 +27,21 @@ export default async function Home() {
             Chrome Store
             <IconBrandChrome />
           </a>
-          <a
+          {/* <a
             className="flex gap-2 rounded-lg bg-zinc-200 p-2 text-lg font-semibold"
             href="https://discord.gg/gBB8uVarFn"
             target="_blank"
           >
             Discord
             <IconBrandDiscordFilled />
+          </a> */}
+          <a
+            className="flex gap-2 rounded-lg bg-zinc-200 p-2 text-lg font-semibold"
+            href="https://twitter.com/mik_pete"
+            target="_blank"
+          >
+            Follow Updates on
+            <IconBrandX />
           </a>
         </div>
       </section>
@@ -126,7 +134,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <footer className="flex w-full gap-8 bg-gradient-to-b from-zinc-50 to-white p-6 justify-end">
+      <footer className="flex w-full justify-end gap-8 bg-gradient-to-b from-zinc-50 to-white p-6">
         <Link
           className="text-xs font-semibold uppercase text-zinc-600 hover:text-sky-600"
           href="mailto:mike@boltapply.com"
