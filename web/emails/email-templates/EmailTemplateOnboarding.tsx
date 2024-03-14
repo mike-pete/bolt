@@ -17,11 +17,9 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-const EmailTemplateOnboarding: React.FC = () => {
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
-
+const EmailTemplateOnboarding: React.FC<{ NEXT_PUBLIC_URL: string }> = ({
+  NEXT_PUBLIC_URL = "http://localhost:3000",
+}) => {
   return (
     <Html>
       <Head />
@@ -32,7 +30,7 @@ const EmailTemplateOnboarding: React.FC = () => {
             <Section className="pb-4 pt-8">
               <Row>
                 <Column align="center">
-                  <Img src={`${baseUrl}/bolt.png`} height="60" />
+                  <Img src={`${NEXT_PUBLIC_URL}/bolt.png`} height="60" />
                 </Column>
               </Row>
             </Section>
@@ -84,7 +82,7 @@ const EmailTemplateOnboarding: React.FC = () => {
               <Row>
                 <Column width={66} valign="middle">
                   <Img
-                    src={`${baseUrl}/small_Mike.png`}
+                    src={`${NEXT_PUBLIC_URL}/small_Mike.png`}
                     height={66}
                     width={66}
                     className="rounded-lg"
