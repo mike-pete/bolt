@@ -24,15 +24,16 @@ const EmailTemplateOnboarding: React.FC<{ NEXT_PUBLIC_URL: string }> = ({
       <Preview>Welcome to Bolt!</Preview>
       <Tailwind>
         <Body className="mx-auto my-auto font-sans">
-          <Container className="mx-auto my-[40px] max-w-[465px] rounded-lg border-2 border-solid border-zinc-300 bg-white p-6">
-            <Section className="pb-4 pt-8">
+          <Container className="mx-auto my-[40px] max-w-[465px] rounded-lg border-2 border-solid border-zinc-300 bg-zinc-50 p-6">
+            <Section className="">
               <Row>
-                <Column align="center">
-                  <Img src={`${NEXT_PUBLIC_URL}/bolt.png`} height="60" />
+                <Column align="left">
+                  <Img src={`${NEXT_PUBLIC_URL}/email-bolt.png`} height="40" />
                 </Column>
               </Row>
             </Section>
-            <Section className="py-8">
+
+            <Section className="pb-8 pt-8">
               <Heading className="m-0 text-base font-semibold text-black">
                 Welcome to Bolt!
               </Heading>
@@ -46,7 +47,7 @@ const EmailTemplateOnboarding: React.FC<{ NEXT_PUBLIC_URL: string }> = ({
               <Row>
                 <Column align="center">
                   <Button
-                    className="rounded-lg bg-[#000000] px-5 py-3 text-center text-base font-semibold text-white no-underline"
+                    className="rounded-lg bg-[#f47a0c] px-5 py-3 text-center text-base font-semibold text-white no-underline"
                     href="https://boltapply.com/download"
                   >
                     Download the Extension
