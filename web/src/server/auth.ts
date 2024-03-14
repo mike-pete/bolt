@@ -6,7 +6,7 @@ import {
   type User,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import EmailTemplateOnboarding from "~/app/_components/EmailTemplates/EmailTemplateOnboarding";
+import EmailTemplateOnboarding, { EmailTemplateOnboardingText } from "emails/email-templates/EmailTemplateOnboarding";
 import { env } from "~/env";
 import { db } from "~/server/db";
 import { resend } from "./resend";
@@ -54,18 +54,16 @@ export const authOptions: NextAuthOptions = {
       if (message.user?.email) {
         console.log("sending email...");
 
-        const { data, error } = await resend.emails.send({
+        const { error } = await resend.emails.send({
           from: "Mike <mike@boltapply.com>",
           to: [message.user.email],
           subject: "Welcome to Bolt",
-          text: "Hello, this is the email text.",
+          text: EmailTemplateOnboardingText,
           react: EmailTemplateOnboarding({}),
         });
 
-        console.log("data", data);
-
         if (error) {
-          console.log("error", error);
+          console.error("error", error);
         }
       }
     },
