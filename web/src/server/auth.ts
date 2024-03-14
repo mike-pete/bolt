@@ -3,11 +3,13 @@ import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
+  type User,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-
+import EmailTemplateOnboarding, { EmailTemplateOnboardingText } from "emails/email-templates/EmailTemplateOnboarding";
 import { env } from "~/env";
 import { db } from "~/server/db";
+import { resend } from "./resend";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -45,6 +47,27 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
+  events: {
+    createUser: async (message: { user: User }) => {
+      console.log("createUser", message);
+
+      if (message.user?.email) {
+        console.log("sending email...");
+
+        const { error } = await resend.emails.send({
+          from: "Mike <mike@boltapply.com>",
+          to: [message.user.email],
+          subject: "Welcome to Bolt",
+          text: EmailTemplateOnboardingText,
+          react: EmailTemplateOnboarding({}),
+        });
+
+        if (error) {
+          console.error("error", error);
+        }
+      }
+    },
+  },
   adapter: PrismaAdapter(db),
   providers: [
     GoogleProvider({
@@ -62,7 +85,7 @@ export const authOptions: NextAuthOptions = {
      */
   ],
   pages: {
-    signIn: '/auth/signin',
+    signIn: "/auth/signin",
   },
   cookies: {
     sessionToken: {

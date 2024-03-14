@@ -5,6 +5,17 @@
 await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  async redirects() {
+    return [
+      {
+        source: "/download",
+        destination: "https://chromewebstore.google.com/detail/bolt/iieomcnmomejdefhjfdljckabjldeenb",
+        permanent: false,
+        basePath: false,
+      },
+    ];
+  },
+};
 
 export default config;
