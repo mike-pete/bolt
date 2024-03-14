@@ -3,7 +3,6 @@ import {
   Button,
   Column,
   Container,
-  Head,
   Heading,
   Hr,
   Html,
@@ -22,11 +21,10 @@ const EmailTemplateOnboarding: React.FC<{ NEXT_PUBLIC_URL: string }> = ({
 }) => {
   return (
     <Html>
-      <Head />
       <Preview>Welcome to Bolt!</Preview>
       <Tailwind>
-        <Body className="mx-auto my-auto bg-white px-2 font-sans">
-          <Container className="mx-auto my-[40px] max-w-[465px] rounded-lg border-2 border-solid border-zinc-300 p-6">
+        <Body className="mx-auto my-auto px-2 font-sans">
+          <Container className="mx-auto my-[40px] max-w-[465px] rounded-lg border-2 border-solid border-zinc-300 bg-white p-6">
             <Section className="pb-4 pt-8">
               <Row>
                 <Column align="center">
