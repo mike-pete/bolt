@@ -3,7 +3,6 @@ import {
   Button,
   Column,
   Container,
-  Head,
   Heading,
   Hr,
   Html,
@@ -17,26 +16,24 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-const EmailTemplateOnboarding: React.FC = () => {
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
-
+const EmailTemplateOnboarding: React.FC<{ NEXT_PUBLIC_URL: string }> = ({
+  NEXT_PUBLIC_URL = "http://localhost:3000",
+}) => {
   return (
     <Html>
-      <Head />
       <Preview>Welcome to Bolt!</Preview>
       <Tailwind>
-        <Body className="mx-auto my-auto bg-white px-2 font-sans">
-          <Container className="mx-auto my-[40px] max-w-[465px] rounded-lg border-2 border-solid border-zinc-300 p-6">
-            <Section className="pb-4 pt-8">
+        <Body className="mx-auto my-auto font-sans">
+          <Container className="mx-auto my-[40px] max-w-[465px] rounded-lg border-2 border-solid border-zinc-300 bg-zinc-50 p-6">
+            <Section className="">
               <Row>
-                <Column align="center">
-                  <Img src={`${baseUrl}/bolt.png`} height="60" />
+                <Column align="left">
+                  <Img src={`${NEXT_PUBLIC_URL}/email-bolt.png`} height="40" />
                 </Column>
               </Row>
             </Section>
-            <Section className="py-8">
+
+            <Section className="pb-8 pt-8">
               <Heading className="m-0 text-base font-semibold text-black">
                 Welcome to Bolt!
               </Heading>
@@ -50,7 +47,7 @@ const EmailTemplateOnboarding: React.FC = () => {
               <Row>
                 <Column align="center">
                   <Button
-                    className="rounded-lg bg-[#000000] px-5 py-3 text-center text-base font-semibold text-white no-underline"
+                    className="rounded-lg bg-[#f47a0c] px-5 py-3 text-center text-base font-semibold text-white no-underline"
                     href="https://boltapply.com/download"
                   >
                     Download the Extension
@@ -84,7 +81,7 @@ const EmailTemplateOnboarding: React.FC = () => {
               <Row>
                 <Column width={66} valign="middle">
                   <Img
-                    src={`${baseUrl}/small_Mike.png`}
+                    src={`${NEXT_PUBLIC_URL}/small_Mike.png`}
                     height={66}
                     width={66}
                     className="rounded-lg"

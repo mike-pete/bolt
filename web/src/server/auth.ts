@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
           to: [message.user.email],
           subject: "Welcome to Bolt",
           text: EmailTemplateOnboardingText,
-          react: EmailTemplateOnboarding({}),
+          react: EmailTemplateOnboarding({NEXT_PUBLIC_URL: env.NEXT_PUBLIC_URL}),
         });
 
         if (error) {
