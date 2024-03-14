@@ -23,7 +23,7 @@ const EmailTemplateOnboarding: React.FC<{ NEXT_PUBLIC_URL: string }> = ({
     <Html>
       <Preview>Welcome to Bolt!</Preview>
       <Tailwind>
-        <Body className="mx-auto my-auto px-2 font-sans">
+        <Body className="mx-auto my-auto font-sans">
           <Container className="mx-auto my-[40px] max-w-[465px] rounded-lg border-2 border-solid border-zinc-300 bg-white p-6">
             <Section className="pb-4 pt-8">
               <Row>
