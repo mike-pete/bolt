@@ -43,12 +43,12 @@ const NavBar = () => {
 
       <div className="flex flex-grow items-center justify-end gap-2 p-2 text-sm font-semibold">
         <p className="">{<span>{data.user?.name}</span>}</p>
-        <button
+        <Link
           className="rounded-md bg-sky-400 px-2 py-1 uppercase text-white"
-          onClick={() => signOut({ callbackUrl: "/", redirect: true })}
+          href="/auth/signout"
         >
           Sign Out
-        </button>
+        </Link>
       </div>
     </div>
   );
