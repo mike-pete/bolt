@@ -53,6 +53,24 @@ export const authOptions: NextAuthOptions = {
     createUser: async (message: { user: User }) => {
       console.log("createUser", message);
 
+      await db.keywordGroups.createMany({
+        data: [
+          {
+            userId: message.user.id,
+            title: "Strong Match",
+            
+          },
+          {
+            userId: message.user.id,
+            title: "Not a Match",
+          },
+          {
+            userId: message.user.id,
+            title: "Other",
+          },
+        ],
+      });
+
       if (message.user?.email) {
         console.log("sending email...");
 
