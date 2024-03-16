@@ -4,7 +4,7 @@ import { IconX } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";
-import bi from "./_interactions/bi";
+import bi from "../_interactions/bi";
 
 const NavBar = () => {
   const pathname = usePathname();
@@ -27,7 +27,7 @@ const NavBar = () => {
   const currentPage = "";
 
   return (
-    <header className="flex select-none items-center border-b-2 border-zinc-300 p-1.5 bg-white">
+    <header className="flex select-none items-center  border-b-2 border-zinc-300 bg-white p-1.5">
       <div className="flex flex-grow justify-evenly gap-1.5">
         {pages.map(({ name, path }) => (
           <Link

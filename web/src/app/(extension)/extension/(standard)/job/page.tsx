@@ -2,7 +2,7 @@
 import { IconArrowRight, IconX } from "@tabler/icons-react";
 import JobCard from "~/app/_components/JobCard/JobCard";
 import { api } from "~/trpc/react";
-import bi from "../_interactions/bi";
+import bi from "../../_interactions/bi";
 import KeywordsFound from "./KeywordsFound";
 import useGetJobDetails, { JobDetailError } from "./useGetJobDetails";
 

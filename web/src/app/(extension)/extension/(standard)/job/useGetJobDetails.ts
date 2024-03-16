@@ -3,15 +3,15 @@ import posthog from "posthog-js";
 import { useMemo, useState } from "react";
 import { type JobDetails } from "~/app/_components/JobCard/JobCard";
 import { api } from "~/trpc/react";
-import bi from "../_interactions/bi";
-import { jobKeys } from "../_interactions/queryKeys";
+import bi from "../../_interactions/bi";
+import { jobKeys } from "../../_interactions/queryKeys";
 import {
   jobCompSelector,
   jobCompanySelector,
   jobDescSelector,
   jobTitleSelector,
   workModeSelector,
-} from "../_interactions/selectors";
+} from "../../_interactions/selectors";
 
 const workModes = {
   "on-site": "on-site",

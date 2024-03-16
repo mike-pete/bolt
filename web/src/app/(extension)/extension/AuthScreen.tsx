@@ -1,9 +1,11 @@
 "use client";
 
-import { IconArrowRight, IconArrowUpRight } from "@tabler/icons-react";
+import { IconArrowRight } from "@tabler/icons-react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import LoadingSpinner from "../../_components/LoadingSpinner";
+import OnboardingLayout from "./(onboarding)/layout";
 
 // third party cookies will be restricted in Chrome in Q3 2024
 // https://developers.google.com/privacy-sandbox/3pcd/storage-access-api
@@ -58,62 +60,79 @@ const AuthScreen: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { status } = useSession();
   const [clickedLogin, setClickedLogin] = useState(false);
 
-  if (clickedLogin) {
-    return (
-      <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
-        <button
-          className="flex gap-2 rounded-full border bg-sky-400 px-3 py-2 font-semibold uppercase text-white"
-          onClick={() => window.location.reload()}
-        >
-          ENTER
-          <IconArrowRight />
-        </button>
-      </div>
-    );
+  if (status === "authenticated") {
+    return <>{children}</>;
   }
 
   if (cookieAccessLoading || status === "loading") {
     return (
-      <div className="flex h-full items-center justify-center">
-        <LoadingSpinner size={30} />
-      </div>
+      <OnboardingLayout>
+        <div className="flex h-full items-center justify-center">
+          <LoadingSpinner size={30} />
+        </div>
+      </OnboardingLayout>
     );
   }
 
   if (!hasCookieAccess) {
     return (
-      <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
-        <p className="rounded-xl border p-3">
-          We use cookies so you can log in. Without cookies our systems wont
-          work properly. 🍪
-        </p>
-        <button
-          onClick={requestCookieAccess}
-          className="rounded-full border px-3 py-2"
-        >
-          allow access
-        </button>
-      </div>
+      <OnboardingLayout>
+        <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
+          <p className="rounded-xl border p-3">
+            We use cookies so you can log in. Without cookies our systems wont
+            work properly. 🍪
+          </p>
+          <button
+            onClick={requestCookieAccess}
+            className="rounded-full border px-3 py-2"
+          >
+            allow access
+          </button>
+        </div>
+      </OnboardingLayout>
     );
   }
 
-  if (status === "authenticated") {
-    return <>{children}</>;
-  }
-
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
-      <a
-        target="_blank"
-        href={`${window.location.origin}/api/auth/signin/google`}
-        rel="noopener noreferrer"
-        className="flex gap-2 rounded-full border bg-sky-400 px-3 py-2 font-semibold uppercase text-white"
-        onClick={() => setClickedLogin(true)}
-      >
-        LOGIN
-        <IconArrowUpRight />
-      </a>
-    </div>
+    <OnboardingLayout>
+      <div className="flex h-full flex-col items-center justify-center gap-12 p-4">
+        <div className="flex scale-75 flex-col items-center justify-end">
+          <div className="flex items-center gap-4">
+            <Image src="/bolt.svg" alt="Bolt" width={40} height={40} />
+            <h1 className="text-7xl font-semibold">Bolt</h1>
+          </div>
+          <h3 className="text-lg font-black uppercase tracking-wider text-zinc-500">
+            Early Access
+          </h3>
+        </div>
+
+        {clickedLogin && (
+          <button
+            className="flex items-center gap-1.5 rounded-full border border-zinc-500 bg-white px-3 py-2 text-sm font-medium"
+            onClick={() => window.location.reload()}
+          >
+            Continue
+            <IconArrowRight size={18} />
+          </button>
+        )}
+
+        {!clickedLogin && (
+          <a
+            target="_blank"
+            href={`${window.location.origin}/api/auth/signin/google`}
+            rel="noopener noreferrer"
+            onClick={() => setClickedLogin(true)}
+          >
+            <Image
+              src="/siginWithGoogle.svg"
+              alt="sign in with Google"
+              width="175"
+              height="40"
+            />
+          </a>
+        )}
+      </div>
+    </OnboardingLayout>
   );
 };
 
