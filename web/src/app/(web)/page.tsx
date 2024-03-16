@@ -40,7 +40,7 @@ export default async function Home() {
             </button>
           </a>
           <a
-            className="flex items-center gap-2 rounded-lg bg-zinc-200 p-2 font-semibold transition-all duration-150 peer-hover:translate-y-0.5 peer-hover:scale-95"
+            className="flex items-center gap-2 rounded-lg bg-zinc-200 p-2 font-semibold transition-all duration-150 hover:scale-105 peer-hover:translate-y-0.5 peer-hover:scale-95"
             href="https://twitter.com/mik_pete"
             target="_blank"
             data-ph-capture-attribute-user-clicked="Twitter C2A"
