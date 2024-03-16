@@ -8,7 +8,6 @@ import {
   Html,
   Img,
   Link,
-  Preview,
   Row,
   Section,
   Tailwind,
@@ -22,7 +21,6 @@ const EmailTemplateOnboarding: React.FC<{ NEXT_PUBLIC_URL: string }> = ({
 }) => {
   return (
     <Html>
-      <Preview>Welcome to Bolt!</Preview>
       <Tailwind config={TailwindConfig}>
         <Body className="mx-auto my-auto font-sans">
           <Container className="mx-auto my-[40px] max-w-[465px] rounded-lg border-2 border-solid border-zinc-300 bg-zinc-50 p-6">
