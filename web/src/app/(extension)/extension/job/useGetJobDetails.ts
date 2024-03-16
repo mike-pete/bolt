@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import posthog from "posthog-js";
+import { useMemo, useState } from "react";
 import { type JobDetails } from "~/app/_components/JobCard/JobCard";
 import { api } from "~/trpc/react";
 import bi from "../_interactions/bi";
@@ -95,22 +96,6 @@ const useGetJobDetails = (): {
     queryFn: async () => await bi.getTextContent(jobDescSelector),
   });
 
-  const { mutate: addJobSeen } = api.jobs.addJobSeen.useMutation();
-
-  const [lastJobSaved, setLastJobSaved] = useState<string | undefined>(
-    undefined,
-  );
-
-  useEffect(() => {
-    if (typeof jobId === "string" && jobId.trim() && lastJobSaved !== jobId) {
-      addJobSeen({
-        jobId,
-        title: jobTitle ?? `unknown-${Math.floor(Math.random() * 1000000) + 1}`,
-      });
-      setLastJobSaved(jobId);
-    }
-  }, [addJobSeen, jobId, jobTitle, lastJobSaved]);
-
   const workModesFound = useMemo(() => {
     const workModesFound: string[] = [];
 
@@ -134,6 +119,10 @@ const useGetJobDetails = (): {
     retry: 0,
   });
 
+  const [lastJobSaved, setLastJobSaved] = useState<string | undefined>(
+    undefined,
+  );
+
   if (jobId === null) {
     return { isLoading: false, error: JobDetailError.NO_JOB_ID };
   }
@@ -149,14 +138,21 @@ const useGetJobDetails = (): {
       status: savedJobData?.status?.[0]?.status,
     };
 
+    const isLoading =
+      isLoadingLocation ||
+      isLoadingTitle ||
+      isLoadingComp ||
+      isLoadingCompany ||
+      isLoadingWorkMode ||
+      isLoadingDescription;
+
+    if (!isLoading && jobId !== lastJobSaved) {
+      posthog.capture("job_seen", { jobId, jobTitle, comp, workMode });
+      setLastJobSaved(jobId);
+    }
+
     return {
-      isLoading:
-        isLoadingLocation ||
-        isLoadingTitle ||
-        isLoadingComp ||
-        isLoadingCompany ||
-        isLoadingWorkMode ||
-        isLoadingDescription,
+      isLoading,
       jobDetails,
     };
   }

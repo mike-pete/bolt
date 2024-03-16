@@ -1,4 +1,7 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import EmailTemplateWelcome, {
+  EmailTemplateWelcomeText,
+} from "emails/email-templates/EmailTemplateWelcome";
 import {
   getServerSession,
   type DefaultSession,
@@ -6,7 +9,6 @@ import {
   type User,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import EmailTemplateOnboarding, { EmailTemplateOnboardingText } from "emails/email-templates/EmailTemplateOnboarding";
 import { env } from "~/env";
 import { db } from "~/server/db";
 import { resend } from "./resend";
@@ -58,8 +60,8 @@ export const authOptions: NextAuthOptions = {
           from: "Mike <mike@boltapply.com>",
           to: [message.user.email],
           subject: "Welcome to Bolt",
-          text: EmailTemplateOnboardingText,
-          react: EmailTemplateOnboarding({NEXT_PUBLIC_URL: env.NEXT_PUBLIC_URL}),
+          text: EmailTemplateWelcomeText,
+          react: EmailTemplateWelcome({ NEXT_PUBLIC_URL: env.NEXT_PUBLIC_URL }),
         });
 
         if (error) {
@@ -86,6 +88,7 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: {
     signIn: "/auth/signin",
+    signOut: "/auth/signout",
   },
   cookies: {
     sessionToken: {

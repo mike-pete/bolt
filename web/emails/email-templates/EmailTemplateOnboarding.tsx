@@ -15,6 +15,7 @@ import {
   Text,
 } from "@react-email/components";
 import * as React from "react";
+import TailwindConfig from "./TailwindConfig";
 
 const EmailTemplateOnboarding: React.FC<{ NEXT_PUBLIC_URL: string }> = ({
   NEXT_PUBLIC_URL = "http://localhost:3000",
@@ -22,7 +23,7 @@ const EmailTemplateOnboarding: React.FC<{ NEXT_PUBLIC_URL: string }> = ({
   return (
     <Html>
       <Preview>Welcome to Bolt!</Preview>
-      <Tailwind>
+      <Tailwind config={TailwindConfig}>
         <Body className="mx-auto my-auto font-sans">
           <Container className="mx-auto my-[40px] max-w-[465px] rounded-lg border-2 border-solid border-zinc-300 bg-zinc-50 p-6">
             <Section className="">
