@@ -1,7 +1,8 @@
 "use client";
 
-import { IconArrowRight, IconArrowUpRight } from "@tabler/icons-react";
+import { IconArrowRight } from "@tabler/icons-react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import LoadingSpinner from "../../_components/LoadingSpinner";
 
@@ -58,18 +59,8 @@ const AuthScreen: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { status } = useSession();
   const [clickedLogin, setClickedLogin] = useState(false);
 
-  if (clickedLogin) {
-    return (
-      <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
-        <button
-          className="flex gap-2 rounded-full border bg-sky-400 px-3 py-2 font-semibold uppercase text-white"
-          onClick={() => window.location.reload()}
-        >
-          ENTER
-          <IconArrowRight />
-        </button>
-      </div>
-    );
+  if (status === "authenticated") {
+    return <>{children}</>;
   }
 
   if (cookieAccessLoading || status === "loading") {
@@ -97,22 +88,33 @@ const AuthScreen: React.FC<{ children: ReactNode }> = ({ children }) => {
     );
   }
 
-  if (status === "authenticated") {
-    return <>{children}</>;
-  }
-
   return (
     <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
-      <a
-        target="_blank"
-        href={`${window.location.origin}/api/auth/signin/google`}
-        rel="noopener noreferrer"
-        className="flex gap-2 rounded-full border bg-sky-400 px-3 py-2 font-semibold uppercase text-white"
-        onClick={() => setClickedLogin(true)}
-      >
-        LOGIN
-        <IconArrowUpRight />
-      </a>
+      {clickedLogin && (
+        <button
+          className="flex items-center gap-1.5 rounded-full border border-zinc-500 bg-white px-3 py-2 text-sm font-medium"
+          onClick={() => window.location.reload()}
+        >
+          Continue
+          <IconArrowRight size={18} />
+        </button>
+      )}
+
+      {!clickedLogin && (
+        <a
+          target="_blank"
+          href={`${window.location.origin}/api/auth/signin/google`}
+          rel="noopener noreferrer"
+          onClick={() => setClickedLogin(true)}
+        >
+          <Image
+            src="/siginWithGoogle.svg"
+            alt="sign in with Google"
+            width="175"
+            height="40"
+          />
+        </a>
+      )}
     </div>
   );
 };

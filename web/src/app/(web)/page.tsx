@@ -34,7 +34,7 @@ export default async function Home() {
               className="-translate-y-2 transition-all duration-150 group-hover/try-now:translate-y-0"
             />
 
-            <button className="flex items-center gap-2 rounded-lg bg-zinc-800 p-4 text-2xl font-semibold text-zinc-50 transition duration-150 group-hover/try-now:scale-105">
+            <button className="flex items-center gap-2 rounded-lg bg-zinc-700 p-4 text-2xl font-semibold text-zinc-50 transition duration-150 group-hover/try-now:scale-105">
               Chrome Store
               <IconBrandChrome />
             </button>
