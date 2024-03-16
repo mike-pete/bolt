@@ -1,13 +1,16 @@
-import { IconBrandChrome, IconBrandX } from "@tabler/icons-react";
+import {
+  IconArrowDown,
+  IconBrandChrome,
+  IconBrandX,
+} from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
-import BuyWithStripe from "../_components/BuyWithStripe";
 
 export default async function Home() {
   return (
     <div className="flex flex-col items-center gap-8">
       <section className="flex h-screen shrink-0 flex-col p-8">
-        <div className="flex h-4/6 flex-col items-center justify-center">
+        <div className="flex h-2/6 flex-col items-center justify-end">
           <div className="flex items-center gap-4">
             <Image src="/bolt.svg" alt="Bolt" width={40} height={40} />
             <h1 className="text-7xl font-semibold">Bolt</h1>
@@ -17,31 +20,33 @@ export default async function Home() {
           </h3>
         </div>
 
-        <div className="flex flex-col items-start gap-2">
-          <BuyWithStripe />
+        <div className="flex h-3/6 flex-col items-center  justify-center gap-3">
           <a
-            className="flex gap-2 rounded-lg bg-zinc-200 p-2 text-lg font-semibold"
+            className="group/try-now peer flex flex-col items-center justify-center gap-3"
             href="https://chromewebstore.google.com/detail/bolt-apply/iieomcnmomejdefhjfdljckabjldeenb?hl=en&authuser=0"
             target="_blank"
+            data-ph-capture-attribute-user-clicked="Chrome Store C2A"
           >
-            Chrome Store
-            <IconBrandChrome />
+            <p className="text-lg font-bold uppercase text-zinc-500">Try Now</p>
+            <IconArrowDown
+              size={32}
+              stroke={2}
+              className="-translate-y-2 transition-all duration-150 group-hover/try-now:translate-y-0"
+            />
+
+            <button className="flex items-center gap-2 rounded-lg bg-zinc-800 p-4 text-2xl font-semibold text-zinc-50 transition duration-150 group-hover/try-now:scale-105">
+              Chrome Store
+              <IconBrandChrome />
+            </button>
           </a>
-          {/* <a
-            className="flex gap-2 rounded-lg bg-zinc-200 p-2 text-lg font-semibold"
-            href="https://discord.gg/gBB8uVarFn"
-            target="_blank"
-          >
-            Discord
-            <IconBrandDiscordFilled />
-          </a> */}
           <a
-            className="flex gap-2 rounded-lg bg-zinc-200 p-2 text-lg font-semibold"
+            className="flex items-center gap-2 rounded-lg bg-zinc-200 p-2 font-semibold transition-all duration-150 peer-hover:translate-y-0.5 peer-hover:scale-95"
             href="https://twitter.com/mik_pete"
             target="_blank"
+            data-ph-capture-attribute-user-clicked="Twitter C2A"
           >
             Follow Updates on
-            <IconBrandX />
+            <IconBrandX size={18} />
           </a>
         </div>
       </section>
