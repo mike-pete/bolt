@@ -50,8 +50,13 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    firstName     String?
+    onboarded     Boolean   @default(false)
     accounts      Account[]
     sessions      Session[]
+    keywordGroups KeywordGroups[]
+    keywords      Keywords[]
+    jobs          Job[]
 }
 
 model VerificationToken {
@@ -65,13 +70,15 @@ model VerificationToken {
 
 model Keywords {
     id String @id @default(cuid())
-    userId String
     keyword String
     keywordGroupId String
     keywordGroup KeywordGroups @relation(fields: [keywordGroupId], references: [id], onDelete: Cascade)
+    userId String
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([id])
     @@index([keywordGroupId])
+    @@index([userId])
 }
 
 model KeywordGroups {
@@ -79,6 +86,7 @@ model KeywordGroups {
     userId String
     title String
     keywords Keywords[]
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([userId])
 }
@@ -105,6 +113,8 @@ model Job {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     status JobStatus[]
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
     @@unique([userId, jobId])
     @@index([userId])
 }

@@ -1,4 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import type { User as UserDB } from "@prisma/client";
 import EmailTemplateWelcome, {
   EmailTemplateWelcomeText,
 } from "emails/email-templates/EmailTemplateWelcome";
@@ -23,15 +24,14 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
+      onboarded: boolean;
+      firstName?: string;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User extends UserDB {
+    id: string;
+  }
 }
 
 /**
@@ -41,13 +41,17 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    session: ({ session, user }) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+          onboarded: user.onboarded,
+          firstName: user.firstName,
+        },
+      };
+    },
   },
   events: {
     createUser: async (message: { user: User }) => {
@@ -58,7 +62,6 @@ export const authOptions: NextAuthOptions = {
           {
             userId: message.user.id,
             title: "Strong Match",
-            
           },
           {
             userId: message.user.id,
