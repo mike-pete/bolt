@@ -98,20 +98,19 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 
       <section className="flex w-full items-center justify-center p-4">
-        <div className="flex w-full max-w-3xl flex-col gap-4">
-          <h1 className="text-4xl font-black text-zinc-600 md:text-6xl">
+        <div className="flex w-full max-w-3xl flex-col gap-12 items-center">
+          <h1 className="text-5xl font-black text-zinc-600 md:text-6xl">
             DEMO
           </h1>
           <iframe
             className="aspect-video w-full"
-            src="https://www.youtube.com/embed/6YVicD784xA?si=E-MdxGoBMXF_1QqM"
+            src="https://www.youtube.com/embed/UH-98PfcY7U?si=TgXg_ozVa1QnQ3Tf"
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           />
         </div>
-      </section> */}
+      </section>
 
       <section className="flex flex-col items-center gap-12 py-24">
         <h1 className="text-5xl font-black text-zinc-600 md:text-6xl">
