@@ -1,9 +1,9 @@
-const listen = (origin, model) => {
+const listen = (model, origin) => {
     let cleanedUp = false;
     if ("cleanup" in model) {
-        console.warn('"cleanup" is a reserved property name and cannot be used on the model.');
+        console.warn('"cleanup" is a reserved name and cannot be used on the model.');
     }
-    const handler = invokeHandler(origin, model);
+    const handler = callHandler(origin, model);
     window.addEventListener("message", handler);
     return {
         cleanup: () => {
@@ -15,29 +15,34 @@ const listen = (origin, model) => {
         },
     };
 };
-const invokeHandler = (origin, model) => (event) => {
+const callHandler = (origin, model) => (event) => {
     if (origin !== "*") {
-        if (Array.isArray(origin) && !origin.includes(event.origin))
+        if (typeof origin === "string") {
+            if (origin !== event.origin)
+                return;
+        }
+        else if (Array.isArray(origin)) {
+            if (!origin.includes(event.origin))
+                return;
+        }
+        else {
             return;
-        else if (origin !== event.origin)
-            return;
+        }
     }
-    const { id, prop, args, type, } = event.data;
+    const { id, procedure, args, type, } = event.data;
     if (typeof id !== "string" || id === "")
         return;
     if (type !== "request")
         return;
-    if (typeof prop !== "string" || prop === "")
-        return;
     sendResponse({ id: event.data.id, type: "ack" }, event.source, event.origin);
-    if (typeof model[prop] !== "function") {
-        const error = new ReferenceError(`Invalid property "${prop}" is not a function on the model`);
+    if (typeof model[procedure] !== "function") {
+        const error = new ReferenceError(`"${procedure}" is not a procedure on the model`);
         sendResponse({ id: event.data.id, type: "error", error }, event.source, event.origin);
         return;
     }
     try {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        const invocationResult = model[prop](...args);
+        const invocationResult = model[procedure](...args);
         if (invocationResult instanceof Promise) {
             invocationResult
                 .then((data) => {
@@ -55,8 +60,8 @@ const invokeHandler = (origin, model) => (event) => {
         sendResponse({ id: event.data.id, type: "error", error: error }, event.source, event.origin);
     }
 };
-const sendResponse = (message, target, origin) => {
-    target.postMessage(message, origin);
+const sendResponse = (message, remote, origin) => {
+    remote.postMessage(message, origin);
 };
 
 const createExposedPromise = () => {
@@ -73,7 +78,7 @@ const createExposedPromise = () => {
     };
 };
 
-const requestSender = (sentMessagesStore, target, origin, options) => {
+const requestSender = (sentMessagesStore, remote, origin, options) => {
     const autoRetry = (id, reject, options = {
         timeout: 30,
         tries: 3,
@@ -106,7 +111,7 @@ const requestSender = (sentMessagesStore, target, origin, options) => {
             message,
             acknowledged: false,
             promise: exposedPromise,
-            target,
+            remote,
         });
         return exposedPromise;
     };
@@ -116,17 +121,17 @@ const requestSender = (sentMessagesStore, target, origin, options) => {
             id: Math.random().toString(36).substring(7),
         };
         const exposedPromise = saveMessageToStore(message);
-        if (origin === "*" || origin === target.origin) {
+        if (origin === "*" || origin === remote.origin) {
             sendRequest(message);
             autoRetry(message.id, exposedPromise.reject, options);
         }
         else {
-            exposedPromise.reject(new Error(`The target window's origin "${target.origin}" does not match the specified origin "${origin}". The request was aborted before sending.`));
+            exposedPromise.reject(new Error(`The remote window's origin "${remote.origin}" does not match the specified origin "${origin}". The request was aborted before sending.`));
         }
         return await exposedPromise.promise;
     };
     const sendRequest = (message) => {
-        target.postMessage(message, origin);
+        remote.postMessage(message, origin);
     };
     return sendNewRequest;
 };
@@ -149,7 +154,7 @@ const messageHandler = (sentMessagesStore, origin) => (event) => {
     const sentMessage = sentMessagesStore.get(id);
     if (sentMessage === undefined)
         return;
-    if (event.source !== sentMessage.target)
+    if (event.source !== sentMessage.remote)
         return;
     switch (type) {
         case "response":
@@ -167,14 +172,14 @@ const messageHandler = (sentMessagesStore, origin) => (event) => {
     }
 };
 
-const target = (target, origin, options) => {
+const remote = (remote, origin, options) => {
     const sentMessagesStore = new Map();
-    const sendRequest = requestSender(sentMessagesStore, target, origin, options);
+    const sendRequest = requestSender(sentMessagesStore, remote, origin, options);
     const cleanup = responseListener(sentMessagesStore, origin);
     let cleanedUp = false;
     const handler = {
-        get: (_, prop) => {
-            if (prop === "cleanup") {
+        get: (_, procedure) => {
+            if (procedure === "cleanup") {
                 return () => {
                     if (cleanedUp) {
                         throw new Error("The response listener has been cleaned up.");
@@ -189,7 +194,7 @@ const target = (target, origin, options) => {
                 }
                 return await sendRequest({
                     type: "request",
-                    prop,
+                    procedure,
                     args,
                 });
             };
@@ -199,6 +204,6 @@ const target = (target, origin, options) => {
     return new Proxy({}, handler);
 };
 
-const bime = { listen, target };
+const bime = { listen, remote };
 
 export { bime as default };

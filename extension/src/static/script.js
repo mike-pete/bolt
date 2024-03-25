@@ -1,25 +1,23 @@
 import bime from './bime.js'
 const iframe = document.querySelector('iframe')
-const invokeIframe = bime.target(iframe.contentWindow, '*')
-const invokeContent = bime.target(parent, '*')
+const callBoltIframe = bime.remote(iframe.contentWindow, '*')
+const callContentScript = bime.remote(parent, '*')
 
-const handler = {
+const handler = (caller) => ({
 	get: (_, prop) => {
 		return async (...args) => {
-			// TODO: forward messages to proper recipient
-			//       instead of sending them to both the iframe and the content script
-			let response
 			try {
-				response = invokeIframe[prop](args)
-			} catch (_) {}
-			try {
-				response = invokeContent[prop](args)
-			} catch (_) {}
-			return response
+				const response = caller[prop](args)
+				return response
+			} catch (error) {
+				console.warn(error)
+			}
 		}
 	},
-}
+})
 
-const model = new Proxy({}, handler)
-
-bime.listen('*', model)
+bime.listen(new Proxy({}, handler(callContentScript)), [
+	'https://boltapply.com',
+	'http://localhost:3000',
+])
+bime.listen(new Proxy({}, handler(callBoltIframe)), 'https://www.linkedin.com')
