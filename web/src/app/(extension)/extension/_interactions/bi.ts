@@ -26,9 +26,9 @@ const bi = () => {
     locationChanged: handleLocationChanged,
   };
 
-  bime.listen("*", model);
+  bime.listen(model, "*");
 
-  return bime.target<ExtensionModel>(target, "*");
+  return bime.remote<ExtensionModel>(target, "*");
 };
 
 export default bi();

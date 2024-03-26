@@ -6,7 +6,7 @@ const allowedHostnames = new Set(['www.linkedin.com'])
 const { hostname } = window.location
 const shouldShowIframe = allowedHostnames.has(hostname)
 
-bime.listen('*', model)
+bime.listen(model, '*')
 
 type IframeModel = {
 	locationChanged: (location: string) => void
@@ -17,7 +17,7 @@ if (shouldShowIframe) {
 	const target = iframe.contentWindow
 
 	if (target) {
-		const bi = bime.target<IframeModel>(target, '*')
+		const bi = bime.remote<IframeModel>(target, '*')
 
 		let previousUrl = ''
 		const observer = new MutationObserver(() => {
