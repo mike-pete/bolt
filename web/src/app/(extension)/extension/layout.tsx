@@ -12,7 +12,10 @@ const ExtensionLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (session === null) {
       posthog.reset();
     } else if (session?.user.email) {
-      posthog.identify(session.user.email);
+      posthog.identify(session.user.email, {
+        email: session.user.email,
+        full_name: session.user.name,
+      });
     }
   }, [session, session?.user.email]);
 
