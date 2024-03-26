@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { api } from "~/trpc/react";
 import JobCard, { type JobDetails } from "./JobCard/JobCard";
 
-const SavedJobs: React.FC = () => {
+const SavedJobs: React.FC<{ search?: string }> = ({ search }) => {
   const { data: savedJobs, isLoading } = api.jobs.getJobs.useQuery();
 
   const jobsByDate = useMemo(() => {
@@ -23,6 +23,11 @@ const SavedJobs: React.FC = () => {
         };
         const date = dayjs(createdAt).format("MMM D, YYYY");
 
+        if (search) {
+          const searchable = `${job.company} ${job.title} ${job.status}`;
+          if (!searchable.toLowerCase().includes(search.toLowerCase())) return;
+        }
+
         if (dates.at(-1)?.date === date) {
           dates.at(-1)?.jobs.push(job);
           return;
@@ -31,7 +36,7 @@ const SavedJobs: React.FC = () => {
     }
 
     return dates;
-  }, [savedJobs]);
+  }, [savedJobs, search]);
 
   if (isLoading) {
     return (
