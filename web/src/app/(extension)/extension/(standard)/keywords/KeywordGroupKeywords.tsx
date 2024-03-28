@@ -9,6 +9,7 @@ const KeywordGroupKeywords: React.FC<{
   keywordGroupId: string;
   keywords: Keywords;
 }> = ({ keywordGroupId, keywords }) => {
+  const utils = api.useUtils();
   const [keyword, setKeyword] = useState("");
   const ctx = api.useUtils();
 
@@ -19,6 +20,24 @@ const KeywordGroupKeywords: React.FC<{
   });
 
   const { mutate: deleteKeyword } = api.keywords.deleteKeyword.useMutation({
+    onMutate: async (idToDelete: string) => {
+      await utils.keywords.getKeywordGroups.cancel();
+      const prevData = utils.keywords.getKeywordGroups.getData();
+      utils.keywords.getKeywordGroups.setData(undefined, (prev) => {
+        return prev?.map((keywordGroup) => {
+          return {
+            ...keywordGroup,
+            keywords: keywordGroup.keywords.filter(
+              ({ id }) => id !== idToDelete,
+            ),
+          };
+        });
+      });
+      return { prevData };
+    },
+    onError(err, newPost, ctx) {
+      utils.keywords.getKeywordGroups.setData(undefined, ctx?.prevData);
+    },
     onSettled: () => {
       void ctx.keywords.getKeywordGroups.invalidate();
     },
@@ -40,7 +59,7 @@ const KeywordGroupKeywords: React.FC<{
   };
 
   return (
-    <div className="flex flex-wrap gap-2 overflow-clip rounded-lg border-2 p-2 bg-white">
+    <div className="flex flex-wrap gap-2 overflow-clip rounded-lg border-2 bg-white p-2">
       {keywords?.map(({ keyword, id }) => (
         <div
           key={id}
