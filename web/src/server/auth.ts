@@ -10,6 +10,7 @@ import {
   type User,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import PostHogClient from "~/app/posthog";
 import { env } from "~/env";
 import { db } from "~/server/db";
 import { resend } from "./resend";
@@ -75,6 +76,17 @@ export const authOptions: NextAuthOptions = {
       });
 
       if (message.user?.email) {
+        PostHogClient().capture({
+          distinctId: message.user.id,
+          event: "user signed up",
+          properties: {
+            $set:{
+              email: message.user.email,
+              name: message.user.name,
+            }
+          },
+        });
+
         console.log("sending email...");
 
         const { error } = await resend.emails.send({
