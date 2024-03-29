@@ -29,7 +29,6 @@ const KeywordGroupKeywords: React.FC<{
                   id: `pending${Math.random()}`,
                   keyword,
                   keywordGroupId,
-                  createdAt: new Date(),
                   userId: "",
                 },
               ],
@@ -89,7 +88,7 @@ const KeywordGroupKeywords: React.FC<{
 
   return (
     <div className="flex flex-wrap gap-2 overflow-clip rounded-lg border-2 bg-white p-2">
-      {keywords?.map(({ keyword, id }) => {
+      {keywords?.map(({ keyword, id, }) => {
         const pending = id.startsWith("pending");
         return (
           <div
