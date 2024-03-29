@@ -1,5 +1,5 @@
 import { IconTrash } from "@tabler/icons-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import LoadingSpinner from "~/app/_components/LoadingSpinner";
 import { api } from "~/trpc/react";
 import type { KeywordGroupType } from "./KeywordGroup";
@@ -13,6 +13,7 @@ const KeywordGroupKeywords: React.FC<{
   const utils = api.useUtils();
   const [keyword, setKeyword] = useState("");
   const ctx = api.useUtils();
+  const mutationCount = useRef(0);
 
   const { mutate: createKeyword } = api.keywords.createKeyword.useMutation({
     onMutate: async ({ keyword, keywordGroupId }) => {
@@ -37,13 +38,17 @@ const KeywordGroupKeywords: React.FC<{
           return keywordGroup;
         });
       });
+      mutationCount.current += 1;
       return { prevData };
     },
     onError(err, _, ctx) {
       utils.keywords.getKeywordGroups.setData(undefined, ctx?.prevData);
     },
     onSettled: () => {
-      void ctx.keywords.getKeywordGroups.invalidate();
+      mutationCount.current -= 1;
+      if (mutationCount.current === 0) {
+        void ctx.keywords.getKeywordGroups.invalidate();
+      }
     },
   });
 
@@ -61,13 +66,17 @@ const KeywordGroupKeywords: React.FC<{
           };
         });
       });
+      mutationCount.current += 1;
       return { prevData };
     },
     onError(err, _, ctx) {
       utils.keywords.getKeywordGroups.setData(undefined, ctx?.prevData);
     },
     onSettled: () => {
-      void ctx.keywords.getKeywordGroups.invalidate();
+      mutationCount.current -= 1;
+      if (mutationCount.current === 0) {
+        void ctx.keywords.getKeywordGroups.invalidate();
+      }
     },
   });
 
@@ -88,7 +97,7 @@ const KeywordGroupKeywords: React.FC<{
 
   return (
     <div className="flex flex-wrap gap-2 overflow-clip rounded-lg border-2 bg-white p-2">
-      {keywords?.map(({ keyword, id, }) => {
+      {keywords?.map(({ keyword, id }) => {
         const pending = id.startsWith("pending");
         return (
           <div
