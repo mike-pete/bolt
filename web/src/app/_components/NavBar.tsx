@@ -1,17 +1,17 @@
 "use client";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-// import { usePathname } from "next/navigation";
-// import { twMerge } from "tailwind-merge";
+import { usePathname } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 const NavBar = () => {
   const { status, data } = useSession();
-  // const pathname = usePathname();
+  const pathname = usePathname();
 
-  // const buttons = {
-  //   "/dashboard": "Dashboard",
-  // };
+  const buttons = {
+    "/dashboard": "Dashboard",
+  };
 
   if (status !== "authenticated") {
     return null;
@@ -26,7 +26,7 @@ const NavBar = () => {
         </Link>
       </div>
 
-      {/* <div className="flex hidden items-end gap-2 pb-2">
+      <div className="flex items-end gap-2 pb-2">
         {Object.entries(buttons).map(([key, value]) => (
           <Link
             href={key}
@@ -39,7 +39,7 @@ const NavBar = () => {
             {value}
           </Link>
         ))}
-      </div> */}
+      </div>
 
       <div className="flex flex-grow items-center justify-end gap-2 p-2 text-sm font-semibold">
         <p className="">{<span>{data.user?.name}</span>}</p>

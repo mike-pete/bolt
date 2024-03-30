@@ -43,6 +43,7 @@ const NavBar = () => {
             {name}
           </Link>
         ))}
+        <a href="/dashboard" target="_blank" className="flex-grow rounded px-1.5 py-0.5 text-center text-sm font-bold uppercase text-zinc-400 transition hover:bg-zinc-200 hover:text-zinc-600">DASHBOARD</a>
       </div>
       <button
         onClick={() => bi.hideIframe()}
