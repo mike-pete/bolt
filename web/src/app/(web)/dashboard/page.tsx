@@ -3,14 +3,17 @@
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import SavedJobs from "~/app/_components/SavedJobs";
+import CommitGrid from "./CommitGrid";
+import Streak from "./Streak";
 
 const Dashboard = () => {
   const [search, setSearch] = useState("");
 
   return (
     <div className="flex-grow flex-col bg-zinc-50">
-      <div className="bg-zinc-100 p-8 lg:px-[8%]">
-        <div className="h-10 bg-red-200 "></div>
+      <div className="bg-zinc-100 p-8 lg:px-[8%] flex gap-2">
+        <Streak />
+        <CommitGrid />
       </div>
       <div className="p-8 lg:pl-[8%] lg:pr-[4%]">
         <div className="relative flex flex-nowrap items-center pb-4 pr-[6%]">
