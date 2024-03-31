@@ -81,16 +81,16 @@ export default async function Home() {
             />
           </div>
 
-          <div className="flex w-full flex-wrap items-center justify-center">
-            <p className="min-w-lg max-w-[80vw] text-center text-[8vw] font-bold leading-tight sm:max-w-lg sm:text-5xl">
+          <div className="flex w-full flex-wrap items-center justify-center flex-col pt-32 gap-8">
+            <p className="min-w-lg max-w-[80vw] text-center text-[8vw] font-bold leading-tight sm:text-5xl">
               Save jobs and track your applications
             </p>
             <Image
-              src="/savedTab.png"
+              src="/grid.png"
               alt="saved jobs"
-              width={708}
-              height={1308}
-              className="flex-grow scale-75 rounded-lg shadow-2xl shadow-zinc-400 sm:h-[80vh] sm:max-w-[calc(80vh*708/1308)]"
+              width={687}
+              height={413}
+              className="flex-grow rounded-lg shadow-2xl shadow-zinc-400 w-full max-w-[80vw] sm:max-w-5xl"
             />
           </div>
 
