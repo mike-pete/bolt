@@ -1,21 +1,59 @@
 "use client";
 import dayjs from "dayjs";
+import { twJoin } from "tailwind-merge";
+import { api } from "~/trpc/react";
+
+type MonthInfo = {
+  startOn: number;
+  daysInMonth: number;
+  monthName: string;
+  dayData: Record<number, Record<string, number>>;
+};
 
 const CommitGrid = () => {
+  const { data: savedJobs, isLoading } = api.jobs.getJobs.useQuery();
+
+  const jobsByMonth: Record<
+    string,
+    Record<number, Record<string, number>>
+  > = {};
+
+  savedJobs?.forEach(({ createdAt, status }) => {
+    const month = dayjs(createdAt).format("YYYY-MM");
+    const day = dayjs(createdAt).date();
+
+    const statusName = status[0]?.status;
+
+    if (!statusName) {
+      return;
+    }
+
+    if (!jobsByMonth[month]) {
+      jobsByMonth[month] = {};
+    }
+    if (!jobsByMonth[month][day]) {
+      jobsByMonth[month][day] = {};
+    }
+    jobsByMonth[month][day][statusName] =
+      (jobsByMonth[month][day][statusName] ?? 0) + 1;
+  });
+
   const months: MonthInfo[] = [
     {
       startOn: dayjs().date(1).day(),
       daysInMonth: dayjs().date(),
       monthName: dayjs().format("MMM"),
+      dayData: jobsByMonth[dayjs().format("YYYY-MM")] ?? {},
     },
   ];
 
   for (let i = 1; i < 12; i++) {
-    const prevMonth = dayjs().subtract(i, "month");
+    const month = dayjs().subtract(i, "month");
     months.push({
-      startOn: prevMonth.date(1).day(),
-      daysInMonth: prevMonth.daysInMonth(),
-      monthName: prevMonth.format("MMM"),
+      startOn: month.date(1).day(),
+      daysInMonth: month.daysInMonth(),
+      monthName: month.format("MMM"),
+      dayData: jobsByMonth[month.format("YYYY-MM")] ?? {},
     });
   }
   return (
@@ -34,8 +72,6 @@ const CommitGrid = () => {
   );
 };
 
-type MonthInfo = { startOn: number; daysInMonth: number; monthName: string };
-
 const Month: React.FC<{ monthInfo: MonthInfo }> = ({ monthInfo: info }) => {
   const prefix = new Array(info.startOn).fill(0);
   const days = new Array(info.daysInMonth).fill(0);
@@ -50,27 +86,34 @@ const Month: React.FC<{ monthInfo: MonthInfo }> = ({ monthInfo: info }) => {
       </p>
       <div className="flex h-[calc((16px+4px)*7-4px)] flex-col flex-wrap content-start gap-1 pr-4">
         {prefix.map((_, i) => (
-          <Day key={i} />
+          <div
+            className="h-4 w-4 rounded outline -outline-offset-1 outline-zinc-100"
+            key={i}
+          />
         ))}
         {days.map((_, i) => (
-          <Day dayInfo={{ placeholder: true }} key={i} />
+          <Day dayInfo={info.dayData[i + 1]} key={i} />
         ))}
         {suffix.map((_, i) => (
-          <Day key={i} />
+          <div
+            className="h-4 w-4 rounded outline -outline-offset-1 outline-zinc-100"
+            key={i}
+          />
         ))}
       </div>
     </div>
   );
 };
 
-const Day: React.FC<{ dayInfo?: { placeholder: boolean } }> = ({ dayInfo }) => {
-  if (dayInfo === undefined) {
-    return (
-      <div className="h-4 w-4 rounded outline -outline-offset-1 outline-zinc-100" />
-    );
-  }
-
-  return <button className="h-4 w-4 rounded bg-zinc-100 hover:-scale-125" />;
+const Day: React.FC<{ dayInfo?: Record<string, number> }> = ({ dayInfo }) => {
+  return (
+    <div
+      className={twJoin(
+        "h-4 w-4 rounded",
+        dayInfo != undefined ? "bg-emerald-400" : "bg-zinc-100",
+      )}
+    />
+  );
 };
 
 export default CommitGrid;
