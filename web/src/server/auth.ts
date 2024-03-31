@@ -56,8 +56,6 @@ export const authOptions: NextAuthOptions = {
   },
   events: {
     createUser: async (message: { user: User }) => {
-      console.log("createUser", message);
-
       await db.keywordGroups.createMany({
         data: [
           {
@@ -86,8 +84,6 @@ export const authOptions: NextAuthOptions = {
             }
           },
         });
-
-        console.log("sending email...");
 
         const { error } = await resend.emails.send({
           from: "Mike <mike@boltapply.com>",
