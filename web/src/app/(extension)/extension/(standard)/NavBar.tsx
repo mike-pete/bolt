@@ -18,10 +18,10 @@ const NavBar = () => {
       name: "keywords",
       path: "/extension/keywords",
     },
-    {
-      name: "saved",
-      path: "/extension/saved",
-    },
+    // {
+    //   name: "saved",
+    //   path: "/extension/saved",
+    // },
   ];
 
   const currentPage = "";
