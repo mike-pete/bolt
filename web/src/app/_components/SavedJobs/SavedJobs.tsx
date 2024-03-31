@@ -1,5 +1,6 @@
 "use client";
 
+import { type ReactNode } from "react";
 import { api } from "~/trpc/react";
 import JobCard from "../JobCard/JobCard";
 import useJobsByDate from "./useJobsByDate";
@@ -11,11 +12,11 @@ const SavedJobs: React.FC<{ search?: string }> = ({ search }) => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-wrap gap-2 ">
+      <CardGrid>
         <JobCard isLoading={true} />
         <JobCard isLoading={true} />
         <JobCard isLoading={true} />
-      </div>
+      </CardGrid>
     );
   }
 
@@ -34,13 +35,21 @@ const SavedJobs: React.FC<{ search?: string }> = ({ search }) => {
       {jobsByDate?.map((job) => (
         <div key={job.date}>
           <h2 className="p-2 text-2xl font-bold text-zinc-400">{job.date}</h2>
-          <div className="flex flex-wrap gap-2 ">
+          <CardGrid>
             {job.jobs.map((job) => (
               <JobCard key={job.jobId} jobDetails={job} isLoading={false} />
             ))}
-          </div>
+          </CardGrid>
         </div>
       ))}
+    </div>
+  );
+};
+
+const CardGrid: React.FC<{ children: ReactNode }> = ({ children }) => {
+  return (
+    <div className="grid w-full gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 ">
+      {children}
     </div>
   );
 };
