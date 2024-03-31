@@ -2,7 +2,7 @@
 
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
-import SavedJobs from "~/app/_components/SavedJobs";
+import SavedJobs from "~/app/_components/SavedJobs/SavedJobs";
 import CommitGrid from "./CommitGrid";
 import Streak from "./Streak";
 
@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex-grow flex-col bg-zinc-50">
-      <div className="bg-zinc-100 p-8 lg:px-[8%] flex gap-2">
+      <div className="flex gap-2 bg-zinc-100 p-8 lg:px-[8%]">
         <Streak />
         <CommitGrid />
       </div>

@@ -1,42 +1,13 @@
 "use client";
 
-import dayjs from "dayjs";
-import { useMemo } from "react";
 import { api } from "~/trpc/react";
-import JobCard, { type JobDetails } from "./JobCard/JobCard";
+import JobCard from "../JobCard/JobCard";
+import useJobsByDate from "./useJobsByDate";
 
 const SavedJobs: React.FC<{ search?: string }> = ({ search }) => {
   const { data: savedJobs, isLoading } = api.jobs.getJobs.useQuery();
 
-  const jobsByDate = useMemo(() => {
-    const dates: { date: string; jobs: JobDetails[] }[] = [];
-
-    if (savedJobs) {
-      savedJobs.forEach(({ createdAt, ...jobData }) => {
-        const job: JobDetails = {
-          jobId: jobData.jobId,
-          company: jobData.company,
-          title: jobData.title,
-          comp: jobData.compensation ?? undefined,
-          status: jobData.status?.[0]?.status,
-          url: `https://www.linkedin.com/jobs/search/?currentJobId=${jobData.jobId}`,
-        };
-        const date = dayjs(createdAt).format("MMM D, YYYY");
-
-        if (search) {
-          const searchable = `${job.company} ${job.title} ${job.status}`;
-          if (!searchable.toLowerCase().includes(search.toLowerCase())) return;
-        }
-
-        if (dates.at(-1)?.date === date) {
-          dates.at(-1)?.jobs.push(job);
-          return;
-        } else dates.push({ date, jobs: [job] });
-      });
-    }
-
-    return dates;
-  }, [savedJobs, search]);
+  const jobsByDate = useJobsByDate(search);
 
   if (isLoading) {
     return (
