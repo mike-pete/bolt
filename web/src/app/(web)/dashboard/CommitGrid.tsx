@@ -11,7 +11,7 @@ type MonthInfo = {
 };
 
 const CommitGrid = () => {
-  const { data: savedJobs, isLoading } = api.jobs.getJobs.useQuery();
+  const { data: savedJobs } = api.jobs.getJobs.useQuery();
 
   const jobsByMonth: Record<
     string,
@@ -19,14 +19,14 @@ const CommitGrid = () => {
   > = {};
 
   savedJobs?.forEach(({ createdAt, status }) => {
-    const month = dayjs(createdAt).format("YYYY-MM");
-    const day = dayjs(createdAt).date();
-
     const statusName = status[0]?.status;
 
     if (!statusName) {
       return;
     }
+
+    const month = dayjs(createdAt).format("YYYY-MM");
+    const day = dayjs(createdAt).date();
 
     if (!jobsByMonth[month]) {
       jobsByMonth[month] = {};
