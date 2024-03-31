@@ -13,7 +13,7 @@ type MonthInfo = {
 const CommitGrid = () => {
   const { data: savedJobs } = api.jobs.getJobs.useQuery();
 
-  const jobsByMonth: Record<
+  let jobsByMonth: Record<
     string,
     Record<number, Record<string, number>>
   > = {};
@@ -28,14 +28,16 @@ const CommitGrid = () => {
     const month = dayjs(createdAt).format("YYYY-MM");
     const day = dayjs(createdAt).date();
 
-    if (!jobsByMonth[month]) {
-      jobsByMonth[month] = {};
+    jobsByMonth = {
+      ...jobsByMonth,
+      [month]: {
+        ...jobsByMonth[month],
+        [day]: {
+          ...jobsByMonth[month]?.[day],
+          [statusName]: (jobsByMonth[month]?.[day]?.[statusName] ?? 0) + 1,
+        },
+      }
     }
-    if (!jobsByMonth[month][day]) {
-      jobsByMonth[month][day] = {};
-    }
-    jobsByMonth[month][day][statusName] =
-      (jobsByMonth[month][day][statusName] ?? 0) + 1;
   });
 
   const months: MonthInfo[] = [
