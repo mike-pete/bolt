@@ -13,10 +13,7 @@ type MonthInfo = {
 const CommitGrid = () => {
   const { data: savedJobs } = api.jobs.getJobs.useQuery();
 
-  let jobsByMonth: Record<
-    string,
-    Record<number, Record<string, number>>
-  > = {};
+  let jobsByMonth: Record<string, Record<number, Record<string, number>>> = {};
 
   savedJobs?.forEach(({ createdAt, status }) => {
     const statusName = status[0]?.status;
@@ -36,8 +33,8 @@ const CommitGrid = () => {
           ...jobsByMonth[month]?.[day],
           [statusName]: (jobsByMonth[month]?.[day]?.[statusName] ?? 0) + 1,
         },
-      }
-    }
+      },
+    };
   });
 
   const months: MonthInfo[] = [
@@ -67,24 +64,27 @@ const CommitGrid = () => {
       </div>
       <div className="flex flex-shrink-0 flex-row-reverse justify-end gap-4 rounded-lg">
         {months.map((info, i) => (
-          <Month monthInfo={info} key={i} />
+          <Month monthInfo={info} isCurrentMonth={i === 0} key={i} />
         ))}
       </div>
     </div>
   );
 };
 
-const Month: React.FC<{ monthInfo: MonthInfo }> = ({ monthInfo: info }) => {
-  const prefix = new Array(info.startOn).fill(0);
-  const days = new Array(info.daysInMonth).fill(0);
-  const suffix = new Array((42 - (info.daysInMonth + info.startOn)) % 7).fill(
-    0,
-  );
+const Month: React.FC<{ monthInfo: MonthInfo; isCurrentMonth?: boolean }> = ({
+  monthInfo,
+  isCurrentMonth,
+}) => {
+  const prefix = new Array(monthInfo.startOn).fill(0);
+  const days = new Array(monthInfo.daysInMonth).fill(0);
+  const suffix = new Array(
+    isCurrentMonth ? 0 : (42 - (monthInfo.daysInMonth + monthInfo.startOn)) % 7,
+  ).fill(0);
 
   return (
     <div className="">
       <p className="text-xs font-semibold uppercase text-zinc-400">
-        {info.monthName}
+        {monthInfo.monthName}
       </p>
       <div className="flex h-[calc((16px+4px)*7-4px)] flex-col flex-wrap content-start gap-1 pr-4">
         {prefix.map((_, i) => (
@@ -94,7 +94,7 @@ const Month: React.FC<{ monthInfo: MonthInfo }> = ({ monthInfo: info }) => {
           />
         ))}
         {days.map((_, i) => (
-          <Day dayInfo={info.dayData[i + 1]} key={i} />
+          <Day dayInfo={monthInfo.dayData[i + 1]} key={i} />
         ))}
         {suffix.map((_, i) => (
           <div
