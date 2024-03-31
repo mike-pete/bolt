@@ -10,6 +10,7 @@ import {
   type User,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import PostHogClient from "~/app/posthog";
 import { env } from "~/env";
 import { db } from "~/server/db";
 import { resend } from "./resend";
@@ -55,8 +56,6 @@ export const authOptions: NextAuthOptions = {
   },
   events: {
     createUser: async (message: { user: User }) => {
-      console.log("createUser", message);
-
       await db.keywordGroups.createMany({
         data: [
           {
@@ -75,7 +74,16 @@ export const authOptions: NextAuthOptions = {
       });
 
       if (message.user?.email) {
-        console.log("sending email...");
+        PostHogClient().capture({
+          distinctId: message.user.id,
+          event: "user signed up",
+          properties: {
+            $set:{
+              email: message.user.email,
+              name: message.user.name,
+            }
+          },
+        });
 
         const { error } = await resend.emails.send({
           from: "Mike <mike@boltapply.com>",

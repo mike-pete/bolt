@@ -1,7 +1,7 @@
 "use client";
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
-import SavedJobs from "~/app/_components/SavedJobs";
+import SavedJobs from "~/app/_components/SavedJobs/SavedJobs";
 
 const History: React.FC = () => {
   const [search, setSearch] = useState("");

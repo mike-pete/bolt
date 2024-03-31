@@ -48,7 +48,7 @@ const JobCard: React.FC<{
   if (jobDetails) {
     return (
       <div className="flex w-80 flex-col flex-nowrap items-start rounded-lg border-2 bg-white">
-        <div className="flex flex-col flex-nowrap items-start gap-1 p-4">
+        <div className="flex flex-col flex-nowrap items-start gap-1 p-4 flex-grow">
           <JobOverview details={jobDetails} />
         </div>
         <ActionBar details={jobDetails} />

@@ -53,7 +53,7 @@ export default async function Home() {
 
       <section className="w-full bg-[url('/jobDesc.png')] bg-cover bg-fixed">
         <div className="flex flex-col bg-white bg-opacity-85 backdrop-blur-sm">
-          <div className="h-24 w-full bg-gradient-to-t from-transparent to-zinc-50"></div>
+          <div className="h-24 w-full bg-gradient-to-b from-zinc-50"></div>
 
           <div className="flex w-full flex-wrap items-center justify-center">
             <p className="min-w-lg max-w-[80vw] text-center text-[8vw] font-bold leading-tight sm:max-w-lg sm:text-5xl">
@@ -94,7 +94,7 @@ export default async function Home() {
             />
           </div>
 
-          <div className="h-24 w-full bg-gradient-to-b from-transparent to-zinc-50"></div>
+          <div className="h-24 w-full bg-gradient-to-t from-zinc-50"></div>
         </div>
       </section>
 
