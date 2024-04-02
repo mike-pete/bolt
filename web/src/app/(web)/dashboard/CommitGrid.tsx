@@ -75,33 +75,37 @@ const Month: React.FC<{ monthInfo: MonthInfo; isCurrentMonth?: boolean }> = ({
   monthInfo,
   isCurrentMonth,
 }) => {
-  const prefix = new Array(monthInfo.startOn).fill(0);
+  const prefixDays = monthInfo?.startOn ?? 0;
   const days = new Array(monthInfo.daysInMonth).fill(0);
-  const suffix = new Array(
-    isCurrentMonth ? 0 : (42 - (monthInfo.daysInMonth + monthInfo.startOn)) % 7,
-  ).fill(0);
+  const postfixDays = isCurrentMonth
+    ? 0
+    : (42 - (monthInfo.daysInMonth + monthInfo.startOn)) % 7;
 
   return (
-    <div className="">
+    <div>
       <p className="text-xs font-semibold uppercase text-zinc-400">
         {monthInfo.monthName}
       </p>
-      <div className="flex h-[calc((16px+4px)*7-4px)] flex-col flex-wrap content-start gap-1 pr-4">
-        {prefix.map((_, i) => (
+      <div className="flex h-[136px] flex-col flex-wrap content-start gap-1 pr-4">
+        {prefixDays > 0 && (
           <div
-            className="h-4 w-4 rounded outline -outline-offset-1 outline-zinc-100"
-            key={i}
+            className={`w-4 rounded bg-zinc-50`}
+            style={{ height: `${20 * prefixDays - 4}px` }}
           />
-        ))}
+        )}
+        
         {days.map((_, i) => (
           <Day dayInfo={monthInfo.dayData[i + 1]} key={i} />
         ))}
-        {suffix.map((_, i) => (
+        
+        
+        {postfixDays > 0 && (
           <div
-            className="h-4 w-4 rounded outline -outline-offset-1 outline-zinc-100"
-            key={i}
+            className={`w-4 rounded bg-zinc-50`}
+            style={{ height: `${20 * postfixDays - 4}px` }}
           />
-        ))}
+        )}
+        
       </div>
     </div>
   );
