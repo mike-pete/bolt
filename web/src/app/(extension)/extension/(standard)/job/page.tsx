@@ -35,8 +35,8 @@ const Job: React.FC = () => {
           </button>
         </div>
         <p className="text-zinc-400">
-          Tip: In the meantime, you can click the <IconX className="inline" />{" "}
-          icon in the top right corner to hide the extension for now.
+          Tip: You can click the <IconX className="inline" /> icon in the top
+          right corner to hide the extension for now.
         </p>
       </div>
     );
