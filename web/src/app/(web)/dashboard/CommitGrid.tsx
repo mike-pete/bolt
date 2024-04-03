@@ -89,23 +89,21 @@ const Month: React.FC<{ monthInfo: MonthInfo; isCurrentMonth?: boolean }> = ({
       <div className="flex h-[136px] flex-col flex-wrap content-start gap-1 pr-4">
         {prefixDays > 0 && (
           <div
-            className={`w-4 rounded bg-zinc-50`}
+            className={`w-4 rounded`}
             style={{ height: `${20 * prefixDays - 4}px` }}
           />
         )}
-        
+
         {days.map((_, i) => (
           <Day dayInfo={monthInfo.dayData[i + 1]} key={i} />
         ))}
-        
-        
+
         {postfixDays > 0 && (
           <div
-            className={`w-4 rounded bg-zinc-50`}
+            className={`w-4 rounded`}
             style={{ height: `${20 * postfixDays - 4}px` }}
           />
         )}
-        
       </div>
     </div>
   );
