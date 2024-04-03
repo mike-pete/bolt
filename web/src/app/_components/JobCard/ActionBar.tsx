@@ -68,7 +68,7 @@ const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
 
   const { label, style } = details?.status
     ? options[details.status]
-    : { label: "No Status", style: { primary: "", secondary: "" } };
+    : { label: "Set Status", style: { primary: "", secondary: "" } };
 
   return (
     <div className="relative">
