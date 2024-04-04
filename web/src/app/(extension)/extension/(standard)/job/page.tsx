@@ -4,7 +4,9 @@ import JobCard from "~/app/_components/JobCard/JobCard";
 import { api } from "~/trpc/react";
 import bi from "../../_interactions/bi";
 import KeywordsFound from "./KeywordsFound";
-import useGetJobDetails, { JobDetailError } from "./useGetJobDetails";
+import useGetJobDetails, {
+  JobDetailError,
+} from "./scrapingHooks/useGetJobDetails";
 
 const Job: React.FC = () => {
   const { isLoading, jobDetails, error } = useGetJobDetails();
@@ -35,8 +37,8 @@ const Job: React.FC = () => {
           </button>
         </div>
         <p className="text-zinc-400">
-          Tip: In the meantime, you can click the <IconX className="inline" />{" "}
-          icon in the top right corner to hide the extension for now.
+          Tip: You can click the <IconX className="inline" /> icon in the top
+          right corner to hide the extension for now.
         </p>
       </div>
     );

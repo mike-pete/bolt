@@ -1,6 +1,6 @@
 import { type Status } from "@prisma/client";
 import React, { type ReactNode } from "react";
-import { type JobDetailError } from "~/app/(extension)/extension/(standard)/job/useGetJobDetails";
+import { type JobDetailError } from "~/app/(extension)/extension/(standard)/job/scrapingHooks/useGetJobDetails";
 import ActionBar from "./ActionBar";
 import JobOverview from "./JobOverview";
 

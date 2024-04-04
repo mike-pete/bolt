@@ -22,8 +22,8 @@ const SavedJobs: React.FC<{ search?: string }> = ({ search }) => {
 
   if (!savedJobs?.length) {
     return (
-      <div className="flex flex-col items-start gap-4 rounded-lg border-2 bg-white p-4">
-        <p className="text-lg font-bold text-zinc-400 ">
+      <div className="flex flex-col items-start gap-4 rounded-lg border-2 bg-white p-4 min-h-[40vh] items-center justify-center">
+        <p className="text-xl font-semibold text-zinc-400 ">
           Your saved jobs will appear here.
         </p>
       </div>
