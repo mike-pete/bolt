@@ -25,7 +25,8 @@ export const pageContexts: {
 }[] = [
   {
     match: (url: string) =>
-      url.startsWith("https://www.linkedin.com/jobs/search/"),
+      url.startsWith("https://www.linkedin.com/jobs/") &&
+      url.includes("currentJobId"),
     context: linkedinJobSearchContext,
   },
   {
