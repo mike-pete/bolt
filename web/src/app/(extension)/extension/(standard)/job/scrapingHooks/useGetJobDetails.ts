@@ -1,15 +1,13 @@
 import posthog from "posthog-js";
 import { useState } from "react";
 import { type JobDetails } from "~/app/_components/JobCard/JobCard";
+import { jobKeys } from "../../../_interactions/queryKeys";
 import { pageContexts } from "./pageContexts/pageContext";
 import {
-  useGetCompany,
-  useGetCompensation,
   useGetCurrentUrl,
-  useGetDescription,
   useGetJobId,
-  useGetTitle,
   useGetWorkMode,
+  useScrapeText,
 } from "./scrapingHooks";
 
 export enum JobDetailError {
@@ -46,19 +44,23 @@ const useGetJobDetails = (): {
     pageContext?.jobId?.mutate ?? undefined,
   );
 
-  const { title, isLoading: isLoadingTitle } = useGetTitle(pageContext?.title);
+  const { data: title, isLoading: isLoadingTitle } = useScrapeText(
+    jobKeys.title(),
+    pageContext?.title,
+  );
 
-  const { description, isLoading: isLoadingDescription } = useGetDescription(
+  const { data: description, isLoading: isLoadingDescription } = useScrapeText(
+    jobKeys.description(),
     pageContext?.description,
   );
 
-  const { company, isLoading: isLoadingCompany } = useGetCompany(
+  const { data: company, isLoading: isLoadingCompany } = useScrapeText(
+    jobKeys.company(),
     pageContext?.company,
   );
 
-  const { compensation, isLoading: isLoadingCompensation } = useGetCompensation(
-    pageContext?.compensation,
-  );
+  const { data: compensation, isLoading: isLoadingCompensation } =
+    useScrapeText(jobKeys.comp(), pageContext?.compensation);
 
   const { workMode, isLoading: isLoadingWorkMode } = useGetWorkMode(
     description ?? "",

@@ -10,7 +10,7 @@ const useGetTextContent = (queryKey: readonly string[], selector?: string) => {
   });
 };
 
-const useScrapeText = (
+export const useScrapeText = (
   queryKey: readonly string[],
   context:
     | {
@@ -53,34 +53,34 @@ export const useGetJobId = (
   return { jobId, isLoading };
 };
 
-export const useGetTitle = (context?: { selector: string }) => {
-  const { data: title, isLoading } = useScrapeText(jobKeys.title(), context);
-  return { title, isLoading };
-};
+// export const useGetTitle = (context?: { selector: string }) => {
+//   const { data: title, isLoading } = useScrapeText(jobKeys.title(), context);
+//   return { title, isLoading };
+// };
 
-export const useGetDescription = (context?: { selector: string }) => {
-  const { data: description, isLoading } = useScrapeText(
-    jobKeys.description(),
-    context,
-  );
-  return { description, isLoading };
-};
+// export const useGetDescription = (context?: { selector: string }) => {
+//   const { data: description, isLoading } = useScrapeText(
+//     jobKeys.description(),
+//     context,
+//   );
+//   return { description, isLoading };
+// };
 
-export const useGetCompany = (context?: { selector: string }) => {
-  const { data: company, isLoading } = useScrapeText(
-    jobKeys.company(),
-    context,
-  );
-  return { company, isLoading };
-};
+// export const useGetCompany = (context?: { selector: string }) => {
+//   const { data: company, isLoading } = useScrapeText(
+//     jobKeys.company(),
+//     context,
+//   );
+//   return { company, isLoading };
+// };
 
-export const useGetCompensation = (context?: { selector: string }) => {
-  const { data: compensation, isLoading } = useScrapeText(
-    jobKeys.comp(),
-    context,
-  );
-  return { compensation, isLoading };
-};
+// export const useGetCompensation = (context?: { selector: string }) => {
+//   const { data: compensation, isLoading } = useScrapeText(
+//     jobKeys.comp(),
+//     context,
+//   );
+//   return { compensation, isLoading };
+// };
 
 const workModes = {
   "on-site": "on-site",
@@ -92,25 +92,25 @@ const workModes = {
   remote: "remote",
 };
 
-
-export const useGetWorkMode = (jobDescription:string, context?: { selector: string }) => {
+export const useGetWorkMode = (
+  jobDescription: string,
+  context?: { selector: string },
+) => {
   const { data: workModeDeclared, isLoading } = useScrapeText(
     jobKeys.workMode(),
     context,
   );
 
+  const workModesFound: string[] = [];
 
-    const workModesFound: string[] = [];
-
-    for (const [key, value] of Object.entries(workModes)) {
-      if (
-        value !== workModeDeclared?.toLowerCase() &&
-        jobDescription?.toLowerCase().includes(key)
-      ) {
-        workModesFound.push(key);
-      }
+  for (const [key, value] of Object.entries(workModes)) {
+    if (
+      value !== workModeDeclared?.toLowerCase() &&
+      jobDescription?.toLowerCase().includes(key)
+    ) {
+      workModesFound.push(key);
     }
-
+  }
 
   const workMode = workModeDeclared
     ? { declared: workModeDeclared, conflicting: workModesFound }
