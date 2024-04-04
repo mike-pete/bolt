@@ -4,7 +4,9 @@ import JobCard from "~/app/_components/JobCard/JobCard";
 import { api } from "~/trpc/react";
 import bi from "../../_interactions/bi";
 import KeywordsFound from "./KeywordsFound";
-import useGetJobDetails, { JobDetailError } from "./useGetJobDetails";
+import useGetJobDetails, {
+  JobDetailError,
+} from "./scrapingHooks/useGetJobDetails";
 
 const Job: React.FC = () => {
   const { isLoading, jobDetails, error } = useGetJobDetails();
