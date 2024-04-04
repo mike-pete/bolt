@@ -1,6 +1,7 @@
 import posthog from "posthog-js";
 import { useState } from "react";
 import { type JobDetails } from "~/app/_components/JobCard/JobCard";
+import { api } from "~/trpc/react";
 import { jobKeys } from "../../../_interactions/queryKeys";
 import { pageContexts } from "./pageContexts/pageContext";
 import {
@@ -71,6 +72,11 @@ const useGetJobDetails = (): {
     undefined,
   );
 
+  const { data: savedJobData } = api.jobs.getJob.useQuery(jobId!, {
+    enabled: !!jobId,
+    retry: 0,
+  });
+
   if (pageContext === null || jobId === null) {
     return { isLoading: false, error: JobDetailError.NO_JOB_ID };
   }
@@ -98,6 +104,7 @@ const useGetJobDetails = (): {
         company: company ?? "unknown",
         comp: compensation ?? undefined,
         workMode: workMode,
+        status: savedJobData?.status?.[0]?.status,
       },
     };
   }
