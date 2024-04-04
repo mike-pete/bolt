@@ -16,7 +16,7 @@ const useJobsByDate = (search?: string) => {
         title: jobData.title,
         comp: jobData.compensation ?? undefined,
         status: jobData.status?.[0]?.status,
-        url: `https://www.linkedin.com/jobs/search/?currentJobId=${jobData.jobId}`,
+        url: `https://www.linkedin.com/jobs/view/${jobData.jobId}`,
       };
       const date = dayjs(createdAt).format("MMM D, YYYY");
 
