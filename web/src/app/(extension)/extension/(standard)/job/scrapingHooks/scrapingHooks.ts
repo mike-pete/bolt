@@ -53,7 +53,6 @@ export const useGetJobId = (
   return { jobId, isLoading };
 };
 
-
 const workModes = {
   "on-site": "on-site",
   "on site": "on-site",
