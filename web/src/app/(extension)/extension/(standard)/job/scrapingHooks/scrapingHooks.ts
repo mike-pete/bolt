@@ -53,34 +53,6 @@ export const useGetJobId = (
   return { jobId, isLoading };
 };
 
-// export const useGetTitle = (context?: { selector: string }) => {
-//   const { data: title, isLoading } = useScrapeText(jobKeys.title(), context);
-//   return { title, isLoading };
-// };
-
-// export const useGetDescription = (context?: { selector: string }) => {
-//   const { data: description, isLoading } = useScrapeText(
-//     jobKeys.description(),
-//     context,
-//   );
-//   return { description, isLoading };
-// };
-
-// export const useGetCompany = (context?: { selector: string }) => {
-//   const { data: company, isLoading } = useScrapeText(
-//     jobKeys.company(),
-//     context,
-//   );
-//   return { company, isLoading };
-// };
-
-// export const useGetCompensation = (context?: { selector: string }) => {
-//   const { data: compensation, isLoading } = useScrapeText(
-//     jobKeys.comp(),
-//     context,
-//   );
-//   return { compensation, isLoading };
-// };
 
 const workModes = {
   "on-site": "on-site",
