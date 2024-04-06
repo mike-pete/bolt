@@ -6,10 +6,45 @@ import bi from "../../_interactions/bi";
 import KeywordsFound from "./KeywordsFound";
 import useGetJobDetails, {
   JobDetailError,
+  useGetPageContext,
 } from "./scrapingHooks/useGetJobDetails";
+
+const highlightKeywords = (selector: string) => {
+  console.log("highlightKeywords");
+  void bi.highlightKeywords(
+    [
+      {
+        keyword: "about",
+        color: "#f87171",
+      },
+      {
+        keyword: "react",
+        color: "#38bdf8",
+      },
+      {
+        keyword: "html",
+        color: "#38bdf8",
+      },
+      {
+        keyword: "c#",
+        color: "#f87171",
+      },
+      {
+        keyword: "css",
+        color: "#f87171",
+      },
+    ],
+    selector,
+  );
+};
 
 const Job: React.FC = () => {
   const { isLoading, jobDetails, error } = useGetJobDetails();
+  const pageContext = useGetPageContext();
+
+  if (pageContext?.description.selector && !isLoading) {
+    highlightKeywords(pageContext.description.selector);
+  }
 
   const { data: keywordGroups, isLoading: loadingKeywordGroups } =
     api.keywords.getKeywordGroups.useQuery();

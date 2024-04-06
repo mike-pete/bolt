@@ -6,4 +6,5 @@ export const jobKeys = {
   company: () => [...jobKeys.all, "company"] as const,
   comp: () => [...jobKeys.all, "comp"] as const,
   workMode: () => [...jobKeys.all, "workModel"] as const,
+  highlightedKeywords: () => [...jobKeys.all, "highlightedKeywords"] as const,
 };
