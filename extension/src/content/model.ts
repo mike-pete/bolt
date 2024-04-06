@@ -3,7 +3,29 @@ import { iframeHeight, iframeId, showIframeId } from '../constants'
 const query = (selector: string) => document.querySelector(selector) as HTMLElement | null
 
 const getTextContent = async (selector: string) => {
-	return query(selector)?.textContent?.trim()
+	const element = query(selector)
+	
+	if (element === null) {
+		throw new Error('Element not found!')
+	}
+
+	const textNodes = document.evaluate(
+		'.//child::text()',
+		element,
+		null,
+		XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+		null
+	)
+	
+	let textSnippets: string[] = []
+
+	for (let i = 0; i < textNodes.snapshotLength; i++) {
+		const textNode = textNodes.snapshotItem(i)
+		const text = textNode?.textContent?.trim()
+		textSnippets.push(text ?? '')
+	}
+
+	return textSnippets.join(' ')
 }
 
 const hideIframe = () => {
@@ -33,7 +55,7 @@ const goToPage = (url: string) => {
 const getCurrentUrl = () => window.location.href
 
 const removeHighlight = () => {
-	console.log('removing highlight...')
+	// console.log('removing highlight...')
 	document.querySelectorAll<HTMLElement>('[data-bolt-highlight]').forEach((span) => {
 		const textNode = document.createTextNode(span.innerText)
 		span.parentNode?.replaceChild(textNode, span)
@@ -46,18 +68,18 @@ const removeHighlight = () => {
 }
 
 const highlightKeywords = (
-	keywords: { keyword: string, color: string }[],
+	keywords: { keyword: string; color: string }[],
 	elementSelector: string
 ) => {
 	removeHighlight()
-
-	console.log('highlighting keywords...', keywords)
 
 	const element = document.querySelector(elementSelector) as HTMLElement | null
 	if (element === null) {
 		throw new Error('Element not found!')
 	}
 
+
+	console.log('highlighting...', keywords)
 	const textNodes = document.evaluate(
 		'.//child::text()',
 		element,
@@ -96,7 +118,7 @@ export type ExtensionModel = {
 	goToPage: (url: string) => void
 	getCurrentUrl: () => string
 	highlightKeywords: (
-		keywords: { keyword: string, color: string }[],
+		keywords: { keyword: string; color: string }[],
 		elementSelector: string
 	) => void
 	removeHighlight: () => void
