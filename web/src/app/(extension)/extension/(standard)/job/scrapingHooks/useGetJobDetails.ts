@@ -14,7 +14,8 @@ import {
 export enum JobDetailError {
   NO_JOB_ID,
 }
-const useGetPageContext = () => {
+
+export const useGetPageContext = () => {
   const { data: currentURL, isLoading } = useGetCurrentUrl();
 
   if (isLoading) {

@@ -1,4 +1,5 @@
 "use client";
+import { Menu } from "@headlessui/react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,7 +19,7 @@ const NavBar = () => {
   }
 
   return (
-    <div className="sticky top-0 z-50 flex border-b-2 bg-white px-4">
+    <div className="sticky top-0 z-50 flex items-center border-b-2 bg-white px-4">
       <div className="flex items-center gap-2 p-2">
         <Link href="/" className="flex justify-center gap-1.5">
           <Image src="/bolt.svg" alt="Bolt" width={12} height={12} />
@@ -26,13 +27,13 @@ const NavBar = () => {
         </Link>
       </div>
 
-      <div className="flex items-end gap-2 pb-2">
+      <div className="flex flex-grow items-end gap-2">
         {Object.entries(buttons).map(([key, value]) => (
           <Link
             href={key}
             key={key}
             className={twMerge(
-              "rounded px-1.5 py-0.5 text-sm font-bold uppercase text-zinc-400 transition hover:bg-zinc-200 hover:text-zinc-600",
+              "relative flex items-center gap-1 rounded-lg px-3 py-1.5 text-left text-xs font-bold uppercase text-zinc-600 transition hover:bg-zinc-200 focus:outline-none",
               pathname.startsWith(key) && "bg-zinc-100 text-zinc-700",
             )}
           >
@@ -41,16 +42,48 @@ const NavBar = () => {
         ))}
       </div>
 
-      <div className="flex flex-grow items-center justify-end gap-2 p-2 text-sm font-semibold">
-        <p className="">{<span>{data.user?.name}</span>}</p>
-        <Link
-          className="rounded-md bg-sky-400 px-2 py-1 uppercase text-white"
-          href="/auth/signout"
-        >
-          Sign Out
-        </Link>
-      </div>
+      <UserDropdown name={data.user?.name ?? undefined} />
     </div>
+  );
+};
+
+const UserDropdown: React.FC<{ name?: string }> = ({ name }) => {
+  return (
+    <Menu as="div" className="relative">
+      <div>
+        <Menu.Button className="relative flex items-center gap-1 rounded-lg px-3 py-1.5 text-left text-xs font-bold uppercase text-zinc-600 transition hover:bg-zinc-200 focus:outline-none">
+          {name ?? "Account"}
+        </Menu.Button>
+      </div>
+      <Menu.Items className="absolute right-0 z-10 mt-1 flex flex-col gap-1 overflow-auto rounded-lg border-2 bg-white p-1 text-base shadow-lg outline-none">
+        <Menu.Item>
+          {({ active }) => (
+            <Link
+              className={twMerge(
+                "cursor-pointer select-none truncate rounded-lg px-3 py-1.5 text-xs font-bold uppercase text-zinc-600 transition",
+                active && "bg-zinc-200",
+              )}
+              href="/settings"
+            >
+              Settings
+            </Link>
+          )}
+        </Menu.Item>
+        <Menu.Item>
+          {({ active }) => (
+            <Link
+              className={twMerge(
+                "cursor-pointer select-none truncate rounded-lg px-3 py-1.5 text-xs font-bold uppercase text-zinc-600 transition",
+                active && "bg-zinc-200",
+              )}
+              href="/auth/signout"
+            >
+              Sign Out
+            </Link>
+          )}
+        </Menu.Item>
+      </Menu.Items>
+    </Menu>
   );
 };
 

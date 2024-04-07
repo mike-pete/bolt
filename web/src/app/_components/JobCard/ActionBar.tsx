@@ -31,27 +31,45 @@ const options: Record<
 > = {
   [Status.Saved]: {
     label: "Saved",
-    style: { primary: "bg-zinc-500/70 text-white", secondary: "bg-zinc-100 text-zinc-700" },
+    style: {
+      primary: "bg-zinc-500/70 text-white",
+      secondary: "bg-zinc-100 text-zinc-700",
+    },
   },
   [Status.Applied]: {
     label: "Applied",
-    style: { primary: "bg-indigo-500/70 text-white", secondary: "bg-indigo-100 text-zinc-700" },
+    style: {
+      primary: "bg-indigo-500/70 text-white",
+      secondary: "bg-indigo-100 text-zinc-700",
+    },
   },
   [Status.Interviewing]: {
     label: "Interviewing",
-    style: { primary: "bg-emerald-500/70 text-white", secondary: "bg-emerald-100 text-zinc-700" },
+    style: {
+      primary: "bg-emerald-500/70 text-white",
+      secondary: "bg-emerald-100 text-zinc-700",
+    },
   },
   [Status.Offer]: {
     label: "Offer",
-    style: { primary: "bg-violet-500/70 text-white", secondary: "bg-violet-100 text-zinc-700" },
+    style: {
+      primary: "bg-violet-500/70 text-white",
+      secondary: "bg-violet-100 text-zinc-700",
+    },
   },
   [Status.Rejected]: {
     label: "Rejected",
-    style: { primary: "bg-red-500/70 text-white", secondary: "bg-red-100 text-zinc-700" },
+    style: {
+      primary: "bg-red-500/70 text-white",
+      secondary: "bg-red-100 text-zinc-700",
+    },
   },
   [Status.Archived]: {
     label: "Archived",
-    style: { primary: "bg-orange-500/70 text-white", secondary: "bg-orange-100 text-zinc-700" },
+    style: {
+      primary: "bg-orange-500/70 text-white",
+      secondary: "bg-orange-100 text-zinc-700",
+    },
   },
 };
 
@@ -88,7 +106,7 @@ const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
       >
         <Listbox.Button
           className={twMerge(
-            "relative flex items-center gap-1 rounded-lg bg-zinc-200 py-1.5 pl-3 pr-2 text-left text-xs font-bold focus:outline-none uppercase text-zinc-700",
+            "relative flex items-center gap-1 rounded-lg bg-zinc-200 py-1.5 pl-3 pr-2 text-left text-xs font-bold uppercase text-zinc-700 focus:outline-none",
             style.primary,
           )}
         >
@@ -102,8 +120,8 @@ const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
               value={value}
               className={({ active, selected }) =>
                 twMerge(
-                  "cursor-pointer select-none truncate rounded-lg px-3 py-1.5 text-xs font-bold transition uppercase text-zinc-700",
-                  
+                  "cursor-pointer select-none truncate rounded-lg px-3 py-1.5 text-xs font-bold uppercase text-zinc-700 transition",
+
                   selected && style.primary,
                   active && style.secondary,
                 )

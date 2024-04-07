@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="flex flex-grow flex-col bg-zinc-50">
+    <div className="flex flex-grow flex-col">
       <div className="flex justify-center gap-2 bg-zinc-100 p-8">
         <div className="flex w-full max-w-7xl gap-2">
           <Streak />

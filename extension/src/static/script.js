@@ -7,7 +7,7 @@ const handler = (caller) => ({
 	get: (_, prop) => {
 		return async (...args) => {
 			try {
-				const response = caller[prop](args)
+				const response = caller[prop](...args)
 				return response
 			} catch (error) {
 				console.warn(error)

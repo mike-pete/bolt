@@ -4,7 +4,7 @@ import GoogleAuthButton from "../../_components/GoogleAuthButton";
 
 const Welcome = () => {
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-6 bg-zinc-50">
+    <div className="flex h-screen flex-col items-center justify-center gap-6">
       <div className="flex flex-col items-center justify-center gap-2">
         <h1 className="text-3xl font-bold text-zinc-700">
           Thank you for installing Bolt!

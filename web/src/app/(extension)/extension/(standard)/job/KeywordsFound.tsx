@@ -87,14 +87,16 @@ const KeywordGroupPreview: React.FC<{
     <div className="flex flex-col flex-nowrap gap-2">
       <p className="font-bold uppercase text-zinc-400">{title}</p>
       <div className="flex flex-wrap items-center gap-2">
-        {keywordsFoundInGroup.map(({ keyword, count }) => (
+        {keywordsFoundInGroup.sort((a,b) => b.count - a.count).map(({ keyword, count }) => (
           <div
-            className={`flex select-none items-center gap-2 rounded-full bg-sky-400 py-1.5 pl-3 pr-1.5 uppercase`}
+            className={`flex select-none items-center gap-1 rounded-full bg-sky-400 px-3 py-1.5`}
             key={keyword}
           >
-            <p className="text-sm font-semibold text-white">{keyword}</p>
-            <p className="m-0 min-w-[16px] rounded-full bg-white px-1 py-0.5 text-center text-xs font-bold text-zinc-700">
-              {count}
+            <p className="text-sm font-semibold uppercase text-white">
+              {keyword}
+            </p>
+            <p className="m-0 min-w-[16px] rounded-full text-center text-xs font-bold text-white/70">
+              x {count}
             </p>
           </div>
         ))}

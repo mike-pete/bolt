@@ -8,11 +8,44 @@ import useGetJobDetails, {
   JobDetailError,
 } from "./scrapingHooks/useGetJobDetails";
 
+// const highlightKeywords = (
+//   selector: string,
+//   keywords: { keyword: string; color: string }[],
+// ) => {
+//   void bi.highlightKeywords(keywords, selector);
+// };
+
 const Job: React.FC = () => {
   const { isLoading, jobDetails, error } = useGetJobDetails();
-
   const { data: keywordGroups, isLoading: loadingKeywordGroups } =
     api.keywords.getKeywordGroups.useQuery();
+  // const pageContext = useGetPageContext();
+
+  // const [highlightedJobId, setHighlightedJobId] = useState<string>();
+
+  // useEffect(() => {
+  //   if (
+  //     pageContext?.description.selector &&
+  //     !isLoading &&
+  //     jobDetails?.jobId &&
+  //     jobDetails?.jobId !== highlightedJobId
+  //   ) {
+
+  //     const keywords =
+  //       keywordGroups?.flatMap((group) =>
+  //         group.keywords.map(({ keyword }) => ({ keyword, color: "#38bdf8" })),
+  //       ) ?? [];
+  //     highlightKeywords(pageContext.description.selector, keywords);
+  //     setHighlightedJobId(jobDetails.jobId);
+  //   }
+  // }, [
+  //   highlightedJobId,
+  //   isLoading,
+  //   jobDetails?.description,
+  //   jobDetails?.jobId,
+  //   pageContext?.description.selector,
+  //   keywordGroups,
+  // ]);
 
   if (!isLoading && error === JobDetailError.NO_JOB_ID) {
     return (

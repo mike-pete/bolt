@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default async function Home() {
   return (
-    <div className="flex flex-col items-center gap-8 bg-zinc-50">
+    <div className="flex flex-col items-center gap-8">
       <section className="flex h-screen shrink-0 flex-col p-8">
         <div className="flex h-2/6 scale-105 flex-col items-center justify-end">
           <div className="flex items-center gap-4">
