@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import ExportJobs from "./ExportJobs";
 
 const Settings = () => {
