@@ -7,11 +7,22 @@ const JobOverview: React.FC<{ details: JobDetails }> = ({ details }) => {
   return (
     <>
       <p className="text-sm font-bold text-zinc-500">{company}</p>
-      <p className="text-lg font-bold text-zinc-700">{title}</p>
+      {details?.url ? (
+        <a
+          href={details.url}
+          target="_blank"
+          title="Go to job"
+          className="text-lg font-bold text-sky-600 transition hover:text-sky-400"
+        >
+          {title}
+        </a>
+      ) : (
+        <p className="text-lg font-bold text-zinc-700">{title}</p>
+      )}
       {comp && <p className="text-sm font-bold text-zinc-500">{comp}</p>}
       {(typeof workMode?.declared === "string" ||
         workMode?.conflicting?.length) && (
-        <div className="flex-wrap flex items-start gap-2">
+        <div className="flex flex-wrap items-start gap-2">
           {typeof workMode.declared === "string" && (
             <p className="flex-shrink-0 rounded bg-zinc-400 px-1.5 py-0.5 text-xs font-bold uppercase text-zinc-100">
               {workMode.declared}
@@ -32,7 +43,7 @@ const JobOverview: React.FC<{ details: JobDetails }> = ({ details }) => {
               </p>
             </div>
           )}
-        </div> 
+        </div>
       )}
     </>
   );

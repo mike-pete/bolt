@@ -1,10 +1,6 @@
 import { Listbox } from "@headlessui/react";
 import { Status } from "@prisma/client";
-import {
-  IconChevronDown,
-  IconExternalLink,
-  IconHeart,
-} from "@tabler/icons-react";
+import { IconChevronDown, IconHeart } from "@tabler/icons-react";
 import React, { useRef } from "react";
 import { twMerge } from "tailwind-merge";
 import { api } from "~/trpc/react";
@@ -15,7 +11,7 @@ const useSaveJob = () => {
   const ctx = api.useUtils();
   const utils = api.useUtils();
   const mutationCount = useRef(0);
-  
+
   const saveJob = api.jobs.saveJob.useMutation({
     onMutate: async (jobDetails) => {
       await utils.jobs.getJob.cancel();
@@ -70,16 +66,6 @@ const ActionBar: React.FC<{ details: JobDetails }> = ({ details }) => {
   return (
     <div className="flex w-full flex-row items-center gap-2 border-t-2 px-4 py-2">
       <StatusPicker details={details} />
-      {details?.url && (
-        <a
-          href={details.url}
-          target="_blank"
-          title="Go to job"
-          className="text-sky-600 transition hover:text-sky-400"
-        >
-          <IconExternalLink />
-        </a>
-      )}
       <FavoriteButton details={details} />
     </div>
   );
@@ -197,7 +183,7 @@ const FavoriteButton: React.FC<{ details: JobDetails }> = ({ details }) => {
     >
       <IconHeart
         className={twMerge(
-          "fill-zinc-200 text-zinc-400 transition hover:fill-red-200 hover:text-red-400",
+          "transition-duration-150 fill-zinc-200 text-zinc-400 transition",
           details.favoritedAt && "fill-red-400 text-red-600",
         )}
         stroke={2}
