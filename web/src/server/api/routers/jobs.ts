@@ -22,8 +22,7 @@ export const jobsRouter = createTRPCRouter({
             "Rejected",
             "Offer",
             "Archived",
-          ])
-          .default("Saved"),
+          ]),
         favoritedAt: z.nullable(z.coerce.date()),
       }),
     )
@@ -87,6 +86,9 @@ export const jobsRouter = createTRPCRouter({
         favoritedAt: true,
 
         status: {
+          select: {
+            status: true,
+          },
           orderBy: {
             createdAt: "desc",
           },
@@ -98,7 +100,10 @@ export const jobsRouter = createTRPCRouter({
       },
     });
 
-    return jobPreviews;
+    return jobPreviews.map((job) => ({
+      ...job,
+      status: job.status[0]?.status,
+    }));
   }),
 
   getJob: protectedProcedure
@@ -112,8 +117,18 @@ export const jobsRouter = createTRPCRouter({
             userId,
             jobId: input,
           },
-          include: {
+          select: {
+            title: true,
+            company: true,
+            createdAt: true,
+            compensation: true,
+            jobId: true,
+            favoritedAt: true,
+
             status: {
+              select: {
+                status: true,
+              },
               orderBy: {
                 createdAt: "desc",
               },
@@ -122,7 +137,7 @@ export const jobsRouter = createTRPCRouter({
           },
         });
 
-        return job;
+        return { ...job, status: job.status[0]?.status };
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
           if (error.code === "P2025") {

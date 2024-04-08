@@ -8,9 +8,7 @@ const Streak = () => {
   const datesActive = new Set<string>();
 
   savedJobs?.forEach(({ createdAt, status }) => {
-    const statusName = status[0]?.status;
-
-    if (!statusName) {
+    if (!status) {
       return;
     }
     datesActive.add(dayjs(createdAt).format("YYYY-MM-DD"));

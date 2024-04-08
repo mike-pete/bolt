@@ -13,9 +13,39 @@ import { type JobDetails } from "./JobCard";
 
 const useSaveJob = () => {
   const ctx = api.useUtils();
+  const utils = api.useUtils();
 
   const saveJob = api.jobs.saveJob.useMutation({
-    // todo: implement optimistic updates
+    onMutate: async (jobDetails) => {
+      await utils.jobs.getJob.cancel();
+      await utils.jobs.getJobs.cancel();
+      const prevData = {
+        job: utils.jobs.getJob.getData(jobDetails.jobId),
+        jobs: utils.jobs.getJobs.getData(),
+      };
+      utils.jobs.getJob.setData(jobDetails.jobId, {
+        ...jobDetails,
+        status: jobDetails?.status ?? Status.Saved,
+        compensation: jobDetails?.compensation ?? null,
+        createdAt: prevData?.job?.createdAt ?? new Date(),
+      });
+      utils.jobs.getJobs.setData(undefined, (prev) => {
+        return prev?.map((job) => {
+          if (job.jobId === jobDetails.jobId) {
+            return {
+              ...job,
+              ...jobDetails,
+            };
+          }
+          return job;
+        });
+      });
+      return { prevData };
+    },
+    onError(err, jobDetails, ctx) {
+      utils.jobs.getJob.setData(jobDetails.jobId, ctx?.prevData.job);
+      utils.jobs.getJobs.setData(undefined, ctx?.prevData.jobs);
+    },
     onSuccess: () => {
       void ctx.jobs.getJob.invalidate();
       void ctx.jobs.getJobs.invalidate();

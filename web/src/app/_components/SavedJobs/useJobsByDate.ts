@@ -9,17 +9,18 @@ const useJobsByDate = (search?: string) => {
   const dates: { date: string; jobs: JobDetails[] }[] = [];
 
   if (savedJobs) {
-    savedJobs.forEach(({ createdAt, ...jobData }) => {
+    savedJobs.forEach(({...jobData }) => {
       const job: JobDetails = {
         jobId: jobData.jobId,
         company: jobData.company,
         title: jobData.title,
         comp: jobData.compensation ?? undefined,
-        status: jobData.status?.[0]?.status,
+        status: jobData.status,
         url: `https://www.linkedin.com/jobs/view/${jobData.jobId}`,
         favoritedAt: jobData.favoritedAt,
+        createdAt: jobData.createdAt,
       };
-      const date = dayjs(createdAt).format("MMM D, YYYY");
+      const date = dayjs(jobData.createdAt).format("MMM D, YYYY");
 
       if (search) {
         const searchable = `${job.company} ${job.title} ${job.status}`;
