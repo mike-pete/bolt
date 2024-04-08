@@ -5,7 +5,7 @@ import {
   IconExternalLink,
   IconHeart,
 } from "@tabler/icons-react";
-import React from "react";
+import React, { useRef } from "react";
 import { twMerge } from "tailwind-merge";
 import { api } from "~/trpc/react";
 import { type RouterInputs } from "~/trpc/shared";
@@ -14,7 +14,8 @@ import { type JobDetails } from "./JobCard";
 const useSaveJob = () => {
   const ctx = api.useUtils();
   const utils = api.useUtils();
-
+  const mutationCount = useRef(0);
+  
   const saveJob = api.jobs.saveJob.useMutation({
     onMutate: async (jobDetails) => {
       await utils.jobs.getJob.cancel();
@@ -46,9 +47,12 @@ const useSaveJob = () => {
       utils.jobs.getJob.setData(jobDetails.jobId, ctx?.prevData.job);
       utils.jobs.getJobs.setData(undefined, ctx?.prevData.jobs);
     },
-    onSuccess: () => {
-      void ctx.jobs.getJob.invalidate();
-      void ctx.jobs.getJobs.invalidate();
+    onSettled: () => {
+      mutationCount.current -= 1;
+      if (mutationCount.current === 0) {
+        void ctx.jobs.getJob.invalidate();
+        void ctx.jobs.getJobs.invalidate();
+      }
     },
   });
 
