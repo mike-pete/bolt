@@ -11,7 +11,7 @@ const ExportJobs = async () => {
       job.title,
       job.company,
       job?.compensation ?? "",
-      job?.status[0]?.status ?? "",
+      job?.status ?? "",
       dayjs(job.createdAt).format("DD/MM/YYYY"),
     ]);
   });
