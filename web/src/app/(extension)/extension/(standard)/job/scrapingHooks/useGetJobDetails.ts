@@ -106,6 +106,7 @@ const useGetJobDetails = (): {
         comp: compensation ?? undefined,
         workMode: workMode,
         status: savedJobData?.status?.[0]?.status,
+        favoritedAt: savedJobData?.favoritedAt ?? null,
       },
     };
   }

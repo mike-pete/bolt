@@ -16,6 +16,7 @@ export type JobDetails = {
   };
   status?: Status;
   url?: string;
+  favoritedAt: Date | null;
 };
 
 const JobCard: React.FC<{

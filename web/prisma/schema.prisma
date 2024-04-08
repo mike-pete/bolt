@@ -92,17 +92,6 @@ model KeywordGroups {
     @@index([userId])
 }
 
-model JobSeen {
-    id String @id @default(cuid())
-    userId String
-    jobId String
-    title String
-    seenAt DateTime @default(now())
-
-    @@unique([userId, jobId])
-    @@index([userId])
-}
-
 model Job {
     id String @id @default(cuid())
     userId String
@@ -115,6 +104,7 @@ model Job {
     updatedAt DateTime @updatedAt
     status JobStatus[]
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    favoritedAt DateTime?
 
     @@unique([userId, jobId])
     @@index([userId])
