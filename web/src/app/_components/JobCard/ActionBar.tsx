@@ -1,26 +1,72 @@
 import { Listbox } from "@headlessui/react";
 import { Status } from "@prisma/client";
-import { IconChevronDown, IconExternalLink } from "@tabler/icons-react";
-import React from "react";
+import { IconChevronDown, IconHeart } from "@tabler/icons-react";
+import React, { useRef } from "react";
 import { twMerge } from "tailwind-merge";
 import { api } from "~/trpc/react";
 import { type RouterInputs } from "~/trpc/shared";
 import { type JobDetails } from "./JobCard";
 
+const useSaveJob = () => {
+  const ctx = api.useUtils();
+  const utils = api.useUtils();
+  const mutationCount = useRef(0);
+
+  const saveJob = api.jobs.saveJob.useMutation({
+    onMutate: async (jobDetails) => {
+      await utils.jobs.getJob.cancel();
+      await utils.jobs.getJobs.cancel();
+      const prevData = {
+        job: utils.jobs.getJob.getData(jobDetails.jobId),
+        jobs: utils.jobs.getJobs.getData(),
+      };
+      utils.jobs.getJob.setData(jobDetails.jobId, {
+        ...jobDetails,
+        status: jobDetails?.status ?? Status.Saved,
+        compensation: jobDetails?.compensation ?? null,
+        createdAt: prevData?.job?.createdAt ?? new Date(),
+      });
+      utils.jobs.getJobs.setData(undefined, (prev) => {
+        return prev?.map((job) => {
+          if (job.jobId === jobDetails.jobId) {
+            return {
+              ...job,
+              ...jobDetails,
+            };
+          }
+          return job;
+        });
+      });
+      return { prevData };
+    },
+    onError(err, jobDetails, ctx) {
+      utils.jobs.getJob.setData(jobDetails.jobId, ctx?.prevData.job);
+      utils.jobs.getJobs.setData(undefined, ctx?.prevData.jobs);
+    },
+    onSettled: () => {
+      mutationCount.current -= 1;
+      if (mutationCount.current === 0) {
+        void ctx.jobs.getJob.invalidate();
+        void ctx.jobs.getJobs.invalidate();
+      }
+    },
+  });
+
+  return (details: JobDetails) => {
+    const newJobData: RouterInputs["jobs"]["saveJob"] = {
+      ...details,
+      compensation: details?.comp,
+      status: details?.status ?? Status.Saved,
+    };
+    saveJob.mutate(newJobData);
+  };
+};
+
 const ActionBar: React.FC<{ details: JobDetails }> = ({ details }) => {
   return (
-    <div className="flex w-full flex-row items-center gap-2 border-t-2 px-4 py-2">
+    <div className="flex w-full flex-row items-center gap-2 border-t-2 border-t-inherit px-4 py-2 bg-white/70">
       <StatusPicker details={details} />
-      {details?.url && (
-        <a
-          href={details.url}
-          target="_blank"
-          title="Go to job"
-          className="text-sky-600 transition hover:text-sky-400"
-        >
-          <IconExternalLink />
-        </a>
-      )}
+      <FavoriteButton details={details} />
     </div>
   );
 };
@@ -74,15 +120,7 @@ const options: Record<
 };
 
 const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
-  const ctx = api.useUtils();
-
-  const saveJob = api.jobs.saveJob.useMutation({
-    // todo: implement optimistic updates
-    onSuccess: () => {
-      void ctx.jobs.getJob.invalidate();
-      void ctx.jobs.getJobs.invalidate();
-    },
-  });
+  const saveJob = useSaveJob();
 
   const { label, style } = details?.status
     ? options[details.status]
@@ -93,15 +131,10 @@ const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
       <Listbox
         value={details?.status}
         onChange={(newStatus) => {
-          const newJobData: RouterInputs["jobs"]["saveJob"] = {
-            jobId: details.jobId,
-            title: details?.title,
-            company: details?.company,
-            description: details?.description,
-            compensation: details?.comp,
+          saveJob({
+            ...details,
             status: newStatus,
-          };
-          saveJob.mutate(newJobData);
+          });
         }}
       >
         <Listbox.Button
@@ -133,6 +166,29 @@ const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
         </Listbox.Options>
       </Listbox>
     </div>
+  );
+};
+
+const FavoriteButton: React.FC<{ details: JobDetails }> = ({ details }) => {
+  const saveJob = useSaveJob();
+
+  return (
+    <button
+      onClick={() =>
+        saveJob({
+          ...details,
+          favoritedAt: details.favoritedAt ? null : new Date(),
+        })
+      }
+    >
+      <IconHeart
+        className={twMerge(
+          "transition-duration-150 fill-zinc-200 text-zinc-400 transition",
+          details.favoritedAt && "fill-red-400 text-red-600",
+        )}
+        stroke={2}
+      />
+    </button>
   );
 };
 

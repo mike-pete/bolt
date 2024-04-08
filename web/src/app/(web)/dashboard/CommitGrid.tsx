@@ -16,9 +16,7 @@ const CommitGrid = () => {
   let jobsByMonth: Record<string, Record<number, Record<string, number>>> = {};
 
   savedJobs?.forEach(({ createdAt, status }) => {
-    const statusName = status[0]?.status;
-
-    if (!statusName) {
+    if (!status) {
       return;
     }
 
@@ -31,7 +29,7 @@ const CommitGrid = () => {
         ...jobsByMonth[month],
         [day]: {
           ...jobsByMonth[month]?.[day],
-          [statusName]: (jobsByMonth[month]?.[day]?.[statusName] ?? 0) + 1,
+          [status]: (jobsByMonth[month]?.[day]?.[status] ?? 0) + 1,
         },
       },
     };
