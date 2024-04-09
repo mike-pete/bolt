@@ -64,7 +64,7 @@ const useSaveJob = () => {
 
 const ActionBar: React.FC<{ details: JobDetails }> = ({ details }) => {
   return (
-    <div className="flex w-full flex-row items-center gap-2 border-t-2 border-t-inherit px-4 py-2 bg-white/70">
+    <div className="flex w-full flex-row items-center gap-2 border-t-2 border-t-inherit px-4 py-2 bg-white/70 rounded-b-md">
       <StatusPicker details={details} />
       <FavoriteButton details={details} />
     </div>

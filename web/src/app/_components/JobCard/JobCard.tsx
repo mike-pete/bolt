@@ -68,7 +68,7 @@ const CardContainer: React.FC<{ children: ReactNode; className?: string }> = ({
   return (
     <div
       className={twMerge(
-        "flex w-full flex-col flex-nowrap items-start rounded-lg border-2 bg-white overflow-hidden",
+        "flex w-full flex-col flex-nowrap items-start rounded-lg border-2 bg-white",
         className,
       )}
     >
