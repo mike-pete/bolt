@@ -12,7 +12,6 @@ const SavedJobs: React.FC<{ search?: string }> = ({ search }) => {
 
   const jobsByDate = useJobsByDate(search);
   const favoritedJobs = useFavoritedJobs(search);
-  const hasFavoritedJobs = !!savedJobs?.find((job) => job.favoritedAt !== null);
 
   if (isLoading) {
     return (
@@ -36,7 +35,7 @@ const SavedJobs: React.FC<{ search?: string }> = ({ search }) => {
 
   return (
     <div className="flex flex-col gap-12">
-      {(hasFavoritedJobs || !search) && (
+      {(!search || Boolean(search && favoritedJobs?.length)) && (
         <div>
           <h2 className="p-2 text-2xl font-bold text-zinc-400">
             Favorited Jobs
