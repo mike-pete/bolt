@@ -54,7 +54,7 @@ const EmailTemplateWelcome: React.FC<{ NEXT_PUBLIC_URL: string }> = ({
                   Mike Peterson
                 </Text>
                 <Link
-                  href="mailto:mike@lemonshell.com"
+                  href="mailto:mike@boltapply.com"
                   className="inline py-1 text-blue-600 no-underline"
                 >
                   mike@boltapply.com
