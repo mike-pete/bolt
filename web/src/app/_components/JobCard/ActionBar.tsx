@@ -174,7 +174,9 @@ const FavoriteButton: React.FC<{ details: JobDetails }> = ({ details }) => {
 
   return (
     <button
+    data-ph-capture-attribute-user-clicked-favorite={details.favoritedAt ? "unfavorited" : "favorited"}
       onClick={() =>
+        
         saveJob({
           ...details,
           favoritedAt: details.favoritedAt ? null : new Date(),
