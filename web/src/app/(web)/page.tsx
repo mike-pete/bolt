@@ -81,7 +81,7 @@ export default async function Home() {
             />
           </div>
 
-          <div className="flex w-full flex-wrap items-center justify-center flex-col pt-32 gap-8">
+          <div className="flex w-full flex-col flex-wrap items-center justify-center gap-8 pt-32">
             <p className="min-w-lg max-w-[80vw] text-center text-[8vw] font-bold leading-tight sm:text-5xl">
               Save jobs and track your applications
             </p>
@@ -90,7 +90,7 @@ export default async function Home() {
               alt="saved jobs"
               width={687}
               height={413}
-              className="flex-grow rounded-lg shadow-2xl shadow-zinc-400 w-full max-w-[80vw] sm:max-w-5xl"
+              className="w-full max-w-[80vw] flex-grow rounded-lg shadow-2xl shadow-zinc-400 sm:max-w-5xl"
             />
           </div>
 
@@ -99,7 +99,7 @@ export default async function Home() {
       </section>
 
       <section className="flex w-full items-center justify-center p-4">
-        <div className="flex w-full max-w-3xl flex-col gap-12 items-center">
+        <div className="flex w-full max-w-3xl flex-col items-center gap-12">
           <h1 className="text-5xl font-black text-zinc-600 md:text-6xl">
             DEMO
           </h1>
@@ -132,6 +132,7 @@ export default async function Home() {
               <li>Instant job overviews</li>
               <li>Save jobs for later</li>
               <li>Track applications</li>
+              <li>Export saved jobs as .csv</li>
             </ul>
           </div>
           <hr />
@@ -157,28 +158,58 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* <section className="flex w-full items-center justify-center p-4">
-        <div className="flex w-full max-w-3xl flex-col gap-4">
-          <h1 className="text-4xl font-black text-zinc-600 md:text-6xl">Q&A</h1>
+      <section
+        className="flex w-full flex-grow items-center justify-center p-4"
+        id="q&a"
+      >
+        <div className=" flex w-full max-w-3xl flex-col items-center rounded-lg border-2 bg-white px-6 py-10">
+          <div className="prose prose-zinc">
+            <h1 className="border-b-2 pb-6 text-center">Q&A</h1>
 
-          <h3 className="text-xl font-semibold">
-            How do I cancel my subscription?
-          </h3>
-          <p className="ml-4 border-l-4 p-3">
-            Cancel at any time by sending an email to mike@boltapply.com and{" "}
-            {"I'll"} make sure {"it's"} canceled within 24 hrs!
-          </p>
+            <h2>What job boards are supported?</h2>
+            <p>
+              Currently we only support LinkedIn. But if {"you'd"} like a
+              different job board added, definitely let me know!{"  "}
+              <a href="mailto:mike@boltapply.com">mike@boltapply.com</a>
+            </p>
 
-          <h3 className="text-xl font-semibold">
-            What job boards are supported?
-          </h3>
-          <p className="ml-4 border-l-4 p-3">
-            Currently we only support LinkedIn. But if {"you'd"} like a
-            different job board added, definitely let me know!
-            mike@boltapply.com
-          </p>
+            <hr className="border-0 border-b-2" />
+
+            <h2>How is my data used?</h2>
+            <p>
+              Data collected in Bolt generally falls into one of two categories:
+            </p>
+            <ol>
+              <li>
+                <h3>Product</h3>
+                <p>
+                  Data in this category power the application and allows you to
+                  save and track jobs.
+                </p>
+                <p>
+                  <strong>Examples include: </strong>
+                  jobs saved, user account data, keywords, session data, etc.
+                </p>
+              </li>
+
+              <li>
+                <h3>Analytics</h3>
+                <p>
+                  Data in this category help me understand how users interact
+                  with the product so I can extend features that are used
+                  frequently, and fix or drop features that aren&apos;t being
+                  used.
+                </p>
+                <p>
+                  <strong>Examples include: </strong>
+                  button presses, LinkedIn jobs viewed, pages viewed, user
+                  interactions, user account data, browser metadata, etc.
+                </p>
+              </li>
+            </ol>
+          </div>
         </div>
-      </section> */}
+      </section>
 
       <footer className="flex w-full justify-center gap-8 p-6">
         <Link
