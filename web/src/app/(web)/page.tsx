@@ -177,7 +177,7 @@ export default async function Home() {
 
             <h2>How is my data used?</h2>
             <p>
-              Data collected in Bolt generally falls into one of two categories:
+              Data in Bolt generally falls into one of two categories:
             </p>
             <ol>
               <li>
@@ -188,7 +188,7 @@ export default async function Home() {
                 </p>
                 <p>
                   <strong>Examples include: </strong>
-                  jobs saved, user account data, keywords, session data, etc.
+                  jobs saved, user account data, Google account data (email, name, and profile picture), keywords, session data, etc.
                 </p>
               </li>
 
@@ -203,7 +203,7 @@ export default async function Home() {
                 <p>
                   <strong>Examples include: </strong>
                   button presses, LinkedIn jobs viewed, pages viewed, user
-                  interactions, user account data, browser metadata, etc.
+                  interactions, user account data, Google account data (email, name, and profile picture), browser metadata, etc.
                 </p>
               </li>
             </ol>
