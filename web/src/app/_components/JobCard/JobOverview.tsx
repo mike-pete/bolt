@@ -3,7 +3,7 @@ import React from "react";
 import { type JobDetails } from "./JobCard";
 
 const JobOverview: React.FC<{ details: JobDetails }> = ({ details }) => {
-  const { company, title, comp, workMode } = details;
+  const { company, title, compensation, workMode } = details;
   return (
     <>
       <p className="text-sm font-bold text-zinc-500">{company}</p>
@@ -19,7 +19,7 @@ const JobOverview: React.FC<{ details: JobDetails }> = ({ details }) => {
       ) : (
         <p className="text-lg font-bold text-zinc-700">{title}</p>
       )}
-      {comp && <p className="text-sm font-bold text-zinc-500">{comp}</p>}
+      {compensation && <p className="text-sm font-bold text-zinc-500">{compensation}</p>}
       {(typeof workMode?.declared === "string" ||
         workMode?.conflicting?.length) && (
         <div className="flex flex-wrap items-start gap-2">

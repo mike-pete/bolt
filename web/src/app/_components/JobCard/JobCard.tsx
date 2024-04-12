@@ -9,7 +9,7 @@ export type JobDetails = {
   jobId: string;
   company: string;
   title: string;
-  comp?: string;
+  compensation?: string | null;
   description?: string;
   workMode?: {
     declared: string;

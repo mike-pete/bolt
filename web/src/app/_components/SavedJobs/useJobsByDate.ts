@@ -14,7 +14,7 @@ const useJobsByDate = (search?: string) => {
         jobId: jobData.jobId,
         company: jobData.company,
         title: jobData.title,
-        comp: jobData.compensation ?? undefined,
+        compensation: jobData.compensation,
         status: jobData.status,
         url: `https://www.linkedin.com/jobs/view/${jobData.jobId}`,
         favoritedAt: jobData.favoritedAt,
