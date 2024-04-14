@@ -8,7 +8,6 @@ import { type RouterInputs } from "~/trpc/shared";
 import { type JobDetails } from "./JobCard";
 
 const useSaveJob = () => {
-  const ctx = api.useUtils();
   const utils = api.useUtils();
   const mutationCount = useRef(0);
 
@@ -25,6 +24,7 @@ const useSaveJob = () => {
         status: jobDetails?.status ?? Status.Saved,
         compensation: jobDetails?.compensation ?? null,
         createdAt: prevData?.job?.createdAt ?? new Date(),
+        notes: prevData?.job?.notes ?? [],
       });
       utils.jobs.getJobs.setData(undefined, (prev) => {
         return prev?.map((job) => {
@@ -46,8 +46,8 @@ const useSaveJob = () => {
     onSettled: () => {
       mutationCount.current -= 1;
       if (mutationCount.current === 0) {
-        void ctx.jobs.getJob.invalidate();
-        void ctx.jobs.getJobs.invalidate();
+        void utils.jobs.getJob.invalidate();
+        void utils.jobs.getJobs.invalidate();
       }
     },
   });
@@ -55,7 +55,7 @@ const useSaveJob = () => {
   return (details: JobDetails) => {
     const newJobData: RouterInputs["jobs"]["saveJob"] = {
       ...details,
-      compensation: details?.comp,
+      compensation: details?.compensation ?? undefined,
       status: details?.status ?? Status.Saved,
     };
     saveJob.mutate(newJobData);
