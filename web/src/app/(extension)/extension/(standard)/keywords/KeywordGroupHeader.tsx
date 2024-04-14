@@ -11,7 +11,7 @@ const KeywordGroupHeader: React.FC<{ keywordGroup: KeywordGroupType }> = ({
   keywordGroup,
 }) => {
   const { id, title } = keywordGroup;
-  const ctx = api.useUtils();
+  const utils = api.useUtils();
 
   const { mutate: updateKeywordGroup } =
     api.keywords.updateKeywordGroup.useMutation();
@@ -19,9 +19,9 @@ const KeywordGroupHeader: React.FC<{ keywordGroup: KeywordGroupType }> = ({
   const { mutate: deleteKeywordGroup } =
     api.keywords.deleteKeywordGroup.useMutation({
       onMutate: async ({ keywordGroupId }) => {
-        await ctx.keywords.getKeywordGroups.cancel();
-        const prevData = ctx.keywords.getKeywordGroups.getData();
-        ctx.keywords.getKeywordGroups.setData(
+        await utils.keywords.getKeywordGroups.cancel();
+        const prevData = utils.keywords.getKeywordGroups.getData();
+        utils.keywords.getKeywordGroups.setData(
           undefined,
           (prevData) =>
             prevData?.filter((group) => group.id !== keywordGroupId) ?? [],
@@ -30,11 +30,11 @@ const KeywordGroupHeader: React.FC<{ keywordGroup: KeywordGroupType }> = ({
       },
       onError: (error, variables, context) => {
         if (context?.prevData) {
-          ctx.keywords.getKeywordGroups.setData(undefined, context.prevData);
+          utils.keywords.getKeywordGroups.setData(undefined, context.prevData);
         }
       },
       onSettled: () => {
-        void ctx.keywords.getKeywordGroups.invalidate();
+        void utils.keywords.getKeywordGroups.invalidate();
       },
     });
 

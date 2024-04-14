@@ -3,12 +3,12 @@ import LoadingSpinner from "~/app/_components/LoadingSpinner";
 import { api } from "~/trpc/react";
 
 const NewKeywordGroupButton: React.FC = () => {
-  const ctx = api.useUtils();
+  const utils = api.useUtils();
 
   const { mutate: addKeywordGroup, isLoading } =
     api.keywords.createKeywordGroup.useMutation({
       onSettled: () => {
-        void ctx.keywords.getKeywordGroups.invalidate();
+        void utils.keywords.getKeywordGroups.invalidate();
       },
     });
 
