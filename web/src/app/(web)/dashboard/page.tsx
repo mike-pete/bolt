@@ -4,17 +4,22 @@ import { IconSearch } from "@tabler/icons-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import SavedJobs from "~/app/_components/SavedJobs/SavedJobs";
+import { api } from "~/trpc/react";
 import CommitGrid from "./CommitGrid";
 import JobModal from "./JobModal";
 import Streak from "./Streak";
 
-
 const Dashboard = () => {
   const [search, setSearch] = useState("");
   const searchParams = useSearchParams();
-  const pathname = usePathname()
-  const router = useRouter()
+  const pathname = usePathname();
+  const router = useRouter();
   const jobId = searchParams.get("job");
+  const { data: jobDetails, isLoading: isLoadingJobDetails } =
+    api.jobs.getJob.useQuery(jobId!, {
+      enabled: !!jobId,
+      retry: 0,
+    });
 
   return (
     <>
@@ -48,9 +53,16 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {jobId && <JobModal open={!!jobId} onClose={()=>{
-        void router.push(pathname, {scroll: false})
-      }}/>}
+      {jobId && (
+        <JobModal
+          open={!!jobId}
+          onClose={() => {
+            void router.push(pathname, { scroll: false });
+          }}
+          isLoadingJobDetails={isLoadingJobDetails}
+          jobDetails={jobDetails}
+        />
+      )}
     </>
   );
 };
