@@ -1,12 +1,13 @@
 import { Status } from ".prisma/client";
 import { Dialog } from "@headlessui/react";
 import { IconX } from "@tabler/icons-react";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { type JobDetails } from "~/app/_components/JobCard/JobCard";
 import TextArea from "~/app/_components/TextArea/TextArea";
 import { api } from "~/trpc/react";
 
-const JobModal: React.FC<{
+const JobNotesModal: React.FC<{
   open: boolean;
   onClose: () => void;
   isLoadingJobDetails: boolean;
@@ -69,8 +70,8 @@ const JobModal: React.FC<{
                 </p>
               )}
               {notes?.map(({ id, note, createdAt }) => (
-                <div className="rounded-lg border-2 bg-white p-4" key={id}>
-                  <p>{createdAt.toString()}</p>
+                <div className="rounded-lg border-2 bg-white p-4 flex flex-col gap-2" key={id}>
+                  <p className="text-xs text-zinc-400">{dayjs(createdAt).format("DD/MM/YYYY")}</p>
                   <TextArea
                     value={note}
                     setValue={() => {
@@ -82,7 +83,7 @@ const JobModal: React.FC<{
                 </div>
               ))}
             </div>
-            <button
+            {/* <button
               className="absolute right-2 top-2 rounded-lg"
               onClick={onClose}
             >
@@ -90,7 +91,7 @@ const JobModal: React.FC<{
                 size={20}
                 className="text-zinc-400 transition hover:text-zinc-800"
               />
-            </button>
+            </button> */}
           </div>
         </div>
       </Dialog.Panel>
@@ -98,4 +99,4 @@ const JobModal: React.FC<{
   );
 };
 
-export default JobModal;
+export default JobNotesModal;

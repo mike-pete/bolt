@@ -6,7 +6,7 @@ import { useState } from "react";
 import SavedJobs from "~/app/_components/SavedJobs/SavedJobs";
 import { api } from "~/trpc/react";
 import CommitGrid from "./CommitGrid";
-import JobModal from "./JobModal";
+import JobNotesModal from "./JobNotesModal";
 import Streak from "./Streak";
 
 const Dashboard = () => {
@@ -54,7 +54,7 @@ const Dashboard = () => {
       </div>
 
       {jobId && (
-        <JobModal
+        <JobNotesModal
           open={!!jobId}
           onClose={() => {
             void router.push(pathname, { scroll: false });
