@@ -1,6 +1,5 @@
 import { Status } from ".prisma/client";
 import { Dialog } from "@headlessui/react";
-import { IconX } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { type JobDetails } from "~/app/_components/JobCard/JobCard";
@@ -46,16 +45,18 @@ const JobNotesModal: React.FC<{
       onClose={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-400/40 p-4 backdrop-blur-sm"
     >
-      <Dialog.Panel className="max-h-[95vh] w-[50ch] max-w-full overflow-hidden rounded-lg bg-white shadow-lg">
+      <Dialog.Panel className="max-h-[95vh] w-[50ch] max-w-full overflow-hidden rounded-lg bg-zinc-50 shadow-lg">
         <div className="relative flex max-h-[inherit] min-h-[45ch] max-w-full flex-col overflow-y-auto overflow-x-hidden">
           <div className="flex flex-grow flex-col">
-            <TextArea
-              value={val}
-              setValue={setVal}
-              placeholder="new note..."
-              className="max-w-full resize-none rounded-t-lg p-8 pb-4 outline-none"
-            />
-            <div className="flex justify-end gap-2 border-b-2 p-4 pt-0">
+            <div className="flex flex-col w-full items-end gap-4 z-10 border-b-2 p-4 bg-white">
+              <div className="max-h-[30vh] w-full flex-grow overflow-hidden rounded-lg bg-white">
+                <TextArea
+                  value={val}
+                  setValue={setVal}
+                  placeholder="new note..."
+                  className="max-h-[inherit] w-full resize-none overflow-y-auto rounded-lg p-4 outline-none"
+                />
+              </div>
               <button
                 className="rounded-lg bg-sky-400 px-2 py-1 text-sm font-semibold uppercase text-white"
                 onClick={createNote}
@@ -63,15 +64,21 @@ const JobNotesModal: React.FC<{
                 SAVE
               </button>
             </div>
-            <div className="flex flex-col gap-2 rounded-b-lg bg-zinc-50 p-4 flex-grow">
+
+            <div className="flex max-h-[50vh] flex-grow flex-col gap-2 overflow-auto rounded-b-lg p-4">
               {!notes?.length && (
                 <p className="flex justify-center rounded-lg p-4 text-sm font-semibold uppercase text-zinc-400">
                   No saved notes
                 </p>
               )}
               {notes?.map(({ id, note, createdAt }) => (
-                <div className="rounded-lg border-2 bg-white p-4 flex flex-col gap-2" key={id}>
-                  <p className="text-xs text-zinc-400">{dayjs(createdAt).format("DD/MM/YYYY")}</p>
+                <div
+                  className="flex flex-col gap-1 rounded-lg p-4"
+                  key={id}
+                >
+                  <p className="text-xs text-zinc-400 font-semibold">
+                    {dayjs(createdAt).format("MMMM DD, YYYY")}
+                  </p>
                   <TextArea
                     value={note}
                     setValue={() => {
