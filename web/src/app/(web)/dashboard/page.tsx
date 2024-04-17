@@ -21,6 +21,12 @@ const Dashboard = () => {
       retry: 0,
     });
 
+  const utils = api.useUtils();
+
+  const jobDetailsAltCache = utils.jobs.getJobs
+    .getData()
+    ?.find((job) => job.jobId === jobId);
+
   return (
     <>
       <div className="flex flex-grow flex-col">
@@ -60,7 +66,7 @@ const Dashboard = () => {
             void router.push(pathname, { scroll: false });
           }}
           isLoadingJobDetails={isLoadingJobDetails}
-          jobDetails={jobDetails}
+          jobDetails={isLoadingJobDetails ? jobDetailsAltCache : jobDetails}
         />
       )}
     </>
