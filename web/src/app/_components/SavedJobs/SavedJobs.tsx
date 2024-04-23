@@ -38,7 +38,7 @@ const SavedJobs: React.FC<{ search?: string }> = ({ search }) => {
       {(!search || Boolean(search && favoritedJobs?.length)) && (
         <div>
           <h2 className="p-2 text-2xl font-bold text-zinc-400">
-            Favorited Jobs
+            Favorite Jobs
           </h2>
           <CardGrid>
             {favoritedJobs?.map((job) => (
@@ -53,7 +53,7 @@ const SavedJobs: React.FC<{ search?: string }> = ({ search }) => {
               <div className="flex w-full flex-col flex-nowrap items-start overflow-hidden rounded-lg border-2 border-red-300 bg-white">
                 <div className="flex flex-grow flex-col flex-nowrap items-start gap-1 p-4">
                   <p className="text-lg font-semibold text-zinc-500">
-                    Your favorited jobs will appear here.{" "}
+                    Your favorite jobs will appear here.{" "}
                     <IconHeart
                       className="inline fill-red-400 stroke-red-600"
                       size={20}

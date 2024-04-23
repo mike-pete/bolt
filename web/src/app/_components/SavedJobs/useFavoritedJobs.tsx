@@ -2,8 +2,9 @@
 
 import dayjs from "dayjs";
 import { api } from "~/trpc/react";
+import { type JobDetails } from "../JobCard/JobCard";
 
-const useFavoritedJobs = (search?: string) => {
+const useFavoritedJobs = (search?: string): JobDetails[] | undefined => {
   const { data: savedJobs } = api.jobs.getJobs.useQuery();
 
   return savedJobs
@@ -17,8 +18,9 @@ const useFavoritedJobs = (search?: string) => {
     })
     .sort((a, b) => {
       return dayjs(b.favoritedAt).diff(dayjs(a.favoritedAt));
-    }).map((job) => {
-        return {...job, url: `https://www.linkedin.com/jobs/view/${job.jobId}`,}
+    })
+    .map((job) => {
+      return { ...job, url: `https://www.linkedin.com/jobs/view/${job.jobId}` };
     });
 };
 

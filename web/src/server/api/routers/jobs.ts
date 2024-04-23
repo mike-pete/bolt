@@ -14,16 +14,16 @@ export const jobsRouter = createTRPCRouter({
         company: z.string().min(1).max(255),
         description: z.optional(z.string().min(1).max(65535)),
         compensation: z.optional(z.string().min(1).max(191)),
-        status: z
-          .enum([
-            "Saved",
-            "Applied",
-            "Interviewing",
-            "Rejected",
-            "Offer",
-            "Archived",
-          ]),
+        status: z.enum([
+          "Saved",
+          "Applied",
+          "Interviewing",
+          "Rejected",
+          "Offer",
+          "Archived",
+        ]),
         favoritedAt: z.nullable(z.coerce.date()),
+        note: z.optional(z.string().min(1).max(65535)),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -44,6 +44,11 @@ export const jobsRouter = createTRPCRouter({
               status: input.status as Status,
             },
           },
+          notes: input.note ? {
+            create: {
+              note: input.note,
+            },
+          }: undefined,
         },
         update: {
           userId,
@@ -59,6 +64,11 @@ export const jobsRouter = createTRPCRouter({
               status: input.status as Status,
             },
           },
+          notes: input.note ? {
+            create: {
+              note: input.note,
+            },
+          }: undefined,
         },
         where: {
           userId_jobId: {
@@ -84,7 +94,6 @@ export const jobsRouter = createTRPCRouter({
         compensation: true,
         jobId: true,
         favoritedAt: true,
-
         status: {
           select: {
             status: true,
@@ -93,6 +102,16 @@ export const jobsRouter = createTRPCRouter({
             createdAt: "desc",
           },
           take: 1,
+        },
+        notes: {
+          select: {
+            id: true,
+            note: true,
+            createdAt: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
         },
       },
       orderBy: {
@@ -124,7 +143,6 @@ export const jobsRouter = createTRPCRouter({
             compensation: true,
             jobId: true,
             favoritedAt: true,
-
             status: {
               select: {
                 status: true,
@@ -133,6 +151,16 @@ export const jobsRouter = createTRPCRouter({
                 createdAt: "desc",
               },
               take: 1,
+            },
+            notes: {
+              select: {
+                id: true,
+                note: true,
+                createdAt: true,
+              },
+              orderBy: {
+                createdAt: "desc",
+              },
             },
           },
         });

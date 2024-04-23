@@ -103,11 +103,12 @@ const useGetJobDetails = (): {
         title: title ?? "unknown",
         description: description ?? undefined,
         company: company ?? "unknown",
-        comp: compensation ?? undefined,
+        compensation: compensation ?? undefined,
         workMode: workMode,
         status: savedJobData?.status,
         favoritedAt: savedJobData?.favoritedAt ?? null,
         createdAt: savedJobData?.createdAt,
+        notes: savedJobData?.notes ?? [],
       },
     };
   }

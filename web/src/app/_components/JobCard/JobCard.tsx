@@ -9,7 +9,7 @@ export type JobDetails = {
   jobId: string;
   company: string;
   title: string;
-  comp?: string;
+  compensation?: string | null;
   description?: string;
   workMode?: {
     declared: string;
@@ -19,6 +19,7 @@ export type JobDetails = {
   url?: string;
   favoritedAt: Date | null;
   createdAt?: Date;
+  notes?: { id: string; note: string; createdAt: Date }[];
 };
 
 const JobCard: React.FC<{

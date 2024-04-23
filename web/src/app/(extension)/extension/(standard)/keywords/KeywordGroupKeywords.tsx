@@ -12,7 +12,6 @@ const KeywordGroupKeywords: React.FC<{
 }> = ({ keywordGroupId, keywords }) => {
   const utils = api.useUtils();
   const [keyword, setKeyword] = useState("");
-  const ctx = api.useUtils();
   const mutationCount = useRef(0);
 
   const { mutate: createKeyword } = api.keywords.createKeyword.useMutation({
@@ -47,7 +46,7 @@ const KeywordGroupKeywords: React.FC<{
     onSettled: () => {
       mutationCount.current -= 1;
       if (mutationCount.current === 0) {
-        void ctx.keywords.getKeywordGroups.invalidate();
+        void utils.keywords.getKeywordGroups.invalidate();
       }
     },
   });
@@ -75,7 +74,7 @@ const KeywordGroupKeywords: React.FC<{
     onSettled: () => {
       mutationCount.current -= 1;
       if (mutationCount.current === 0) {
-        void ctx.keywords.getKeywordGroups.invalidate();
+        void utils.keywords.getKeywordGroups.invalidate();
       }
     },
   });
