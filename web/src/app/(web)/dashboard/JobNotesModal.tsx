@@ -73,7 +73,7 @@ const JobNotesModal: React.FC<{
                   />
                 </div>
                 <button
-                  className="rounded-lg bg-sky-400 px-2 py-1 text-sm font-semibold uppercase text-white"
+                  className="rounded-lg bg-sky-400 px-2 py-1 text-sm font-semibold uppercase text-white disabled:bg-zinc-300"
                   onClick={createNote}
                   disabled={saveJob.isLoading || val.trim() === ''}
                 >
