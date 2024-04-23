@@ -3,11 +3,10 @@
 
 import {
   type Dispatch,
+  forwardRef,
   type SetStateAction,
   useEffect,
   useRef,
-  forwardRef,
-  useImperativeHandle,
 } from "react";
 
 type TextAreaProps = {
@@ -19,8 +18,8 @@ type TextAreaProps = {
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (props, forwardRef) => {
     const { value, setValue, ...rest } = props;
-    const textAreaRef = useRef<HTMLTextAreaElement>();
-    useImperativeHandle(forwardRef, () => textAreaRef.current);
+    const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+    // useImperativeHandle(forwardRef, () => textAreaRef.current!);
 
     useEffect(() => {
       if (textAreaRef?.current) {
@@ -41,7 +40,14 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     return (
       <textarea
         onChange={handleChange}
-        ref={textAreaRef}
+        ref={(ref) => {
+          textAreaRef.current = ref;
+          if (typeof forwardRef === "function") {
+            forwardRef(ref);
+          } else if (forwardRef) {
+            forwardRef.current = ref;
+          }
+        }}
         value={value}
         {...rest}
       />
