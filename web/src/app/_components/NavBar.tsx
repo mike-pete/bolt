@@ -19,7 +19,7 @@ const NavBar = () => {
   }
 
   return (
-    <div className="sticky top-0 z-50 flex items-center border-b-2 bg-white px-4">
+    <div className="sticky top-0 z-40 flex items-center border-b-2 bg-white px-4">
       <div className="flex items-center gap-2 p-2">
         <Link href="/" className="flex justify-center gap-1.5">
           <Image src="/bolt.svg" alt="Bolt" width={12} height={12} />

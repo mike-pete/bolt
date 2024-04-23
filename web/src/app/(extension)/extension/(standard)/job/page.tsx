@@ -1,5 +1,7 @@
 "use client";
 import { IconArrowRight, IconX } from "@tabler/icons-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import JobNotesModal from "~/app/(web)/dashboard/JobNotesModal";
 import JobCard from "~/app/_components/JobCard/JobCard";
 import { api } from "~/trpc/react";
 import bi from "../../_interactions/bi";
@@ -46,6 +48,11 @@ const Job: React.FC = () => {
   //   pageContext?.description.selector,
   //   keywordGroups,
   // ]);
+
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const jobId = searchParams.get("job");
 
   if (!isLoading && error === JobDetailError.NO_JOB_ID) {
     return (
@@ -101,10 +108,22 @@ const Job: React.FC = () => {
   }
 
   return (
-    <div className="flex min-h-full flex-col gap-2 p-4">
-      <JobCard isLoading={isLoading} jobDetails={jobDetails} error={error} />
-      <KeywordsFound description={jobDetails?.description} />
-    </div>
+    <>
+      <div className="flex min-h-full flex-col gap-2 p-4">
+        <JobCard isLoading={isLoading} jobDetails={jobDetails} error={error} />
+        <KeywordsFound description={jobDetails?.description} />
+      </div>
+      {jobId && (
+        <JobNotesModal
+          open={!!jobId}
+          onClose={() => {
+            void router.push(pathname, { scroll: false });
+          }}
+          isLoadingJobDetails={isLoading}
+          jobDetails={jobDetails}
+        />
+      )}
+    </>
   );
 };
 

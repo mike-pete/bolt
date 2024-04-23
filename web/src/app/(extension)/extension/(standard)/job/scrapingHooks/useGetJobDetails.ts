@@ -108,6 +108,7 @@ const useGetJobDetails = (): {
         status: savedJobData?.status,
         favoritedAt: savedJobData?.favoritedAt ?? null,
         createdAt: savedJobData?.createdAt,
+        notes: savedJobData?.notes ?? [],
       },
     };
   }
