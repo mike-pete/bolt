@@ -44,11 +44,13 @@ export const jobsRouter = createTRPCRouter({
               status: input.status as Status,
             },
           },
-          notes: input.note ? {
-            create: {
-              note: input.note,
-            },
-          }: undefined,
+          notes: input.note
+            ? {
+                create: {
+                  note: input.note,
+                },
+              }
+            : undefined,
         },
         update: {
           userId,
@@ -64,11 +66,13 @@ export const jobsRouter = createTRPCRouter({
               status: input.status as Status,
             },
           },
-          notes: input.note ? {
-            create: {
-              note: input.note,
-            },
-          }: undefined,
+          notes: input.note
+            ? {
+                create: {
+                  note: input.note,
+                },
+              }
+            : undefined,
         },
         where: {
           userId_jobId: {
@@ -79,6 +83,20 @@ export const jobsRouter = createTRPCRouter({
       });
 
       return jobSaved;
+    }),
+
+  deleteNote: protectedProcedure
+    .input(z.string().min(1).max(191))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      return await ctx.db.notes.delete({
+        where: {
+          id: input,
+          job: {
+            userId,
+          },
+        },
+      });
     }),
 
   getJobs: protectedProcedure.query(async ({ ctx }) => {
