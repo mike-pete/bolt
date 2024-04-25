@@ -1,12 +1,13 @@
 import { Listbox } from "@headlessui/react";
 import { Status } from "@prisma/client";
 import { IconChevronDown, IconHeart, IconNote } from "@tabler/icons-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import posthog from "posthog-js";
 import React, { useCallback, useRef } from "react";
 import { twMerge } from "tailwind-merge";
 import { api } from "~/trpc/react";
 import { type RouterInputs } from "~/trpc/shared";
 import { type JobDetails } from "./JobCard";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const useSaveJob = () => {
   const utils = api.useUtils();
@@ -65,7 +66,7 @@ const useSaveJob = () => {
 
 const ActionBar: React.FC<{ details: JobDetails }> = ({ details }) => {
   return (
-    <div className="flex w-full flex-row items-center gap-2 border-t-2 border-t-inherit px-4 py-2 bg-white/70 rounded-b-md">
+    <div className="flex w-full flex-row items-center gap-2 rounded-b-md border-t-2 border-t-inherit bg-white/70 px-4 py-2">
       <StatusPicker details={details} />
       <FavoriteButton details={details} />
       <NotesButton details={details} />
@@ -133,6 +134,10 @@ const StatusPicker: React.FC<{ details: JobDetails }> = ({ details }) => {
       <Listbox
         value={details?.status}
         onChange={(newStatus) => {
+          posthog.capture("job_status_changed", {
+            jobId: details.jobId,
+            status: newStatus,
+          });
           saveJob({
             ...details,
             status: newStatus,
@@ -176,9 +181,10 @@ const FavoriteButton: React.FC<{ details: JobDetails }> = ({ details }) => {
 
   return (
     <button
-    data-ph-capture-attribute-user-clicked-favorite={details.favoritedAt ? "unfavorited" : "favorited"}
+      data-ph-capture-attribute-user-clicked-favorite={
+        details.favoritedAt ? "unfavorited" : "favorited"
+      }
       onClick={() =>
-        
         saveJob({
           ...details,
           favoritedAt: details.favoritedAt ? null : new Date(),
@@ -197,27 +203,29 @@ const FavoriteButton: React.FC<{ details: JobDetails }> = ({ details }) => {
 };
 
 const NotesButton: React.FC<{ details: JobDetails }> = ({ details }) => {
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const createQueryString = useCallback(
     (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
- 
-      return params.toString()
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
     },
-    [searchParams]
-  )
+    [searchParams],
+  );
 
   return (
     <button
-    data-ph-capture-attribute-user-clicked-favorite={details.favoritedAt ? "unfavorited" : "favorited"}
+      data-ph-capture-attribute-user-clicked-favorite={
+        details.favoritedAt ? "unfavorited" : "favorited"
+      }
       onClick={() =>
-        
-        router.push(pathname + '?' + createQueryString('job', details.jobId), {scroll: false})
-
+        router.push(pathname + "?" + createQueryString("job", details.jobId), {
+          scroll: false,
+        })
       }
     >
       <IconNote
