@@ -21,6 +21,8 @@
     "@prisma/adapter-planetscale": "^5.6.0",
     "@prisma/client": "^5.6.0",
     "@react-email/components": "0.0.15",
+    "@stripe/react-stripe-js": "^2.7.0",
+    "@stripe/stripe-js": "^3.3.0",
     "@t3-oss/env-nextjs": "^0.7.1",
     "@tabler/icons-react": "^2.47.0",
     "@tanstack/react-query": "^4.36.1",
