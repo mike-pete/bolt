@@ -55,6 +55,10 @@ model User {
     keywordGroups KeywordGroups[]
     keywords      Keywords[]
     jobs          Job[]
+    stripeCustomerId String?
+    stripeSubscriptionId String?
+    planActive    Boolean @default(false)
+    planExpires   DateTime?
 }
 
 model VerificationToken {
