@@ -17,13 +17,7 @@ const linkedinJobSearchContext: PageContext = {
   description: { selector: ".jobs-description--reformatted" },
   company: {
     selector:
-      ".job-details-jobs-unified-top-card__primary-description-without-tagline",
-    mutate: (scrapedText: string) => {
-      if (scrapedText.includes("·")) {
-        return (scrapedText.split("·")[0] ?? "").trim();
-      }
-      return null;
-    },
+    '.job-details-jobs-unified-top-card__company-name',
   },
   compensation: {
     selector: ".job-details-jobs-unified-top-card__job-insight > span > span",
