@@ -112,7 +112,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="flex flex-col items-center gap-12 py-24">
+      {/* <section className="flex flex-col items-center gap-12 py-24">
         <h1 className="text-5xl font-black text-zinc-600 md:text-6xl">
           Pricing
         </h1>
@@ -156,7 +156,7 @@ export default async function Home() {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section
         className="flex w-full flex-grow items-center justify-center p-4"
