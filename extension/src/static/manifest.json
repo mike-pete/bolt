@@ -3,14 +3,13 @@
 	"version": "0.0.0.14",
 	"description": "Find relevant jobs in less time",
 	"manifest_version": 3,
-	"permissions": ["activeTab", "scripting", "tabs"],
 	"background": {
 		"service_worker": "background.js",
 		"type": "module"
 	},
 	"content_scripts": [
 		{
-			"matches": ["http://*/*", "https://*/*"],
+			"matches": ["https://www.linkedin.com/*", "https://*.linkedin.com/*"],
 			"js": ["content.js"],
 			"run_at": "document_end"
 		}
