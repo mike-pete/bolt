@@ -1,6 +1,6 @@
 {
 	"name": "Bolt - Job Application Tracker",
-	"version": "0.0.0.14",
+	"version": "0.0.0.15",
 	"description": "Find relevant jobs in less time",
 	"manifest_version": 3,
 	"background": {
